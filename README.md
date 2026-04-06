@@ -11,7 +11,8 @@ explorer/
 │   ├── oh-my-opencode-agent-rankings-2026-04-06.md # Updated comprehensive report (v2.0)
 │   ├── session-learnings-2026-04-04.md # Session 1: Agent architecture insights
 │   ├── session-learnings-2026-04-05.md # Session 2: Exhaustive search methodology
-│   └── session-learnings-2026-04-06.md # Session 3: Timeout configuration & system architecture
+│   ├── session-learnings-2026-04-06.md # Session 3: Timeout configuration & system architecture
+│   └── session-learnings-2026-04-06-fallback-investigation.md # Session 4: Fallback configuration & retry mechanism
 ├── .omx/
 │   └── model-rankings-report.md # OpenCode Zen agent rankings (25 agents)
 ├── session_opencode_model_ranking.md # Previous session notes
@@ -70,6 +71,15 @@ Timeout configuration & system architecture session covering:
 - **Configuration management** (Environment variables, provider-level, agent-level)
 - **Solution implementation** (OPENCODE_MODEL_TIMEOUT=120000 globally)
 - **System architecture insights** (OpenCode core vs. oh-my-opencode plugin)
+
+### 5. [Session Learnings - April 6 (Fallback Investigation)](docs/session-learnings-2026-04-06-fallback-investigation.md)
+
+Fallback configuration & retry mechanism investigation covering:
+- **Retry-count-based fallback discovery** (Feature doesn't exist - Issue #3011)
+- **Configuration verification** (All agents already have fallback configured)
+- **TUI display bug** (Fallback works but TUI shows error - OpenClaw #54060)
+- **Usage limit handling** (Automatic fallback on HTTP 429, timeouts, errors)
+- **Free model landscape** (Diversified across OpenRouter, NVIDIA Build, Google)
 
 ## Quick Reference: Best Free Models by Agent
 
@@ -165,6 +175,10 @@ Timeout configuration & system architecture session covering:
 April 6, 2026
 
 **Recent Changes:**
+- Added session-learnings-2026-04-06-fallback-investigation.md documenting fallback configuration & retry mechanism
+- Discovered retry-count-based fallback doesn't exist (Issue #3011)
+- Verified all agents have fallback configured (11 agents, 8 categories)
+- Documented TUI display bug where fallback succeeds but error shows (OpenClaw #54060)
 - Added session-learnings-2026-04-06.md documenting timeout configuration & system architecture
 - Created TIMEOUT_CONFIGURATION.md with comprehensive timeout guide
 - Implemented global timeout reduction (OPENCODE_MODEL_TIMEOUT=120000)
