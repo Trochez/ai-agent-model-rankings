@@ -10,7 +10,8 @@ explorer/
 │   ├── oh-my-opencode-agent-rankings.md # Comprehensive model rankings for 11 agents (v1.0)
 │   ├── oh-my-opencode-agent-rankings-2026-04-06.md # Updated comprehensive report (v2.0)
 │   ├── session-learnings-2026-04-04.md # Session 1: Agent architecture insights
-│   └── session-learnings-2026-04-05.md # Session 2: Exhaustive search methodology
+│   ├── session-learnings-2026-04-05.md # Session 2: Exhaustive search methodology
+│   └── session-learnings-2026-04-06.md # Session 3: Timeout configuration & system architecture
 ├── .omx/
 │   └── model-rankings-report.md # OpenCode Zen agent rankings (25 agents)
 ├── session_opencode_model_ranking.md # Previous session notes
@@ -60,6 +61,15 @@ Exhaustive search methodology session covering:
 - Provider landscape understanding (4 major ecosystems)
 - Search methodology insights (parallel agents + multi-pattern grep)
 - User request handling ("show me" requires exhaustive discovery)
+
+### 4. [Session Learnings - April 6](docs/session-learnings-2026-04-06.md)
+
+Timeout configuration & system architecture session covering:
+- **OpenCode timeout architecture** (3 distinct timeout layers)
+- **Critical bug discovery** (Background task fallback ignored - Issue #2203)
+- **Configuration management** (Environment variables, provider-level, agent-level)
+- **Solution implementation** (OPENCODE_MODEL_TIMEOUT=120000 globally)
+- **System architecture insights** (OpenCode core vs. oh-my-opencode plugin)
 
 ## Quick Reference: Best Free Models by Agent
 
@@ -145,16 +155,20 @@ Exhaustive search methodology session covering:
 ## Related Documentation
 
 - [Oh-My-OpenCode Configuration](~/.config/opencode/oh-my-opencode.json)
+- [Timeout Configuration Guide](~/.config/opencode/TIMEOUT_CONFIGURATION.md)
 - [OpenRouter Free Models](https://openrouter.ai)
 - [NVIDIA Build Models](https://build.nvidia.com/models)
 - [OpenAI Models](https://developers.openai.com/api/docs/models/all)
 
 ## Last Updated
 
-April 5, 2026
+April 6, 2026
 
 **Recent Changes:**
-- Added Provider column to all ranking tables
-- Created session-learnings-2026-04-05.md documenting exhaustive search methodology
-- Updated README with category rankings quick reference
-- Added comprehensive catalog of 65+ ranking tables across all documents
+- Added session-learnings-2026-04-06.md documenting timeout configuration & system architecture
+- Created TIMEOUT_CONFIGURATION.md with comprehensive timeout guide
+- Implemented global timeout reduction (OPENCODE_MODEL_TIMEOUT=120000)
+- Documented critical bug: Background task fallback ignored (Issue #2203)
+- Added Provider column to all ranking tables (April 5)
+- Created session-learnings-2026-04-05.md documenting exhaustive search methodology (April 5)
+- Updated README with category rankings quick reference (April 5)
