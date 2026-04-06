@@ -12,20 +12,15 @@ explorer/
 │   ├── session-learnings-2026-04-04.md # Session 1: Agent architecture insights
 │   ├── session-learnings-2026-04-05.md # Session 2: Exhaustive search methodology
 │   ├── session-learnings-2026-04-06.md # Session 3: Timeout configuration & system architecture
-│   └── session-learnings-2026-04-06-fallback-investigation.md # Session 4: Fallback configuration & retry mechanism
+│   ├── session-learnings-2026-04-06-fallback-investigation.md # Session 4: Fallback configuration & retry mechanism
+│   └── session-learnings-2026-04-06-model-id-investigation.md # Session 5: Model ID investigation & config fixes
 ├── .omx/
 │   └── model-rankings-report.md # OpenCode Zen agent rankings (25 agents)
 ├── session_opencode_model_ranking.md # Previous session notes
+├── model-id-investigation-report.md # Detailed model ID investigation
+├── corrected-model-ids.md # Quick reference for correct model IDs
+├── config-fix-summary.md # Configuration change log
 └── README.md # This file
-```
-explorer/
-├── docs/
-│   ├── oh-my-opencode-agent-rankings.md    # Comprehensive model rankings for 11 agents
-│   └── session-learnings-2026-04-04.md     # Detailed session learnings and insights
-├── .omx/
-│   └── model-rankings-report.md            # OpenCode agent rankings (different system)
-├── session_opencode_model_ranking.md       # Previous session notes
-└── README.md                               # This file
 ```
 
 ## Key Documents
@@ -80,6 +75,15 @@ Fallback configuration & retry mechanism investigation covering:
 - **TUI display bug** (Fallback works but TUI shows error - OpenClaw #54060)
 - **Usage limit handling** (Automatic fallback on HTTP 429, timeouts, errors)
 - **Free model landscape** (Diversified across OpenRouter, NVIDIA Build, Google)
+
+### 6. [Session Learnings - April 6 (Model ID Investigation)](docs/session-learnings-2026-04-06-model-id-investigation.md)
+
+Model ID investigation & configuration fix session covering:
+- **OpenRouter ID convention** (no `openrouter/` prefix)
+- **Qwen 2.5 hyphenation requirement** (`qwen-2.5` not `qwen2.5`)
+- **Error type classification** (400 vs 429 vs 503)
+- **Configuration fixes** (5 model IDs corrected in oh-my-opencode.json)
+- **Research methodology** (direct web fetch > background agents for rate-limited scenarios)
 
 ## Quick Reference: Best Free Models by Agent
 
@@ -175,6 +179,13 @@ Fallback configuration & retry mechanism investigation covering:
 April 6, 2026
 
 **Recent Changes:**
+- Added session-learnings-2026-04-06-model-id-investigation.md documenting model ID investigation & configuration fixes
+- Discovered OpenRouter ID convention (no `openrouter/` prefix)
+- Discovered Qwen 2.5 hyphenation requirement (`qwen-2.5` not `qwen2.5`)
+- Fixed 5 incorrect model IDs in oh-my-opencode.json
+- Created model-id-investigation-report.md with detailed investigation findings
+- Created corrected-model-ids.md quick reference guide
+- Created config-fix-summary.md configuration change log
 - Added session-learnings-2026-04-06-fallback-investigation.md documenting fallback configuration & retry mechanism
 - Discovered retry-count-based fallback doesn't exist (Issue #3011)
 - Verified all agents have fallback configured (11 agents, 8 categories)
