@@ -13,7 +13,8 @@ explorer/
 │   ├── session-learnings-2026-04-05.md # Session 2: Exhaustive search methodology
 │   ├── session-learnings-2026-04-06.md # Session 3: Timeout configuration & system architecture
 │   ├── session-learnings-2026-04-06-fallback-investigation.md # Session 4: Fallback configuration & retry mechanism
-│   └── session-learnings-2026-04-06-model-id-investigation.md # Session 5: Model ID investigation & config fixes
+│   ├── session-learnings-2026-04-06-model-id-investigation.md # Session 5: Model ID investigation & config fixes
+│   └── session-learnings-2026-04-07.md # Session 6: Model config updates & visual engineering research
 ├── .omx/
 │   └── model-rankings-report.md # OpenCode Zen agent rankings (25 agents)
 ├── session_opencode_model_ranking.md # Previous session notes
@@ -85,21 +86,31 @@ Model ID investigation & configuration fix session covering:
 - **Configuration fixes** (5 model IDs corrected in oh-my-opencode.json)
 - **Research methodology** (direct web fetch > background agents for rate-limited scenarios)
 
+### 7. [Session Learnings - April 7](docs/session-learnings-2026-04-07.md)
+
+Model configuration updates & visual engineering research session covering:
+- **Qwen3.6 Plus migration** from OpenRouter to OpenCode Zen (15 references updated)
+- **Model testing insights** (14% success rate, rate limit issues)
+- **Visual engineering research** (15+ visual models identified, 8 free options)
+- **Provider landscape analysis** (OpenRouter vs OpenCode Zen vs NVIDIA Build)
+- **Configuration file structure** (11 agents, 8 categories, model properties)
+- **Best practices** for model selection and fallback strategies
+
 ## Quick Reference: Best Free Models by Agent
 
 | Agent | Best Free Model | Provider | Score |
 |-------|-----------------|----------|-------|
-| sisyphus | qwen/qwen3.6-plus:free | OpenRouter | 88/100 |
+| sisyphus | opencode/qwen3.6-plus-free | OpenCode Zen | 88/100 |
 | hephaestus | qwen/qwen3-coder:free | OpenRouter | 89/100 |
-| oracle | qwen/qwen3.6-plus:free | OpenRouter | 82/100 |
-| explore | qwen/qwen3.6-plus:free | OpenRouter | 90/100 |
-| prometheus | qwen/qwen3.6-plus:free | OpenRouter | 85/100 |
-| metis | qwen/qwen3.6-plus:free | OpenRouter | 91/100 |
-| momus | qwen/qwen3.6-plus:free | OpenRouter | 84/100 |
-| librarian | qwen/qwen3.6-plus:free | OpenRouter | 90/100 |
+| oracle | opencode/qwen3.6-plus-free | OpenCode Zen | 82/100 |
+| explore | opencode/qwen3.6-plus-free | OpenCode Zen | 90/100 |
+| prometheus | opencode/qwen3.6-plus-free | OpenCode Zen | 85/100 |
+| metis | opencode/qwen3.6-plus-free | OpenCode Zen | 91/100 |
+| momus | opencode/qwen3.6-plus-free | OpenCode Zen | 84/100 |
+| librarian | opencode/qwen3.6-plus-free | OpenCode Zen | 90/100 |
 | multimodal-looker | google/lyria-3-pro-preview:free | OpenRouter | 95/100 |
-| atlas | qwen/qwen3.6-plus:free | OpenRouter | 90/100 |
-| sisyphus-junior | qwen/qwen3.6-plus:free | OpenRouter | 88/100 |
+| atlas | opencode/qwen3.6-plus-free | OpenCode Zen | 90/100 |
+| sisyphus-junior | opencode/qwen3.6-plus-free | OpenCode Zen | 88/100 |
 
 ## Quick Reference: Best Free Models by Category
 
@@ -120,18 +131,24 @@ Model ID investigation & configuration fix session covering:
 - Rate limits: 20 req/min, 200 req/day
 - Cost: $0 (no credit card required)
 - Top models: qwen3.6-plus, qwen3-coder, lyria-3
+- **Note**: Rate limits are provider-level, not credit-based
+
+### OpenCode Zen Free Models
+- No rate limits mentioned for free tier
+- Curated, tested models for coding agents
+- Top models: qwen3.6-plus-free, gemini-3-flash, gemini-3.1-pro
+- **Advantage**: Models benchmarked for coding agent performance
 
 ### NVIDIA Build Free Endpoints (91 total)
 - GPU-optimized inference
-- Top models: glm5 (744B MoE), nemotron-3-super
-
-### OpenCode Free Models
-- opencode/qwen3.6-plus-free
-- opencode/gemini-3-flash
+- Specialized vision models available
+- Top models: glm5 (744B MoE), nemotron-3-super, nemotron-nano-12b-v2-vl
+- **Specialized**: OCR, object detection, image embeddings, video understanding
 
 ### OpenAI Models (Paid)
 - gpt-5.4, gpt-5.4-pro, gpt-5.3-codex
 - Cost: $0.20-$180 per 1M tokens
+- Best for critical tasks requiring frontier intelligence
 
 ## Cost Optimization Recommendations
 
@@ -176,9 +193,18 @@ Model ID investigation & configuration fix session covering:
 
 ## Last Updated
 
-April 6, 2026
+April 7, 2026
 
-**Recent Changes:**
+**Recent Changes (April 7):**
+- Added session-learnings-2026-04-07.md documenting model configuration updates & visual engineering research
+- Updated Qwen3.6 Plus from OpenRouter to OpenCode Zen (15 references)
+- Updated Gemini 3.1 Pro Preview to use OpenRouter routing
+- Documented model testing insights (14% success rate)
+- Expanded visual engineering model options (15+ models, 8 free)
+- Documented provider landscape (OpenRouter vs OpenCode Zen vs NVIDIA Build)
+- Updated best free models by agent to reflect OpenCode Zen migration
+
+**Previous Changes (April 6):**
 - Added session-learnings-2026-04-06-model-id-investigation.md documenting model ID investigation & configuration fixes
 - Discovered OpenRouter ID convention (no `openrouter/` prefix)
 - Discovered Qwen 2.5 hyphenation requirement (`qwen-2.5` not `qwen2.5`)
