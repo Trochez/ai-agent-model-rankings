@@ -14,7 +14,9 @@ explorer/
 │   ├── session-learnings-2026-04-06.md # Session 3: Timeout configuration & system architecture
 │   ├── session-learnings-2026-04-06-fallback-investigation.md # Session 4: Fallback configuration & retry mechanism
 │   ├── session-learnings-2026-04-06-model-id-investigation.md # Session 5: Model ID investigation & config fixes
-│   └── session-learnings-2026-04-07.md # Session 6: Model config updates & visual engineering research
+│   ├── session-learnings-2026-04-07.md # Session 6: Model config updates & visual engineering research
+│   ├── session-learnings-2026-04-07-model-configuration-fix.md # Session 7: Model configuration verification & correction
+│   └── oh-my-opencode-reference.json # Working configuration reference (verified 2026-04-07)
 ├── .omx/
 │   └── model-rankings-report.md # OpenCode Zen agent rankings (25 agents)
 ├── session_opencode_model_ranking.md # Previous session notes
@@ -95,6 +97,17 @@ Model configuration updates & visual engineering research session covering:
 - **Provider landscape analysis** (OpenRouter vs OpenCode Zen vs NVIDIA Build)
 - **Configuration file structure** (11 agents, 8 categories, model properties)
 - **Best practices** for model selection and fallback strategies
+
+### 8. [Session Learnings - April 7 (Model Configuration Fix)](docs/session-learnings-2026-04-07-model-configuration-fix.md)
+
+Model configuration verification & correction session covering:
+- **Model name discrepancies** (3 types found, 21 occurrences fixed)
+- **Provider prefix hierarchy** (NVIDIA provider for z-ai/glm5)
+- **Unicode vs ASCII characters** (Unicode hyphens causing silent failures)
+- **Testing methodology** (opencode run vs opencode --model)
+- **Parallel execution efficiency** (87.5% time reduction)
+- **Configuration validation process** (extract, cross-reference, validate, test)
+- **All non-OpenAI models verified** (8/8 working after fixes)
 
 ## Quick Reference: Best Free Models by Agent
 
@@ -195,7 +208,16 @@ Model configuration updates & visual engineering research session covering:
 
 April 7, 2026
 
-**Recent Changes (April 7):**
+**Recent Changes (April 7 - Session 7):**
+- Added session-learnings-2026-04-07-model-configuration-fix.md documenting model verification & correction
+- Fixed 21 model name discrepancies in oh-my-opencode.json (3 types of errors)
+- Corrected z-ai/glm-5 → nvidia/z-ai/glm5 (18 occurrences)
+- Corrected nvidia/nemotron-3-nano-30b-a3b → nvidia/nvidia/nemotron-3-nano-30b-a3b (3 occurrences)
+- Saved working configuration as reference (oh-my-opencode-reference.json)
+- Tested all 8 non-OpenAI models (100% success rate)
+- Documented testing methodology and parallel execution efficiency
+
+**Previous Changes (April 7 - Session 6):**
 - Added session-learnings-2026-04-07.md documenting model configuration updates & visual engineering research
 - Updated Qwen3.6 Plus from OpenRouter to OpenCode Zen (15 references)
 - Updated Gemini 3.1 Pro Preview to use OpenRouter routing

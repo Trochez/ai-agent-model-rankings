@@ -1,0 +1,418 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "model_fallback": true,
+  "providerOptions": {
+    "enable-auto-tool-choice": true,
+    "tool-call-parser": "glm47"
+  },
+  "agents": {
+    "sisyphus": {
+      "model": "nvidia/z-ai/glm5",
+      "variant": "max",
+      "reasoningEffort": "xhigh",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "thinking": {
+        "type": "enabled",
+        "budgetTokens": 10000
+      },
+      "mode": "primary",
+      "category": "orchestrator",
+      "skills": [
+        "ralph",
+        "autopilot",
+        "ultrawork"
+      ],
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true,
+        "task": true,
+        "webfetch": true,
+        "websearch": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow",
+        "webfetch": "allow",
+        "task": "allow"
+      },
+      "textVerbosity": "medium",
+      "color": "#9400D3",
+      "fallback_models": [
+        "openai/gpt-5.4",
+        "opencode/qwen3.6-plus-free"
+      ]
+    },
+    "hephaestus": {
+      "model": "openai/gpt-5.4",
+      "variant": "medium",
+      "reasoningEffort": "high",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "mode": "primary",
+      "category": "executor",
+      "skills": [],
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true,
+        "grep": true,
+        "glob": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      },
+      "textVerbosity": "medium",
+      "allow_non_gpt_model": true,
+      "color": "#4ECDC4",
+      "fallback_models": [
+        "nvidia/qwen/qwen3-coder-480b-a35b-instruct",
+        "nvidia/z-ai/glm5"
+      ]
+    },
+    "oracle": {
+      "model": "openai/gpt-5.4",
+      "variant": "high",
+      "reasoningEffort": "xhigh",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "mode": "subagent",
+      "category": "consultant",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "grep": true,
+        "glob": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      },
+      "textVerbosity": "high",
+      "color": "#9B59B6",
+      "fallback_models": [
+        "nvidia/z-ai/glm5",
+        "opencode/qwen3.6-plus-free"
+      ]
+    },
+    "explore": {
+      "model": "nvidia/z-ai/glm5",
+      "variant": "low",
+      "reasoningEffort": "minimal",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "mode": "subagent",
+      "category": "search",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "grep": true,
+        "glob": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      },
+      "textVerbosity": "low",
+      "color": "#3498DB",
+      "fallback_models": [
+        "opencode/qwen3.6-plus-free",
+        "nvidia/stepfun-ai/step-3.5-flash"
+      ]
+    },
+    "prometheus": {
+      "model": "openai/gpt-5.4",
+      "variant": "max",
+      "reasoningEffort": "xhigh",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "mode": "primary",
+      "category": "planner",
+      "skills": [
+        "plan",
+        "ralplan"
+      ],
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "grep": true,
+        "glob": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      },
+      "textVerbosity": "high",
+      "color": "#E74C3C",
+      "fallback_models": [
+        "nvidia/z-ai/glm5",
+        "opencode/qwen3.6-plus-free"
+      ]
+    },
+    "metis": {
+      "model": "opencode/qwen3.6-plus-free",
+      "variant": "max",
+      "reasoningEffort": "xhigh",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "mode": "subagent",
+      "category": "analyst",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      },
+      "textVerbosity": "high",
+      "color": "#1ABC9C",
+      "fallback_models": [
+        "nvidia/z-ai/glm5",
+        "openai/gpt-5.4"
+      ]
+    },
+    "momus": {
+      "model": "openai/gpt-5.4",
+      "variant": "xhigh",
+      "reasoningEffort": "xhigh",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "mode": "subagent",
+      "category": "reviewer",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      },
+      "textVerbosity": "high",
+      "color": "#F39C12",
+      "fallback_models": [
+        "nvidia/z-ai/glm5",
+        "opencode/qwen3.6-plus-free"
+      ]
+    },
+    "librarian": {
+      "model": "google/gemini-3.1-flash-lite-preview",
+      "variant": "low",
+      "reasoningEffort": "minimal",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "mode": "subagent",
+      "category": "research",
+      "tools": {
+        "webfetch": true,
+        "websearch": true,
+        "read": true,
+        "bash": true,
+        "edit": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow",
+        "webfetch": "allow"
+      },
+      "textVerbosity": "medium",
+      "color": "#2ECC71",
+      "fallback_models": [
+        "opencode/qwen3.6-plus-free",
+        "nvidia/z-ai/glm5"
+      ]
+    },
+    "multimodal-looker": {
+      "model": "nvidia/z-ai/glm5",
+      "variant": "medium",
+      "reasoningEffort": "medium",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "mode": "subagent",
+      "category": "visual",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      },
+      "textVerbosity": "medium",
+      "color": "#E67E22",
+      "fallback_models": [
+        "opencode/qwen3.6-plus-free",
+        "nvidia/nvidia/nemotron-3-nano-30b-a3b"
+      ]
+    },
+    "atlas": {
+      "model": "opencode/qwen3.6-plus-free",
+      "variant": "medium",
+      "reasoningEffort": "medium",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "mode": "subagent",
+      "category": "knowledge",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      },
+      "textVerbosity": "medium",
+      "color": "#95A5A6",
+      "fallback_models": [
+        "nvidia/z-ai/glm5",
+        "nvidia/meta/llama-3.3-70b-instruct"
+      ]
+    },
+    "sisyphus-junior": {
+      "model": "nvidia/z-ai/glm5",
+      "variant": "medium",
+      "reasoningEffort": "medium",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "mode": "subagent",
+      "category": "orchestrator-junior",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true
+      },
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      },
+      "textVerbosity": "medium",
+      "color": "#FF6B6B",
+      "fallback_models": [
+        "opencode/qwen3.6-plus-free",
+        "nvidia/meta/llama-3.3-70b-instruct"
+      ]
+    }
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "opencode/qwen3.6-plus-free",
+      "variant": "high",
+      "reasoningEffort": "high",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "fallback_models": [
+        "nvidia/nvidia/nemotron-3-nano-30b-a3b",
+        "nvidia/meta/llama-3.2-11b-vision-instruct"
+      ]
+    },
+    "ultrabrain": {
+      "model": "openai/gpt-5.4",
+      "variant": "xhigh",
+      "reasoningEffort": "xhigh",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "fallback_models": [
+        "nvidia/z-ai/glm5",
+        "opencode/qwen3.6-plus-free"
+      ]
+    },
+    "deep": {
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
+      "reasoningEffort": "medium",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "fallback_models": [
+        "openai/gpt-5.4",
+        "nvidia/z-ai/glm5",
+        "opencode/qwen3.6-plus-free"
+      ]
+    },
+    "artistry": {
+      "model": "nvidia/z-ai/glm5",
+      "variant": "high",
+      "reasoningEffort": "high",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "fallback_models": [
+        "opencode/qwen3.6-plus-free",
+        "nvidia/meta/llama-3.3-70b-instruct"
+      ]
+    },
+    "quick": {
+      "model": "nvidia/z-ai/glm5",
+      "variant": "low",
+      "reasoningEffort": "minimal",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "fallback_models": [
+        "opencode/qwen3.6-plus-free",
+        "nvidia/stepfun-ai/step-3.5-flash"
+      ]
+    },
+    "unspecified-low": {
+      "model": "nvidia/z-ai/glm5",
+      "variant": "medium",
+      "reasoningEffort": "medium",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "fallback_models": [
+        "opencode/qwen3.6-plus-free",
+        "nvidia/meta/llama-3.3-70b-instruct"
+      ]
+    },
+    "unspecified-high": {
+      "model": "nvidia/z-ai/glm5",
+      "variant": "medium",
+      "reasoningEffort": "medium",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "fallback_models": [
+        "openai/gpt-5.4",
+        "opencode/qwen3.6-plus-free",
+        "nvidia/nvidia/nemotron-3-nano-30b-a3b"
+      ]
+    },
+    "writing": {
+      "model": "google/gemini-3.1-flash-lite-preview",
+      "variant": "low",
+      "reasoningEffort": "minimal",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "maxTokens": 16384,
+      "fallback_models": [
+        "nvidia/meta/llama-3.3-70b-instruct",
+        "opencode/qwen3.6-plus-free"
+      ]
+    }
+  }
+}
