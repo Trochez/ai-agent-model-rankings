@@ -15,8 +15,9 @@ explorer/
 │   ├── session-learnings-2026-04-06-fallback-investigation.md # Session 4: Fallback configuration & retry mechanism
 │   ├── session-learnings-2026-04-06-model-id-investigation.md # Session 5: Model ID investigation & config fixes
 │   ├── session-learnings-2026-04-07.md # Session 6: Model config updates & visual engineering research
-│   ├── session-learnings-2026-04-07-model-configuration-fix.md # Session 7: Model configuration verification & correction
-│   └── oh-my-opencode-reference.json # Working configuration reference (verified 2026-04-07)
+│ ├── session-learnings-2026-04-07-model-configuration-fix.md # Session 7: Model configuration verification & correction
+│ ├── session-learnings-2026-04-08.md # Session 8: OMO-Team skill creation (OpenCode-native orchestration)
+│ └── oh-my-opencode-reference.json # Working configuration reference (verified 2026-04-07)
 ├── .omx/
 │   └── model-rankings-report.md # OpenCode Zen agent rankings (25 agents)
 ├── session_opencode_model_ranking.md # Previous session notes
@@ -108,6 +109,17 @@ Model configuration verification & correction session covering:
 - **Parallel execution efficiency** (87.5% time reduction)
 - **Configuration validation process** (extract, cross-reference, validate, test)
 - **All non-OpenAI models verified** (8/8 working after fixes)
+
+### 9. [Session Learnings - April 8](docs/session-learnings-2026-04-08.md)
+
+OMO-Team skill creation session covering:
+- **Architecture discovery** (OMX vs OMO orchestration systems)
+- **OpenCode subagent infrastructure** (task() tool, BackgroundManager)
+- **Skill loading behavior** (auto-discovery, timing issues)
+- **State management patterns** (.omo/ vs .omx/ state locations)
+- **Parallel execution testing** (2 workers, 43s + 36s simultaneous)
+- **Skills created** (omo-team, omo-worker)
+- **Key insight**: OpenCode and OMX are parallel systems that don't mix
 
 ## Quick Reference: Best Free Models by Agent
 
@@ -206,9 +218,18 @@ Model configuration verification & correction session covering:
 
 ## Last Updated
 
-April 7, 2026
+April 8, 2026
 
-**Recent Changes (April 7 - Session 7):**
+**Recent Changes (April 8 - Session 8):**
+- Added session-learnings-2026-04-08.md documenting OMO-Team skill creation
+- Created omo-team skill for OpenCode-native team orchestration
+- Created omo-worker skill for OpenCode subagent protocol
+- Discovered OMX vs OMO architecture mismatch
+- Tested parallel subagent spawning (2 workers simultaneously)
+- Documented state management patterns (.omo/ vs .omx/)
+- Created comprehensive DATASHEET.md for omo-team skill
+
+**Previous Changes (April 7 - Session 7):**
 - Added session-learnings-2026-04-07-model-configuration-fix.md documenting model verification & correction
 - Fixed 21 model name discrepancies in oh-my-opencode.json (3 types of errors)
 - Corrected z-ai/glm-5 → nvidia/z-ai/glm5 (18 occurrences)
