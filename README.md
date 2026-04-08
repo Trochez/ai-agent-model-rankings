@@ -119,6 +119,10 @@ OMO-Team skill creation session covering:
 - **State management patterns** (.omo/ vs .omx/ state locations)
 - **Parallel execution testing** (2 workers, 43s + 36s simultaneous)
 - **Skills created** (omo-team, omo-worker)
+- **Skill usefulness analysis** (proven unique value - only OpenCode-native team orchestration with auto-delegation)
+- **Complexity-based worker estimation** (0-100 score → 1-5 workers)
+- **Automatic role assignment** (keyword → agent → category mapping)
+- **Background task lifecycle** (spawn → notification → collect)
 - **Key insight**: OpenCode and OMX are parallel systems that don't mix
 
 ## Quick Reference: Best Free Models by Agent
@@ -228,6 +232,11 @@ April 8, 2026
 - Tested parallel subagent spawning (2 workers simultaneously)
 - Documented state management patterns (.omo/ vs .omx/)
 - Created comprehensive DATASHEET.md for omo-team skill
+- Analyzed skill usefulness - proven unique value (only OpenCode-native team orchestration with auto-delegation)
+- Implemented complexity-based worker estimation (0-100 score → 1-5 workers)
+- Implemented automatic role assignment (keyword → agent → category mapping)
+- Documented background task lifecycle pattern (spawn → notification → collect)
+- Documented skill loading timing issue and solutions
 
 **Previous Changes (April 7 - Session 7):**
 - Added session-learnings-2026-04-07-model-configuration-fix.md documenting model verification & correction
