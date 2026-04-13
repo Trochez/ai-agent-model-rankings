@@ -17,7 +17,12 @@ explorer/
 │   ├── session-learnings-2026-04-07.md # Session 6: Model config updates & visual engineering research
 │ ├── session-learnings-2026-04-07-model-configuration-fix.md # Session 7: Model configuration verification & correction
 │ ├── session-learnings-2026-04-08.md # Session 8: OMO-Team skill creation (OpenCode-native orchestration)
-│ └── oh-my-opencode-reference.json # Working configuration reference (verified 2026-04-07)
+│ ├── session-learnings-2026-04-13.md # Session 9: Extended rankings & dual system architecture
+│ ├── session-learnings-2026-04-13-documentation.md # Session 10: Model testing & configuration verification
+│ ├── extended-rankings-visual-engineering.md # Extended ranking (22 models)
+│ ├── extended-rankings-artistry.md # Extended ranking (20 models)
+│ ├── extended-rankings-writing.md # Extended ranking (20 models)
+│ └── oh-my-opencode-reference.json # Working configuration reference (verified 2026-04-13)
 ├── .omx/
 │   └── model-rankings-report.md # OpenCode Zen agent rankings (25 agents)
 ├── session_opencode_model_ranking.md # Previous session notes
@@ -125,6 +130,19 @@ OMO-Team skill creation session covering:
 - **Background task lifecycle** (spawn → notification → collect)
 - **Key insight**: OpenCode and OMX are parallel systems that don't mix
 
+### 10. [Session Learnings - April 13](docs/session-learnings-2026-04-13.md)
+
+Extended rankings & dual system architecture session covering:
+- **Dual system discovery** (OMX: 11 agents + 9 categories vs Codex native: 25+ roles)
+- **Extended rankings created** (visual-engineering: 22 models, artistry: 20 models, writing: 20 models)
+- **Model dominance patterns** (qwen3.6-plus:free dominates 8/11 agents, 6/9 categories)
+- **Provider landscape analysis** (OpenRouter: 28 free, NVIDIA Build: 91 free, OpenCode: curated)
+- **Use case mapping** (specific models for UI/UX, creative coding, documentation)
+- **Cost optimization analysis** (6 agents/categories can switch to free models)
+- **Ranking methodology** (consistent fields: Rank, Model, Provider, Score, Context, Vision, Tools, Rationale)
+- **Tier classification** (Excellent: 90-100, Good: 80-89, Acceptable: 70-79)
+- **Key insight**: Free tier has matured significantly - paid models only needed for frontier reasoning
+
 ## Quick Reference: Best Free Models by Agent
 
 | Agent | Best Free Model | Provider | Score |
@@ -153,6 +171,38 @@ OMO-Team skill creation session covering:
 | unspecified-low | qwen/qwen3.6-plus:free | OpenRouter | 90/100 | Low effort tasks |
 | unspecified-high | qwen/qwen3.6-plus:free | OpenRouter | 88/100 | High effort tasks |
 | writing | meta-llama/llama-3.3-70b-instruct:free | OpenRouter | 88/100 | Documentation, prose |
+
+## Extended Rankings (20+ Models per Category)
+
+### Visual-Engineering
+See [extended-rankings-visual-engineering.md](docs/extended-rankings-visual-engineering.md) for complete 22-model ranking.
+
+**Top 5:**
+1. `openrouter/qwen/qwen2.5-vl-72b-instruct` - 96/100 (OpenRouter)
+2. `google/lyria-3-pro-preview:free` - 95/100 (OpenRouter)
+3. `opencode/gemini-3.1-pro` - 93/100 (OpenCode)
+4. `qwen/qwen2.5-vl-72b-instruct` - 93/100 (OpenRouter)
+5. `nvidia/z-ai/glm5` - 92/100 (NVIDIA Build)
+
+### Artistry
+See [extended-rankings-artistry.md](docs/extended-rankings-artistry.md) for complete 20-model ranking.
+
+**Top 5:**
+1. `opencode/gemini-3.1-pro` - 93/100 (OpenCode)
+2. `openrouter/qwen/qwen2.5-vl-72b-instruct` - 91/100 (OpenRouter)
+3. `openai/gpt-5.4` - 90/100 (OpenAI)
+4. `nvidia/z-ai/glm5` - 88/100 (NVIDIA Build)
+5. `qwen/qwen3.6-plus:free` - 85/100 (OpenRouter)
+
+### Writing
+See [extended-rankings-writing.md](docs/extended-rankings-writing.md) for complete 20-model ranking.
+
+**Top 5:**
+1. `opencode/gemini-3-flash` - 92/100 (OpenCode)
+2. `qwen/qwen-2.5-72b-instruct` - 90/100 (OpenRouter)
+3. `google/gemini-3.1-flash-lite-preview` - 90/100 (OpenRouter)
+4. `meta-llama/llama-3.3-70b-instruct:free` - 88/100 (OpenRouter)
+5. `openai/gpt-5.4-mini` - 88/100 (OpenAI)
 
 ## Model Sources
 
@@ -222,9 +272,31 @@ OMO-Team skill creation session covering:
 
 ## Last Updated
 
-April 8, 2026
+April 13, 2026
 
-**Recent Changes (April 8 - Session 8):**
+**Recent Changes (April 13 - Session 10):**
+- Added session-learnings-2026-04-13-documentation.md documenting model testing & configuration verification
+- Fixed 6 model path errors in oh-my-opencode.json (2 types: triple prefix, missing slash)
+- Improved configuration health from 83.3% to 100%
+- Resolved critical issue with multimodal-looker agent (both fallbacks were broken)
+- Updated oh-my-opencode-reference.json with verified configuration
+- Documented testing methodology and systematic verification approach
+- Identified free model alternatives via OpenRouter for cost optimization
+- Tested all 12 unique models in config (100% availability after fixes)
+- Documented model ID conventions and common pitfalls
+- Created comprehensive test scripts for future verification
+
+**Previous Changes (April 13 - Session 9):**
+- Added session-learnings-2026-04-13.md documenting extended rankings research
+- Discovered dual system architecture (OMX vs Codex native)
+- Created extended ranking for visual-engineering (22 models)
+- Created extended ranking for artistry (20 models)
+- Created extended ranking for writing (20 models)
+- Documented model dominance patterns (qwen3.6-plus:free dominates)
+- Analyzed cost optimization opportunities (6 agents/categories can switch to free)
+- Created use case mappings for each category
+- Documented ranking methodology and tier classification
+- Identified background task limitations for configuration research
 - Added session-learnings-2026-04-08.md documenting OMO-Team skill creation
 - Created omo-team skill for OpenCode-native team orchestration
 - Created omo-worker skill for OpenCode subagent protocol
