@@ -1,0 +1,17 @@
+Task: T3 — Global precedence over agent relaxation
+
+Test command:
+  bun test src/shared/model-policy.test.ts
+
+Relevant coverage:
+  - global block overrides allow_non_gpt_model agent relaxation
+
+Observed result:
+  5 pass
+  0 fail
+  11 expect() calls
+
+Implementation evidence:
+  - evaluateModelPolicy() only checks normalized provider/model plus global policy state
+  - agent.allow_non_gpt_model is accepted in context for compatibility, but never overrides global OpenAI blocking
+  - Denied result returns code MODEL_POLICY_BLOCKED_OPENAI

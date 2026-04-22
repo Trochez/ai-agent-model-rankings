@@ -7,343 +7,123 @@ AI agent model rankings and optimization research for oh-my-opencode configurati
 ```
 explorer/
 ├── docs/
-│   ├── oh-my-opencode-agent-rankings.md # Comprehensive model rankings for 11 agents (v1.0)
-│   ├── oh-my-opencode-agent-rankings-2026-04-06.md # Updated comprehensive report (v2.0)
-│   ├── session-learnings-2026-04-04.md # Session 1: Agent architecture insights
-│   ├── session-learnings-2026-04-05.md # Session 2: Exhaustive search methodology
-│   ├── session-learnings-2026-04-06.md # Session 3: Timeout configuration & system architecture
-│   ├── session-learnings-2026-04-06-fallback-investigation.md # Session 4: Fallback configuration & retry mechanism
-│   ├── session-learnings-2026-04-06-model-id-investigation.md # Session 5: Model ID investigation & config fixes
-│   ├── session-learnings-2026-04-07.md # Session 6: Model config updates & visual engineering research
-│ ├── session-learnings-2026-04-07-model-configuration-fix.md # Session 7: Model configuration verification & correction
-│ ├── session-learnings-2026-04-08.md # Session 8: OMO-Team skill creation (OpenCode-native orchestration)
-│ ├── session-learnings-2026-04-13.md # Session 9: Extended rankings & dual system architecture
-│ ├── session-learnings-2026-04-13-documentation.md # Session 10: Model testing & configuration verification
-│ ├── extended-rankings-visual-engineering.md # Extended ranking (22 models)
-│ ├── extended-rankings-artistry.md # Extended ranking (20 models)
-│ ├── extended-rankings-writing.md # Extended ranking (20 models)
-│ └── oh-my-opencode-reference.json # Working configuration reference (verified 2026-04-13)
+│   ├── oh-my-opencode-agent-rankings.md          # v3.0 rankings (current, April 20)
+│   ├── oh-my-opencode-agent-rankings-2026-04-06.md # v2.0 rankings (historical, superseded)
+│   ├── oh-my-opencode-reference.json             # Working config reference (v3.0)
+│   ├── session-learnings-2026-04-04.md           # Session 1: Agent architecture insights
+│   ├── session-learnings-2026-04-05.md           # Session 2: Exhaustive search methodology
+│   ├── session-learnings-2026-04-06.md           # Session 3: Timeout configuration & system architecture
+│   ├── session-learnings-2026-04-06-fallback-investigation.md  # Session 4: Fallback configuration
+│   ├── session-learnings-2026-04-06-model-id-investigation.md  # Session 5: Model ID investigation
+│   ├── session-learnings-2026-04-07.md           # Session 6: Model config updates & visual engineering
+│   ├── session-learnings-2026-04-07-model-configuration-fix.md # Session 7: Model config verification
+│   ├── session-learnings-2026-04-08.md           # Session 8: OMO-Team skill creation
+│   ├── session-learnings-2026-04-13.md           # Session 9: Extended rankings & dual system architecture
+│   ├── session-learnings-2026-04-13-documentation.md           # Session 10: Model testing & verification
+│   ├── extended-rankings-visual-engineering.md   # Extended ranking (historical, pre-v3.0)
+│   ├── extended-rankings-artistry.md             # Extended ranking (historical, pre-v3.0)
+│   └── extended-rankings-writing.md              # Extended ranking (historical, pre-v3.0)
 ├── .omx/
-│   └── model-rankings-report.md # OpenCode Zen agent rankings (25 agents)
-├── session_opencode_model_ranking.md # Previous session notes
-├── model-id-investigation-report.md # Detailed model ID investigation
-├── corrected-model-ids.md # Quick reference for correct model IDs
-├── config-fix-summary.md # Configuration change log
-└── README.md # This file
+│   └── model-rankings-report.md                  # OpenCode Zen agent rankings (25 agents)
+└── README.md                                     # This file
 ```
 
 ## Key Documents
 
-### 1. [Oh-My-OpenCode Agent Rankings (v2.0)](docs/oh-my-opencode-agent-rankings-2026-04-06.md)
+### [Oh-My-OpenCode Agent Rankings v3.0](docs/oh-my-opencode-agent-rankings.md) (Current)
 
-**Most comprehensive** model effectiveness ranking with numeric scores (0-100).
+Comprehensive model rankings using only NVIDIA Build, OpenCode Zen, and OpenAI providers.
 
 **Key Findings:**
-- **qwen/qwen3.6-plus:free** is the most versatile free model (top choice for 8/11 agents, 6/8 categories)
-- **google/lyria-3-pro-preview:free** is the best free visual model (95/100)
-- **qwen/qwen3-coder:free** is the best free coding model (89/100)
-- Current configuration is well-optimized but has cost optimization opportunities
-- **Provider column added** for clarity (OpenRouter, NVIDIA Build, OpenCode, OpenAI)
+- **nvidia/z-ai/glm-5.1** is #1 on SWE-Bench Pro (58.4%), released April 18, 2026
+- **nvidia/z-ai/glm5** is DEPRECATED — migrate to `nvidia/z-ai/glm-5.1`
+- Only 3 providers allowed: NVIDIA Build, OpenCode Zen, OpenAI
+- `google/gemini-3.1-flash-lite-preview` replaced with `opencode/gemini-3-flash`
+- momus agent added back to active config
 
-**Covers:**
-- **11 Agents:** sisyphus, hephaestus, oracle, explore, prometheus, metis, momus, librarian, multimodal-looker, atlas, sisyphus-junior
-- **8 Categories:** visual-engineering, ultrabrain, deep, artistry, quick, unspecified-low, unspecified-high, writing
+### [Oh-My-OpenCode Agent Rankings v2.0](docs/oh-my-opencode-agent-rankings-2026-04-06.md) (Historical)
 
-### 2. [Session Learnings - April 4](docs/session-learnings-2026-04-04.md)
+Superseded by v3.0. Contains OpenRouter model references and pre-GLM-5.1 rankings. Retained for historical reference only.
 
-Initial analysis session covering:
-- Agent architecture insights (11 specialized agents)
-- Free model landscape analysis (28 OpenRouter + 91 NVIDIA + OpenCode)
-- Effectiveness scoring methodology (0-100 scale)
-- Critical discoveries (qwen3.6-plus as "Swiss Army Knife")
-- Practical recommendations for configuration
+## Quick Reference: Best Model per Agent (v3.0)
 
-### 3. [Session Learnings - April 5](docs/session-learnings-2026-04-05.md)
+| Agent | Best Model | Provider | Score |
+|-------|-----------|----------|-------|
+| sisyphus | `nvidia/z-ai/glm-5.1` | NVIDIA Build | 99 |
+| hephaestus | `openai/gpt-5.4` | OpenAI | 98 |
+| oracle | `nvidia/z-ai/glm-5.1` | NVIDIA Build | 99 |
+| explore | `nvidia/stepfun-ai/step-3.5-flash` | NVIDIA Build | 98 |
+| prometheus | `nvidia/z-ai/glm-5.1` | NVIDIA Build | 99 |
+| metis | `nvidia/z-ai/glm-5.1` | NVIDIA Build | 99 |
+| momus | `nvidia/z-ai/glm-5.1` | NVIDIA Build | 99 |
+| librarian | `opencode/gemini-3-flash` | OpenCode Zen | 98 |
+| multimodal-looker | `nvidia/qwen/qwen3.5-397b-a17b` | NVIDIA Build | 99 |
+| atlas | `nvidia/z-ai/glm-5.1` | NVIDIA Build | 98 |
+| sisyphus-junior | `nvidia/nvidia/nemotron-3-super-120b-a12b` | NVIDIA Build | 99 |
 
-Exhaustive search methodology session covering:
-- Document structure analysis (3 ranking systems, 65+ tables)
-- Category system architecture (8 distinct categories)
-- Provider landscape understanding (4 major ecosystems)
-- Search methodology insights (parallel agents + multi-pattern grep)
-- User request handling ("show me" requires exhaustive discovery)
+## Quick Reference: Best Model per Category (v3.0)
 
-### 4. [Session Learnings - April 6](docs/session-learnings-2026-04-06.md)
+| Category | Best Model | Provider | Score | Use Case |
+|----------|-----------|----------|-------|----------|
+| visual-engineering | `nvidia/qwen/qwen3.5-397b-a17b` | NVIDIA Build | 99 | Frontend, UI/UX, design |
+| ultrabrain | `nvidia/z-ai/glm-5.1` | NVIDIA Build | 99 | Hard logic-heavy tasks |
+| deep | `nvidia/qwen/qwen3-coder-480b-a35b-instruct` | NVIDIA Build | 99 | Autonomous problem-solving |
+| artistry | `nvidia/mistral-ai/mistral-small-4-119b-2603` | NVIDIA Build | 98 | Creative solutions |
+| quick | `nvidia/nvidia/nemotron-3-nano-30b-a3b` | NVIDIA Build | 99 | Trivial tasks, typos |
+| unspecified-low | `nvidia/nvidia/nemotron-3-nano-30b-a3b` | NVIDIA Build | 99 | Low effort tasks |
+| unspecified-high | `nvidia/z-ai/glm-5.1` | NVIDIA Build | 99 | High effort tasks |
+| writing | `opencode/gemini-3-flash` | OpenCode Zen | 98 | Documentation, prose |
 
-Timeout configuration & system architecture session covering:
-- **OpenCode timeout architecture** (3 distinct timeout layers)
-- **Critical bug discovery** (Background task fallback ignored - Issue #2203)
-- **Configuration management** (Environment variables, provider-level, agent-level)
-- **Solution implementation** (OPENCODE_MODEL_TIMEOUT=120000 globally)
-- **System architecture insights** (OpenCode core vs. oh-my-opencode plugin)
+## Model Providers
 
-### 5. [Session Learnings - April 6 (Fallback Investigation)](docs/session-learnings-2026-04-06-fallback-investigation.md)
+### NVIDIA Build (`nvidia/` prefix)
+- GPU-optimized inference, 200+ models
+- Free tier available for most models
+- Specialized: reasoning, coding, vision, agentic
+- Key models: glm-5.1, qwen3-coder-480b, step-3.5-flash, nemotron-3-super
 
-Fallback configuration & retry mechanism investigation covering:
-- **Retry-count-based fallback discovery** (Feature doesn't exist - Issue #3011)
-- **Configuration verification** (All agents already have fallback configured)
-- **TUI display bug** (Fallback works but TUI shows error - OpenClaw #54060)
-- **Usage limit handling** (Automatic fallback on HTTP 429, timeouts, errors)
-- **Free model landscape** (Diversified across OpenRouter, NVIDIA Build, Google)
-
-### 6. [Session Learnings - April 6 (Model ID Investigation)](docs/session-learnings-2026-04-06-model-id-investigation.md)
-
-Model ID investigation & configuration fix session covering:
-- **OpenRouter ID convention** (no `openrouter/` prefix)
-- **Qwen 2.5 hyphenation requirement** (`qwen-2.5` not `qwen2.5`)
-- **Error type classification** (400 vs 429 vs 503)
-- **Configuration fixes** (5 model IDs corrected in oh-my-opencode.json)
-- **Research methodology** (direct web fetch > background agents for rate-limited scenarios)
-
-### 7. [Session Learnings - April 7](docs/session-learnings-2026-04-07.md)
-
-Model configuration updates & visual engineering research session covering:
-- **Qwen3.6 Plus migration** from OpenRouter to OpenCode Zen (15 references updated)
-- **Model testing insights** (14% success rate, rate limit issues)
-- **Visual engineering research** (15+ visual models identified, 8 free options)
-- **Provider landscape analysis** (OpenRouter vs OpenCode Zen vs NVIDIA Build)
-- **Configuration file structure** (11 agents, 8 categories, model properties)
-- **Best practices** for model selection and fallback strategies
-
-### 8. [Session Learnings - April 7 (Model Configuration Fix)](docs/session-learnings-2026-04-07-model-configuration-fix.md)
-
-Model configuration verification & correction session covering:
-- **Model name discrepancies** (3 types found, 21 occurrences fixed)
-- **Provider prefix hierarchy** (NVIDIA provider for z-ai/glm5)
-- **Unicode vs ASCII characters** (Unicode hyphens causing silent failures)
-- **Testing methodology** (opencode run vs opencode --model)
-- **Parallel execution efficiency** (87.5% time reduction)
-- **Configuration validation process** (extract, cross-reference, validate, test)
-- **All non-OpenAI models verified** (8/8 working after fixes)
-
-### 9. [Session Learnings - April 8](docs/session-learnings-2026-04-08.md)
-
-OMO-Team skill creation session covering:
-- **Architecture discovery** (OMX vs OMO orchestration systems)
-- **OpenCode subagent infrastructure** (task() tool, BackgroundManager)
-- **Skill loading behavior** (auto-discovery, timing issues)
-- **State management patterns** (.omo/ vs .omx/ state locations)
-- **Parallel execution testing** (2 workers, 43s + 36s simultaneous)
-- **Skills created** (omo-team, omo-worker)
-- **Skill usefulness analysis** (proven unique value - only OpenCode-native team orchestration with auto-delegation)
-- **Complexity-based worker estimation** (0-100 score → 1-5 workers)
-- **Automatic role assignment** (keyword → agent → category mapping)
-- **Background task lifecycle** (spawn → notification → collect)
-- **Key insight**: OpenCode and OMX are parallel systems that don't mix
-
-### 10. [Session Learnings - April 13](docs/session-learnings-2026-04-13.md)
-
-Extended rankings & dual system architecture session covering:
-- **Dual system discovery** (OMX: 11 agents + 9 categories vs Codex native: 25+ roles)
-- **Extended rankings created** (visual-engineering: 22 models, artistry: 20 models, writing: 20 models)
-- **Model dominance patterns** (qwen3.6-plus:free dominates 8/11 agents, 6/9 categories)
-- **Provider landscape analysis** (OpenRouter: 28 free, NVIDIA Build: 91 free, OpenCode: curated)
-- **Use case mapping** (specific models for UI/UX, creative coding, documentation)
-- **Cost optimization analysis** (6 agents/categories can switch to free models)
-- **Ranking methodology** (consistent fields: Rank, Model, Provider, Score, Context, Vision, Tools, Rationale)
-- **Tier classification** (Excellent: 90-100, Good: 80-89, Acceptable: 70-79)
-- **Key insight**: Free tier has matured significantly - paid models only needed for frontier reasoning
-
-## Quick Reference: Best Free Models by Agent
-
-| Agent | Best Free Model | Provider | Score |
-|-------|-----------------|----------|-------|
-| sisyphus | opencode/qwen3.6-plus-free | OpenCode Zen | 88/100 |
-| hephaestus | qwen/qwen3-coder:free | OpenRouter | 89/100 |
-| oracle | opencode/qwen3.6-plus-free | OpenCode Zen | 82/100 |
-| explore | opencode/qwen3.6-plus-free | OpenCode Zen | 90/100 |
-| prometheus | opencode/qwen3.6-plus-free | OpenCode Zen | 85/100 |
-| metis | opencode/qwen3.6-plus-free | OpenCode Zen | 91/100 |
-| momus | opencode/qwen3.6-plus-free | OpenCode Zen | 84/100 |
-| librarian | opencode/qwen3.6-plus-free | OpenCode Zen | 90/100 |
-| multimodal-looker | google/lyria-3-pro-preview:free | OpenRouter | 95/100 |
-| atlas | opencode/qwen3.6-plus-free | OpenCode Zen | 90/100 |
-| sisyphus-junior | opencode/qwen3.6-plus-free | OpenCode Zen | 88/100 |
-
-## Quick Reference: Best Free Models by Category
-
-| Category | Best Free Model | Provider | Score | Use Case |
-|----------|-----------------|----------|-------|----------|
-| visual-engineering | google/lyria-3-pro-preview:free | OpenRouter | 95/100 | Frontend, UI/UX, design |
-| ultrabrain | qwen/qwen3.6-plus:free | OpenRouter | 82/100 | Hard logic-heavy tasks |
-| deep | qwen/qwen3.6-plus:free | OpenRouter | 85/100 | Autonomous problem-solving |
-| artistry | qwen/qwen3.6-plus:free | OpenRouter | 85/100 | Creative solutions |
-| quick | qwen/qwen3.6-plus:free | OpenRouter | 92/100 | Trivial tasks, typos |
-| unspecified-low | qwen/qwen3.6-plus:free | OpenRouter | 90/100 | Low effort tasks |
-| unspecified-high | qwen/qwen3.6-plus:free | OpenRouter | 88/100 | High effort tasks |
-| writing | meta-llama/llama-3.3-70b-instruct:free | OpenRouter | 88/100 | Documentation, prose |
-
-## Extended Rankings (20+ Models per Category)
-
-### Visual-Engineering
-See [extended-rankings-visual-engineering.md](docs/extended-rankings-visual-engineering.md) for complete 22-model ranking.
-
-**Top 5:**
-1. `openrouter/qwen/qwen2.5-vl-72b-instruct` - 96/100 (OpenRouter)
-2. `google/lyria-3-pro-preview:free` - 95/100 (OpenRouter)
-3. `opencode/gemini-3.1-pro` - 93/100 (OpenCode)
-4. `qwen/qwen2.5-vl-72b-instruct` - 93/100 (OpenRouter)
-5. `nvidia/z-ai/glm5` - 92/100 (NVIDIA Build)
-
-### Artistry
-See [extended-rankings-artistry.md](docs/extended-rankings-artistry.md) for complete 20-model ranking.
-
-**Top 5:**
-1. `opencode/gemini-3.1-pro` - 93/100 (OpenCode)
-2. `openrouter/qwen/qwen2.5-vl-72b-instruct` - 91/100 (OpenRouter)
-3. `openai/gpt-5.4` - 90/100 (OpenAI)
-4. `nvidia/z-ai/glm5` - 88/100 (NVIDIA Build)
-5. `qwen/qwen3.6-plus:free` - 85/100 (OpenRouter)
-
-### Writing
-See [extended-rankings-writing.md](docs/extended-rankings-writing.md) for complete 20-model ranking.
-
-**Top 5:**
-1. `opencode/gemini-3-flash` - 92/100 (OpenCode)
-2. `qwen/qwen-2.5-72b-instruct` - 90/100 (OpenRouter)
-3. `google/gemini-3.1-flash-lite-preview` - 90/100 (OpenRouter)
-4. `meta-llama/llama-3.3-70b-instruct:free` - 88/100 (OpenRouter)
-5. `openai/gpt-5.4-mini` - 88/100 (OpenAI)
-
-## Model Sources
-
-### OpenRouter Free Models (28 total)
-- Rate limits: 20 req/min, 200 req/day
-- Cost: $0 (no credit card required)
-- Top models: qwen3.6-plus, qwen3-coder, lyria-3
-- **Note**: Rate limits are provider-level, not credit-based
-
-### OpenCode Zen Free Models
-- No rate limits mentioned for free tier
+### OpenCode Zen (`opencode/` prefix)
 - Curated, tested models for coding agents
-- Top models: qwen3.6-plus-free, gemini-3-flash, gemini-3.1-pro
-- **Advantage**: Models benchmarked for coding agent performance
+- Reliable routing, no rate limit issues
+- Key models: gemini-3-flash, qwen3-coder, qwen3.6-plus
 
-### NVIDIA Build Free Endpoints (91 total)
-- GPU-optimized inference
-- Specialized vision models available
-- Top models: glm5 (744B MoE), nemotron-3-super, nemotron-nano-12b-v2-vl
-- **Specialized**: OCR, object detection, image embeddings, video understanding
+### OpenAI (`openai/` prefix)
+- Frontier reasoning, large context windows
+- Paid only ($0.20-$180 per 1M tokens)
+- Key models: gpt-5.4, gpt-5.4-pro, o3, o4-mini
 
-### OpenAI Models (Paid)
-- gpt-5.4, gpt-5.4-pro, gpt-5.3-codex
-- Cost: $0.20-$180 per 1M tokens
-- Best for critical tasks requiring frontier intelligence
+> Only NVIDIA Build, OpenCode Zen, and OpenAI models are used. No OpenRouter or direct Google models.
 
-## Cost Optimization Recommendations
+## Cost Optimization
 
-### Immediate Free Tier Adoption (100% Savings)
+| Task Type | Recommended Model | Cost | Context |
+|-----------|------------------|------|---------|
+| Quick/trivial | `nvidia/nvidia/nemotron-3-nano-30b-a3b` | $0.05/$0.20 | 1M |
+| Search/research | `nvidia/stepfun-ai/step-3.5-flash` | FREE | 200K |
+| Research/writing | `opencode/gemini-3-flash` | $0.50/$3.00 | 128K |
+| Junior tasks | `nvidia/nvidia/nemotron-3-super-120b-a12b` | $0.10/$0.50 | 1M |
+| Cost-effective reasoning | `openai/gpt-5.4-mini` | $0.75/$4.50 | 400K |
 
-| Agent/Category | Switch From | Switch To | Provider | Savings |
-|----------------|-------------|-----------|----------|---------|
-| explore | nvidia/z-ai/glm5 | qwen/qwen3.6-plus:free | OpenRouter | 100% |
-| librarian | opencode/gemini-3-flash | qwen/qwen3.6-plus:free | OpenRouter | 100% |
-| quick | nvidia/z-ai/glm5 | qwen/qwen3.6-plus:free | OpenRouter | 100% |
-| unspecified-low | nvidia/z-ai/glm5 | qwen/qwen3.6-plus:free | OpenRouter | 100% |
-| writing | opencode/gemini-3-flash | meta-llama/llama-3.3-70b-instruct:free | OpenRouter | 100% |
+## Migration Guide (v2.0 → v3.0)
 
-### Keep Paid Models for Critical Tasks
-
-| Agent/Category | Keep Model | Provider | Rationale |
-|----------------|-----------|----------|-----------|
-| sisyphus | nvidia/z-ai/glm5 | NVIDIA Build | Orchestration requires thinking |
-| hephaestus | openai/gpt-5.4 | OpenAI | Best implementation performance |
-| oracle | openai/gpt-5.4 | OpenAI | Critical architecture consultation |
-| prometheus | openai/gpt-5.4 | OpenAI | Strategic planning needs frontier |
-| momus | openai/gpt-5.4 | OpenAI | Quality assurance needs high reasoning |
-| ultrabrain | openai/gpt-5.4 | OpenAI | Hard logic tasks need frontier |
-| deep | openai/gpt-5.3-codex | OpenAI | Autonomous problem-solving needs strong coding |
+| Old Model | New Model | Reason |
+|-----------|-----------|--------|
+| `nvidia/z-ai/glm5` | `nvidia/z-ai/glm-5.1` | Deprecated April 20, 2026 |
+| `google/gemini-3.1-flash-lite-preview` | `opencode/gemini-3-flash` | Provider constraint |
+| `openai/gpt-5.3-codex` | `nvidia/qwen/qwen3-coder-480b-a35b-instruct` | Being retired June 5, 2026 |
+| All OpenRouter models | NVIDIA Build equivalents | Provider constraint |
 
 ## Methodology
 
-**Effectiveness Score (0-100) based on:**
-- Task-specific capability matching (40%)
-- Context window size (20%)
-- Reasoning level requirements (20%)
-- Tool support (vision, tools, function calling) (10%)
-- Cost efficiency (10%)
+Rankings are based on SWE-Bench Pro performance, reasoning capability, context window, cost, and agentic suitability. See [v3.0 rankings doc](docs/oh-my-opencode-agent-rankings.md) for full methodology.
 
 ## Related Documentation
 
-- [Oh-My-OpenCode Configuration](~/.config/opencode/oh-my-opencode.json)
-- [Timeout Configuration Guide](~/.config/opencode/TIMEOUT_CONFIGURATION.md)
-- [OpenRouter Free Models](https://openrouter.ai)
+- [Global Config](~/.config/opencode/oh-my-opencode.json)
+- [v3.0 Rankings](docs/oh-my-opencode-agent-rankings.md)
 - [NVIDIA Build Models](https://build.nvidia.com/models)
 - [OpenAI Models](https://developers.openai.com/api/docs/models/all)
 
 ## Last Updated
 
-April 13, 2026
-
-**Recent Changes (April 13 - Session 10):**
-- Added session-learnings-2026-04-13-documentation.md documenting model testing & configuration verification
-- Fixed 6 model path errors in oh-my-opencode.json (2 types: triple prefix, missing slash)
-- Improved configuration health from 83.3% to 100%
-- Resolved critical issue with multimodal-looker agent (both fallbacks were broken)
-- Updated oh-my-opencode-reference.json with verified configuration
-- Documented testing methodology and systematic verification approach
-- Identified free model alternatives via OpenRouter for cost optimization
-- Tested all 12 unique models in config (100% availability after fixes)
-- Documented model ID conventions and common pitfalls
-- Created comprehensive test scripts for future verification
-
-**Previous Changes (April 13 - Session 9):**
-- Added session-learnings-2026-04-13.md documenting extended rankings research
-- Discovered dual system architecture (OMX vs Codex native)
-- Created extended ranking for visual-engineering (22 models)
-- Created extended ranking for artistry (20 models)
-- Created extended ranking for writing (20 models)
-- Documented model dominance patterns (qwen3.6-plus:free dominates)
-- Analyzed cost optimization opportunities (6 agents/categories can switch to free)
-- Created use case mappings for each category
-- Documented ranking methodology and tier classification
-- Identified background task limitations for configuration research
-- Added session-learnings-2026-04-08.md documenting OMO-Team skill creation
-- Created omo-team skill for OpenCode-native team orchestration
-- Created omo-worker skill for OpenCode subagent protocol
-- Discovered OMX vs OMO architecture mismatch
-- Tested parallel subagent spawning (2 workers simultaneously)
-- Documented state management patterns (.omo/ vs .omx/)
-- Created comprehensive DATASHEET.md for omo-team skill
-- Analyzed skill usefulness - proven unique value (only OpenCode-native team orchestration with auto-delegation)
-- Implemented complexity-based worker estimation (0-100 score → 1-5 workers)
-- Implemented automatic role assignment (keyword → agent → category mapping)
-- Documented background task lifecycle pattern (spawn → notification → collect)
-- Documented skill loading timing issue and solutions
-
-**Previous Changes (April 7 - Session 7):**
-- Added session-learnings-2026-04-07-model-configuration-fix.md documenting model verification & correction
-- Fixed 21 model name discrepancies in oh-my-opencode.json (3 types of errors)
-- Corrected z-ai/glm-5 → nvidia/z-ai/glm5 (18 occurrences)
-- Corrected nvidia/nemotron-3-nano-30b-a3b → nvidia/nvidia/nemotron-3-nano-30b-a3b (3 occurrences)
-- Saved working configuration as reference (oh-my-opencode-reference.json)
-- Tested all 8 non-OpenAI models (100% success rate)
-- Documented testing methodology and parallel execution efficiency
-
-**Previous Changes (April 7 - Session 6):**
-- Added session-learnings-2026-04-07.md documenting model configuration updates & visual engineering research
-- Updated Qwen3.6 Plus from OpenRouter to OpenCode Zen (15 references)
-- Updated Gemini 3.1 Pro Preview to use OpenRouter routing
-- Documented model testing insights (14% success rate)
-- Expanded visual engineering model options (15+ models, 8 free)
-- Documented provider landscape (OpenRouter vs OpenCode Zen vs NVIDIA Build)
-- Updated best free models by agent to reflect OpenCode Zen migration
-
-**Previous Changes (April 6):**
-- Added session-learnings-2026-04-06-model-id-investigation.md documenting model ID investigation & configuration fixes
-- Discovered OpenRouter ID convention (no `openrouter/` prefix)
-- Discovered Qwen 2.5 hyphenation requirement (`qwen-2.5` not `qwen2.5`)
-- Fixed 5 incorrect model IDs in oh-my-opencode.json
-- Created model-id-investigation-report.md with detailed investigation findings
-- Created corrected-model-ids.md quick reference guide
-- Created config-fix-summary.md configuration change log
-- Added session-learnings-2026-04-06-fallback-investigation.md documenting fallback configuration & retry mechanism
-- Discovered retry-count-based fallback doesn't exist (Issue #3011)
-- Verified all agents have fallback configured (11 agents, 8 categories)
-- Documented TUI display bug where fallback succeeds but error shows (OpenClaw #54060)
-- Added session-learnings-2026-04-06.md documenting timeout configuration & system architecture
-- Created TIMEOUT_CONFIGURATION.md with comprehensive timeout guide
-- Implemented global timeout reduction (OPENCODE_MODEL_TIMEOUT=120000)
-- Documented critical bug: Background task fallback ignored (Issue #2203)
-- Added Provider column to all ranking tables (April 5)
-- Created session-learnings-2026-04-05.md documenting exhaustive search methodology (April 5)
-- Updated README with category rankings quick reference (April 5)
+April 20, 2026

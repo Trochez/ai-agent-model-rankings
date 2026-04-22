@@ -1,0 +1,19 @@
+# Direct API Model Test Report
+**Date**: 2026-04-06 15:04:01.619696
+**Test**: 'What is 2 + 2? Reply with ONLY the number.' → Expected: '4'
+
+## Summary: 0/11 passed (0%)
+
+| Model | Provider | Status | Time | Response |
+|-------|----------|--------|------|----------|
+| `z-ai/glm-5` | openrouter | ❌ ERROR | 1095ms | ... |
+| `openai/gpt-5.4` | openai | ❌ ERROR | 949ms | ... |
+| `qwen/qwen3.6-plus:free` | openrouter | ❌ ERROR | 490ms | ... |
+| `google/gemini-3.1-flash-lite-preview` | google | ❌ ERROR | 1122ms | ... |
+| `google/gemini-3.1-pro-preview` | google | ❌ ERROR | 611ms | ... |
+| `meta-llama/llama-3.3-70b-instruct:free` | openrouter | ❌ ERROR | 692ms | ... |
+| `openai/gpt-5.3-codex` | openai | ❌ ERROR | 904ms | ... |
+| `openrouter/qwen/qwen2.5-72b-instruct` | openrouter | ❌ ERROR | 691ms | ... |
+| `openrouter/qwen/qwen3-coder:free` | openrouter | ❌ ERROR | 506ms | ... |
+| `qwen/qwen2.5-vl-72b-instruct` | openrouter | ❌ ERROR | 714ms | ... |
+| `stepfun/step-3.5-flash:free` | openrouter | ❌ ERROR | 732ms | ... |

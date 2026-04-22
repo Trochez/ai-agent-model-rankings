@@ -1,0 +1,12 @@
+| Model | Provider | Source | Status | Response Time | Result |
+| --- | --- | --- | --- | --- | --- |
+| z-ai/glm-5 | openrouter | Primary for 8 agents/categories | ✅ PASS | 6,412ms | Working |
+| openai/gpt-5.4 | openai | Primary for 5 agents/categories | ❌ ERROR | 874ms | Quota exceeded |
+| opencode/qwen3.6-plus-free | opencode | Primary for 3 agents/categories | ❌ ERROR | 522ms | API endpoint issue |
+| google/gemini-3.1-flash-lite-preview | google | Primary for 2 agents | ✅ PASS | 19,969ms | Working |
+| openai/gpt-5.3-codex | openai | Primary for deep category | ❌ ERROR | 738ms | Quota exceeded |
+| qwen/qwen3-coder-4.08.97b-a35b-instruct | openrouter | Hephaestus fallback | ❌ ERROR | 236ms | Invalid model ID |
+| stepfun-ai/step-3.5-flash | openrouter | Explore/Quick fallback | ❌ ERROR | 283ms | Invalid model ID |
+| nvidia/nemotron-3-nano-30b-a3b | nvidia | Multiple fallbacks | ❌ ERROR | 388ms | 404 Not Found |
+| nvidia/meta/llama-3.3-70b-instruct | nvidia | Multiple fallbacks | ✅ PASS | 36,292ms | Working |
+| nvidia/meta/llama-3.2-11b-vision-instruct | nvidia | Visual-engineering fallback | ❌ ERROR | 45,355ms | |

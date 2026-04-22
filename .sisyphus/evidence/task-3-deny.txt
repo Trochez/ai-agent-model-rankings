@@ -1,0 +1,18 @@
+Task: T3 — OpenAI provider denied
+
+Test command:
+  bun test src/shared/model-policy.test.ts
+
+Relevant coverage:
+  - denies OpenAI provider when toggle is off
+  - normalizes case, provider prefixes, and OpenAI aliases before evaluation
+
+Observed result:
+  5 pass
+  0 fail
+  11 expect() calls
+
+Implementation evidence:
+  - src/shared/model-policy.ts exports evaluateModelPolicy()
+  - Stable deny code: MODEL_POLICY_BLOCKED_OPENAI
+  - Normalized OpenAI targets resolve to provider=openai and model=gpt-5.4 before deny

@@ -1,3 +1,7 @@
+> ⚠️ **DEPRECATED** — This document is superseded by [v3.0 Rankings](./oh-my-opencode-agent-rankings.md) (April 20, 2026).
+> v3.0 removes all OpenRouter references, incorporates GLM-5.1, and restricts to NVIDIA Build / OpenCode Zen / OpenAI only.
+> This file is retained for historical reference only.
+
 # 📊 Oh-My-OpenCode Agent & Category Model Rankings - Complete Report
 **Generated**: April 6, 2026
 **Data Sources**: OpenRouter, NVIDIA Build, OpenAI, OpenCode, Configuration File

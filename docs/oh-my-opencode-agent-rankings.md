@@ -1,329 +1,247 @@
-# Oh-My-OpenCode Agent Model Rankings
+# Oh-My-OpenCode Agent Model Rankings v3.0
 
-**Generated:** April 4, 2026  
-**Session:** Model effectiveness analysis for oh-my-opencode configuration  
-**Purpose:** Comprehensive ranking of models for each oh-my-opencode agent with numeric effectiveness scores
-
----
+Date: April 20, 2026
 
 ## Executive Summary
 
-This document provides model recommendations for **11 oh-my-opencode agents** across 4 major model providers: OpenRouter (28 free models), OpenCode (free tier), NVIDIA Build (91 free endpoints), and OpenAI (paid tier). Each ranking includes a numeric effectiveness score (0-100) based on the agent's specific requirements.
+- GLM-5.1 is #1 on SWE-Bench Pro (58.4%), released April 18, 2026.
+- GLM-5 (nvidia/z-ai/glm5) is DEPRECATED as of April 20, 2026. Migrate to nvidia/z-ai/glm-5.1.
+- Only 3 providers allowed: NVIDIA Build, OpenCode Zen, OpenAI.
+- google/gemini-3.1-flash-lite-preview replaced with opencode/gemini-3-flash.
+- momus agent added back to active config.
 
-**Key Finding:** The current oh-my-opencode configuration is well-optimized, but there are significant cost optimization opportunities by leveraging free models (especially `qwen/qwen3.6-plus:free` and `google/lyria-3-pro-preview:free`) for non-critical reasoning tasks.
+## Agent Rankings
 
----
+### sisyphus
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 99 | 200K | Orchestrator, xhigh reasoning |
+| 2 | openai/gpt-5.4 | OpenAI | 97 | 1.05M | High reasoning |
+| 3 | nvidia/deepseek-ai/deepseek-v3.2 | NVIDIA Build | 95 | 128K | Reasoning |
+| 4 | nvidia/qwen/qwen3-coder-480b-a35b-instruct | NVIDIA Build | 92 | 256K | Agentic coding |
+| 5 | openai/o3 | OpenAI | 90 | 200K | Reasoning |
+| 6 | opencode/qwen3.6-plus | OpenCode Zen | 88 | 128K | General purpose |
 
-## Agent Profiles & Model Rankings
+### hephaestus
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | openai/gpt-5.4 | OpenAI | 98 | 1.05M | Executor, high reasoning |
+| 2 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 97 | 200K | High reasoning |
+| 3 | nvidia/qwen/qwen3-coder-480b-a35b-instruct | NVIDIA Build | 95 | 256K | Agentic coding |
+| 4 | openai/gpt-5.4-mini | OpenAI | 92 | 400K | Cost-effective |
+| 5 | opencode/qwen3-coder | OpenCode Zen | 90 | 128K | Coding partner |
+| 6 | nvidia/mistral-ai/devstral-2-123b-instruct-2512 | NVIDIA Build | 89 | 256K | Code-focused |
 
-### 1. SISYPHUS (Orchestrator - Primary)
+### oracle
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 99 | 200K | Consultant, xhigh reasoning |
+| 2 | openai/gpt-5.4-pro | OpenAI | 98 | 1.05M | Deep reasoning |
+| 3 | nvidia/deepseek-ai/deepseek-v3.2 | NVIDIA Build | 96 | 128K | Reasoning |
+| 4 | openai/o3 | OpenAI | 94 | 200K | Reasoning |
+| 5 | nvidia/mistral-ai/mistral-small-4-119b-2603 | NVIDIA Build | 90 | 256K | Hybrid reasoning |
+| 6 | opencode/qwen3.6-plus | OpenCode Zen | 88 | 128K | General purpose |
 
-**Role:** Primary orchestrator with full tool access, thinking enabled  
-**Current Config:** `nvidia/z-ai/glm5` (xhigh reasoning, 10K thinking budget)  
-**Key Requirements:** High reasoning, orchestration, delegation, full tool access, thinking capability
+### explore
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/stepfun-ai/step-3.5-flash | NVIDIA Build | 98 | 200K | Search, fast/cheap |
+| 2 | opencode/gemini-3-flash | OpenCode Zen | 95 | 128K | Research, fast |
+| 3 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 92 | 1M | Quick tasks |
+| 4 | openai/gpt-5.4-nano | OpenAI | 90 | 400K | Cost-effective |
+| 5 | nvidia/nvidia/nvidia-nemotron-nano-9b-v2 | NVIDIA Build | 88 | 128K | Edge/quick |
+| 6 | openai/o4-mini | OpenAI | 85 | 200K | Cost-effective |
 
-| Rank | Model | Provider | Score | Rationale |
-|------|-------|----------|-------|-----------|
-| 1 | **nvidia/z-ai/glm5** ⭐ | NVIDIA Build | **95/100** | Current config. 744B MoE, excellent for complex orchestration, thinking enabled |
-| 2 | openai/gpt-5.4 | OpenAI | 93/100 | Frontier intelligence, excellent reasoning, but no free tier |
-| 3 | qwen/qwen3.6-plus:free | OpenRouter | 88/100 | 1M context, vision+tools, strong reasoning - best free alternative |
-| 4 | nvidia/nemotron-3-super-120b-a12b:free | OpenRouter | 85/100 | 1M context, agentic reasoning, tools support |
-| 5 | meta-llama/llama-3.3-70b-instruct:free | OpenRouter | 78/100 | Strong general purpose, good reasoning, 66K context limit |
-| 6 | openrouter/free | OpenRouter | 72/100 | General purpose with vision+tools, 200K context |
+### prometheus
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 99 | 200K | Planner, xhigh reasoning |
+| 2 | openai/gpt-5.4 | OpenAI | 97 | 1.05M | High reasoning |
+| 3 | nvidia/deepseek-ai/deepseek-v3.2 | NVIDIA Build | 95 | 128K | Reasoning |
+| 4 | openai/o3 | OpenAI | 93 | 200K | Reasoning |
+| 5 | nvidia/mistral-ai/mistral-small-4-119b-2603 | NVIDIA Build | 91 | 256K | Hybrid reasoning |
+| 6 | opencode/qwen3.6-plus | OpenCode Zen | 89 | 128K | General purpose |
 
----
+### metis
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 99 | 200K | Analyst, xhigh reasoning |
+| 2 | openai/gpt-5.4-pro | OpenAI | 98 | 1.05M | Deep reasoning |
+| 3 | nvidia/deepseek-ai/deepseek-v3.2 | NVIDIA Build | 96 | 128K | Reasoning |
+| 4 | nvidia/qwen/qwen3-coder-480b-a35b-instruct | NVIDIA Build | 94 | 256K | Agentic coding |
+| 5 | openai/o3 | OpenAI | 92 | 200K | Reasoning |
+| 6 | opencode/qwen3.6-plus | OpenCode Zen | 90 | 128K | General purpose |
 
-### 2. HEPHAESTUS (Executor - Primary)
+### momus
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 99 | 200K | Reviewer, xhigh reasoning |
+| 2 | openai/gpt-5.4 | OpenAI | 97 | 1.05M | High reasoning |
+| 3 | nvidia/deepseek-ai/deepseek-v3.2 | NVIDIA Build | 95 | 128K | Reasoning |
+| 4 | nvidia/qwen/qwen3-coder-480b-a35b-instruct | NVIDIA Build | 93 | 256K | Agentic coding |
+| 5 | openai/o3 | OpenAI | 91 | 200K | Reasoning |
+| 6 | opencode/qwen3.6-plus | OpenCode Zen | 89 | 128K | General purpose |
 
-**Role:** Primary executor for implementation tasks  
-**Current Config:** `openai/gpt-5.4` (high reasoning)  
-**Key Requirements:** Implementation, code generation, edit/write tools, high reasoning
+### librarian
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | opencode/gemini-3-flash | OpenCode Zen | 98 | 128K | Research, fast |
+| 2 | nvidia/stepfun-ai/step-3.5-flash | NVIDIA Build | 96 | 200K | Fast/cheap |
+| 3 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 93 | 1M | Quick tasks |
+| 4 | openai/gpt-5.4-mini | OpenAI | 91 | 400K | Cost-effective |
+| 5 | nvidia/nvidia/nvidia-nemotron-nano-9b-v2 | NVIDIA Build | 89 | 128K | Edge/quick |
+| 6 | openai/o4-mini | OpenAI | 87 | 200K | Cost-effective |
 
-| Rank | Model | Provider | Score | Rationale |
-|------|-------|----------|-------|-----------|
-| 1 | **openai/gpt-5.4** ⭐ | OpenAI | **94/100** | Current config. Best for implementation tasks |
-| 2 | openai/gpt-5.3-codex | OpenAI | 92/100 | Optimized for agentic coding, excellent execution |
-| 3 | qwen/qwen3-coder:free | OpenRouter | 89/100 | **Best free coding model**, 262K context, specialized for code |
-| 4 | nvidia/z-ai/glm5 | NVIDIA Build | 87/100 | Strong coding capabilities, good for execution |
-| 5 | qwen/qwen3.6-plus:free | OpenRouter | 85/100 | Strong coding + vision capabilities, 1M context |
-| 6 | meta-llama/llama-3.3-70b-instruct:free | OpenRouter | 80/100 | Good general implementation, tools support |
+### multimodal-looker
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/qwen/qwen3.5-397b-a17b | NVIDIA Build | 99 | 128K | VLM with vision |
+| 2 | nvidia/meta/llama-3.2-11b-vision-instruct | NVIDIA Build | 95 | 128K | Vision |
+| 3 | nvidia/nvidia/nemotron-nano-12b-v2-vl | NVIDIA Build | 92 | 128K | Vision |
+| 4 | openai/gpt-5.4 | OpenAI | 90 | 1.05M | High reasoning |
+| 5 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 88 | 200K | High reasoning |
+| 6 | opencode/qwen3.6-plus | OpenCode Zen | 85 | 128K | General purpose |
 
----
+### atlas
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 98 | 200K | Knowledge, medium reasoning |
+| 2 | openai/gpt-5.4 | OpenAI | 96 | 1.05M | High reasoning |
+| 3 | nvidia/deepseek-ai/deepseek-v3.2 | NVIDIA Build | 94 | 128K | Reasoning |
+| 4 | nvidia/qwen/qwen3-coder-480b-a35b-instruct | NVIDIA Build | 92 | 256K | Agentic coding |
+| 5 | openai/o3 | OpenAI | 90 | 200K | Reasoning |
+| 6 | opencode/qwen3.6-plus | OpenCode Zen | 88 | 128K | General purpose |
 
-### 3. ORACLE (Consultant - Subagent)
+### sisyphus-junior
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/nvidia/nemotron-3-super-120b-a12b | NVIDIA Build | 99 | 1M | Orchestrator-junior, medium reasoning |
+| 2 | nvidia/z-ai/glm-4.7 | NVIDIA Build | 96 | 128K | Agentic coding |
+| 3 | nvidia/google/gemma-4-31b-it | NVIDIA Build | 93 | 256K | Coding+agentic |
+| 4 | openai/gpt-5.4-mini | OpenAI | 91 | 400K | Cost-effective |
+| 5 | opencode/qwen3-coder | OpenCode Zen | 89 | 128K | Coding partner |
+| 6 | nvidia/meta/llama-3.3-70b-instruct | NVIDIA Build | 87 | 128K | General purpose |
 
-**Role:** Read-only consultant for architecture/debugging  
-**Current Config:** `openai/gpt-5.4` (xhigh reasoning)  
-**Key Requirements:** Read-only, architecture analysis, debugging, xhigh reasoning
+## Category Rankings
 
-| Rank | Model | Provider | Score | Rationale |
-|------|-------|----------|-------|-----------|
-| 1 | **openai/gpt-5.4** ⭐ | OpenAI | **96/100** | Current config. Optimal for consultation, excellent architecture analysis |
-| 2 | openai/gpt-5.4-pro | OpenAI | 94/100 | More precise responses for complex analysis |
-| 3 | nvidia/z-ai/glm5 | NVIDIA Build | 88/100 | Strong reasoning, good for architecture consultation |
-| 4 | qwen/qwen3.6-plus:free | OpenRouter | 82/100 | Good reasoning, free alternative, 1M context for large codebases |
-| 5 | nvidia/nemotron-3-super-120b-a12b:free | OpenRouter | 80/100 | 1M context for large codebase analysis |
-| 6 | z-ai/glm-4.5-air:free | OpenRouter | 75/100 | GLM family, good reasoning capabilities |
+### visual-engineering
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/qwen/qwen3.5-397b-a17b | NVIDIA Build | 99 | 128K | VLM with vision |
+| 2 | nvidia/meta/llama-3.2-11b-vision-instruct | NVIDIA Build | 95 | 128K | Vision |
+| 3 | nvidia/nvidia/nemotron-nano-12b-v2-vl | NVIDIA Build | 92 | 128K | Vision |
 
----
+### ultrabrain
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 99 | 200K | Needs top reasoning |
+| 2 | openai/gpt-5.4-pro | OpenAI | 98 | 1.05M | Deep reasoning |
+| 3 | nvidia/deepseek-ai/deepseek-v3.2 | NVIDIA Build | 96 | 128K | Reasoning |
 
-### 4. EXPLORE (Search - Subagent)
+### deep
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/qwen/qwen3-coder-480b-a35b-instruct | NVIDIA Build | 99 | 256K | Best agentic coding |
+| 2 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 97 | 200K | High reasoning |
+| 3 | openai/gpt-5.4 | OpenAI | 95 | 1.05M | High reasoning |
 
-**Role:** Fast codebase search agent  
-**Current Config:** `nvidia/z-ai/glm5` (minimal reasoning)  
-**Key Requirements:** Fast codebase search, minimal reasoning, grep/glob tools
+### artistry
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/mistral-ai/mistral-small-4-119b-2603 | NVIDIA Build | 98 | 256K | Hybrid instruct+reasoning |
+| 2 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 96 | 200K | High reasoning |
+| 3 | openai/gpt-5.4 | OpenAI | 94 | 1.05M | High reasoning |
 
-| Rank | Model | Provider | Score | Rationale |
-|------|-------|----------|-------|-----------|
-| 1 | **nvidia/z-ai/glm5** ⭐ | NVIDIA Build | **92/100** | Current config. Good balance of speed and capability |
-| 2 | qwen/qwen3.6-plus:free | OpenRouter | 90/100 | Fast, 1M context for large searches, excellent value |
-| 3 | stepfun/step-3.5-flash:free | OpenRouter | 88/100 | Fast reasoning, 256K context, optimized for speed |
-| 4 | nvidia/nemotron-3-nano-30b-a3b:free | OpenRouter | 85/100 | Efficient for quick searches, low overhead |
-| 5 | google/gemma-3-27b-it:free | OpenRouter | 82/100 | Lightweight, good for simple searches, vision capable |
-| 6 | openrouter/free | OpenRouter | 78/100 | General purpose, vision+tools, 200K context |
+### quick
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 99 | 1M | Fast, cheap |
+| 2 | opencode/gemini-3-flash | OpenCode Zen | 97 | 128K | Fast research |
+| 3 | nvidia/nvidia/nvidia-nemotron-nano-9b-v2 | NVIDIA Build | 95 | 128K | Edge/quick |
 
----
+### unspecified-low
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 99 | 1M | Efficient |
+| 2 | opencode/gemini-3-flash | OpenCode Zen | 97 | 128K | Fast research |
+| 3 | nvidia/nvidia/nvidia-nemotron-nano-9b-v2 | NVIDIA Build | 95 | 128K | Edge/quick |
 
-### 5. PROMETHEUS (Planner - Primary)
+### unspecified-high
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 99 | 200K | Needs reasoning |
+| 2 | openai/gpt-5.4 | OpenAI | 97 | 1.05M | High reasoning |
+| 3 | nvidia/deepseek-ai/deepseek-v3.2 | NVIDIA Build | 95 | 128K | Reasoning |
 
-**Role:** Strategic planning agent  
-**Current Config:** `openai/gpt-5.4` (xhigh reasoning)  
-**Key Requirements:** Strategic planning, xhigh reasoning, plan/ralplan skills
+### writing
+| Rank | Model | Provider | Score | Context | Rationale |
+|---|---|---|---|---|---|
+| 1 | opencode/gemini-3-flash | OpenCode Zen | 98 | 128K | Fast research |
+| 2 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 96 | 200K | High reasoning |
+| 3 | openai/gpt-5.4 | OpenAI | 94 | 1.05M | High reasoning |
 
-| Rank | Model | Provider | Score | Rationale |
-|------|-------|----------|-------|-----------|
-| 1 | **openai/gpt-5.4** ⭐ | OpenAI | **95/100** | Current config. Excellent for strategic planning, xhigh reasoning |
-| 2 | nvidia/z-ai/glm5 | NVIDIA Build | 90/100 | Strong reasoning, good for planning, thinking capable |
-| 3 | qwen/qwen3.6-plus:free | OpenRouter | 85/100 | Good reasoning, free alternative, 1M context for complex plans |
-| 4 | nvidia/nemotron-3-super-120b-a12b:free | OpenRouter | 83/100 | 1M context for complex plans, agentic reasoning |
-| 5 | meta-llama/llama-3.3-70b-instruct:free | OpenRouter | 78/100 | Good general planning, tools support |
-| 6 | minimax/minimax-m2.5:free | OpenRouter | 75/100 | Strong reasoning capabilities, 197K context |
+## Summary: Best Model per Agent
 
----
+| Agent | Model |
+|---|---|
+| sisyphus | nvidia/z-ai/glm-5.1 |
+| hephaestus | openai/gpt-5.4 |
+| oracle | nvidia/z-ai/glm-5.1 |
+| explore | nvidia/stepfun-ai/step-3.5-flash |
+| prometheus | nvidia/z-ai/glm-5.1 |
+| metis | nvidia/z-ai/glm-5.1 |
+| momus | nvidia/z-ai/glm-5.1 |
+| librarian | opencode/gemini-3-flash |
+| multimodal-looker | nvidia/qwen/qwen3.5-397b-a17b |
+| atlas | nvidia/z-ai/glm-5.1 |
+| sisyphus-junior | nvidia/nvidia/nemotron-3-super-120b-a12b |
 
-### 6. METIS (Analyst - Subagent)
+## Summary: Best Model per Category
 
-**Role:** Pre-planning analyst for ambiguity detection  
-**Current Config:** `opencode/qwen3.6-plus-free` (xhigh reasoning)  
-**Key Requirements:** Pre-planning analysis, ambiguity detection, xhigh reasoning
-
-| Rank | Model | Provider | Score | Rationale |
-|------|-------|----------|-------|-----------|
-| 1 | **opencode/qwen3.6-plus-free** ⭐ | OpenCode | **91/100** | Current config. Strong analytical capabilities, optimized for analysis |
-| 2 | nvidia/z-ai/glm5 | NVIDIA Build | 89/100 | Excellent for analysis, thinking capable |
-| 3 | openai/gpt-5.4 | OpenAI | 88/100 | Strong but potentially overkill for analyst role |
-| 4 | qwen/qwen3.6-plus:free | OpenRouter | 86/100 | Same model family, free tier alternative |
-| 5 | deepseek/deepseek-v3.2 | OpenRouter | 82/100 | Fallback config, good reasoning for analysis |
-| 6 | nvidia/nemotron-3-super-120b-a12b:free | OpenRouter | 80/100 | Good for complex analysis, 1M context |
-
----
-
-### 7. MOMUS (Reviewer - Subagent)
-
-**Role:** Expert reviewer for work plans  
-**Current Config:** `openai/gpt-5.4` (xhigh reasoning)  
-**Key Requirements:** Work plan review, xhigh reasoning, quality assurance
-
-| Rank | Model | Provider | Score | Rationale |
-|------|-------|----------|-------|-----------|
-| 1 | **openai/gpt-5.4** ⭐ | OpenAI | **94/100** | Current config. Optimal for review, excellent critical analysis |
-| 2 | nvidia/z-ai/glm5 | NVIDIA Build | 88/100 | Strong reasoning for review tasks, thinking capable |
-| 3 | qwen/qwen3.6-plus:free | OpenRouter | 84/100 | Good reasoning, free alternative |
-| 4 | qwen/qwen-2.5-72b-instruct | OpenRouter | 80/100 | Fallback config, good for reviews |
-| 5 | nvidia/nemotron-3-super-120b-a12b:free | OpenRouter | 78/100 | Good for detailed reviews, 1M context |
-| 6 | meta-llama/llama-3.3-70b-instruct:free | OpenRouter | 75/100 | Acceptable for reviews, tools support |
-
----
-
-### 8. LIBRARIAN (Research - Subagent)
-
-**Role:** External reference search agent  
-**Current Config:** `opencode/gemini-3-flash` (minimal reasoning)  
-**Key Requirements:** External reference search, web tools, minimal reasoning
-
-| Rank | Model | Provider | Score | Rationale |
-|------|-------|----------|-------|-----------|
-| 1 | **opencode/gemini-3-flash** ⭐ | OpenCode | **93/100** | Current config. Fast, optimized for research, web-native |
-| 2 | qwen/qwen3.6-plus:free | OpenRouter | 90/100 | 1M context, vision+tools, excellent for research |
-| 3 | nvidia/z-ai/glm5 | NVIDIA Build | 85/100 | Good research capabilities, strong reasoning |
-| 4 | google/gemma-3-27b-it:free | OpenRouter | 82/100 | Google family, good for search tasks, vision |
-| 5 | openrouter/free | OpenRouter | 78/100 | Vision+tools, general research, 200K context |
-| 6 | stepfun/step-3.5-flash:free | OpenRouter | 75/100 | Fast, good for quick lookups, 256K context |
-
----
-
-### 9. MULTIMODAL-LOOKER (Visual - Subagent)
-
-**Role:** Visual/multimodal analysis agent  
-**Current Config:** `nvidia/z-ai/glm5` (medium reasoning)  
-**Key Requirements:** Visual analysis, medium reasoning, image/document processing
-
-| Rank | Model | Provider | Score | Rationale |
-|------|-------|----------|-------|-----------|
-| 1 | **nvidia/z-ai/glm5** ⭐ | NVIDIA Build | **92/100** | Current config. Good multimodal capabilities, balanced reasoning |
-| 2 | google/lyria-3-pro-preview:free | OpenRouter | **95/100** | **Best for visual tasks**, 1M context, specialized vision |
-| 3 | qwen/qwen2.5-vl-72b-instruct | OpenRouter | 93/100 | Fallback config, excellent vision capabilities |
-| 4 | qwen/qwen3.6-plus:free | OpenRouter | 88/100 | Vision+tools, strong multimodal, 1M context |
-| 5 | nvidia/nemotron-nano-12b-v2-vl:free | OpenRouter | 85/100 | NVIDIA vision model, tools support, 128K context |
-| 6 | google/gemma-3-27b-it:free | OpenRouter | 80/100 | Vision capabilities, good size, 131K context |
-
-**Recommendation:** Switch to `google/lyria-3-pro-preview:free` for best free visual performance.
-
----
-
-### 10. ATLAS (Knowledge - Subagent)
-
-**Role:** Knowledge management agent  
-**Current Config:** `opencode/qwen3.6-plus-free` (medium reasoning)  
-**Key Requirements:** Knowledge management, medium reasoning, read/edit tools
-
-| Rank | Model | Provider | Score | Rationale |
-|------|-------|----------|-------|-----------|
-| 1 | **opencode/qwen3.6-plus-free** ⭐ | OpenCode | **90/100** | Current config. Good for knowledge tasks, optimized |
-| 2 | nvidia/z-ai/glm5 | NVIDIA Build | 88/100 | Strong for knowledge management, thinking capable |
-| 3 | qwen/qwen3.6-plus:free | OpenRouter | 86/100 | Same family, free tier, 1M context |
-| 4 | meta-llama/llama-3.3-70b-instruct:free | OpenRouter | 82/100 | Good general knowledge, tools support |
-| 5 | nvidia/nemotron-3-super-120b-a12b:free | OpenRouter | 80/100 | 1M context for large knowledge bases |
-| 6 | minimax/minimax-m2.5:free | OpenRouter | 75/100 | Good reasoning for knowledge, 197K context |
-
----
-
-### 11. SISYPHUS-JUNIOR (Orchestrator-Junior - Subagent)
-
-**Role:** Junior orchestrator for delegation support  
-**Current Config:** `nvidia/z-ai/glm5` (medium reasoning)  
-**Key Requirements:** Delegation support, medium reasoning, task coordination
-
-| Rank | Model | Provider | Score | Rationale |
-|------|-------|----------|-------|-----------|
-| 1 | **nvidia/z-ai/glm5** ⭐ | NVIDIA Build | **93/100** | Current config. Excellent for junior orchestration, balanced |
-| 2 | qwen/qwen3.6-plus:free | OpenRouter | 88/100 | Strong reasoning, good for delegation, 1M context |
-| 3 | meta-llama/llama-3.3-70b-instruct:free | OpenRouter | 85/100 | Fallback config, good general purpose |
-| 4 | qwen/qwen-2.5-72b-instruct | OpenRouter | 82/100 | Fallback config, good for coordination |
-| 5 | nvidia/nemotron-3-super-120b-a12b:free | OpenRouter | 80/100 | Good for complex delegation, 1M context |
-| 6 | stepfun/step-3.5-flash:free | OpenRouter | 75/100 | Fast, good for quick delegation, 256K context |
-
----
-
-## Summary: Best Free Model per Agent
-
-| Agent | Best Free Model | Score | Why It's Best |
-|-------|-----------------|-------|---------------|
-| sisyphus | qwen/qwen3.6-plus:free | 88/100 | 1M context, vision+tools, strong reasoning for orchestration |
-| hephaestus | qwen/qwen3-coder:free | 89/100 | Best free coding model, specialized for implementation |
-| oracle | qwen/qwen3.6-plus:free | 82/100 | Good reasoning, 1M context for large codebase analysis |
-| explore | qwen/qwen3.6-plus:free | 90/100 | Fast, 1M context for large searches, excellent value |
-| prometheus | qwen/qwen3.6-plus:free | 85/100 | Good reasoning for planning, 1M context |
-| metis | qwen/qwen3.6-plus:free | 86/100 | Same family as current config, optimized for analysis |
-| momus | qwen/qwen3.6-plus:free | 84/100 | Good reasoning for review, free alternative |
-| librarian | qwen/qwen3.6-plus:free | 90/100 | 1M context, excellent for research tasks |
-| multimodal-looker | google/lyria-3-pro-preview:free | 95/100 | Best visual model, 1M context, specialized vision |
-| atlas | qwen/qwen3.6-plus:free | 86/100 | Good for knowledge management, 1M context |
-| sisyphus-junior | qwen/qwen3.6-plus:free | 88/100 | Strong reasoning for delegation, 1M context |
-
----
+| Category | Model |
+|---|---|
+| visual-engineering | nvidia/qwen/qwen3.5-397b-a17b |
+| ultrabrain | nvidia/z-ai/glm-5.1 |
+| deep | nvidia/qwen/qwen3-coder-480b-a35b-instruct |
+| artistry | nvidia/mistral-ai/mistral-small-4-119b-2603 |
+| quick | nvidia/nvidia/nemotron-3-nano-30b-a3b |
+| unspecified-low | nvidia/nvidia/nemotron-3-nano-30b-a3b |
+| unspecified-high | nvidia/z-ai/glm-5.1 |
+| writing | opencode/gemini-3-flash |
 
 ## Model Provider Summary
 
-### OpenRouter Free Models (28 Total)
+### NVIDIA Build
+- High performance, free models, specialized agentic coding models.
+- Best for: Reasoning, coding, vision, quick tasks.
 
-**Top Picks by Use Case:**
-- **Coding:** qwen/qwen3-coder:free (262K context, specialized) - Score: 89/100
-- **General:** qwen/qwen3.6-plus:free (1M context, vision+tools) - Score: 88/100
-- **Visual:** google/lyria-3-pro-preview:free (1M context, vision) - Score: 95/100
-- **Fast Tasks:** stepfun/step-3.5-flash:free (256K context) - Score: 88/100
-- **Reasoning:** nvidia/nemotron-3-super-120b-a12b:free (1M context) - Score: 85/100
+### OpenCode Zen
+- Curated models, reliable routing.
+- Best for: Research, general purpose, coding.
 
-**Rate Limits:** 20 req/min, 200 req/day per model  
-**Cost:** $0 (no credit card required)
+### OpenAI
+- High reasoning, large context.
+- Best for: Complex tasks, deep reasoning.
 
----
+## Cost Optimization
 
-### NVIDIA Build Free Endpoints (91 Total)
-
-**Top Picks:**
-- **nvidia/z-ai/glm5** (744B MoE) - Score: 92/100 avg - Complex reasoning, orchestration
-- **nvidia/nemotron-3-super-120b-a12b** - Score: 85/100 avg - Agentic reasoning, 1M context
-- **stepfun-ai/step-3.5-flash** (200B MoE) - Score: 88/100 avg - Fast reasoning
-- **z-ai/glm-4.7** - Score: 87/100 avg - Multilingual agentic coding
-- **qwen/qwen3.5-122b-a10b** (122B MoE) - Score: 85/100 avg - Coding, reasoning
-
-**Specialized Models:**
-- **Nemotron OCR** - Document extraction
-- **Nemotron ASR** - Speech recognition
-- **Nemotron Voicechat** - Voice interactions
-
----
-
-### OpenCode Free Models
-
-**Top Picks:**
-- **opencode/qwen3.6-plus-free** - Score: 90/100 avg - Strong analytical capabilities
-- **opencode/gemini-3-flash** - Score: 93/100 avg - Fast research, web-native
-
----
-
-### OpenAI Models (Paid Tier)
-
-**Top Picks:**
-- **gpt-5.4** - Score: 94/100 avg - Best intelligence for agentic/coding
-- **gpt-5.4-pro** - Score: 96/100 avg - Smarter, more precise
-- **gpt-5.3-codex** - Score: 92/100 avg - Most capable agentic coding
-- **gpt-5.4-mini** - Score: 90/100 avg - Strong mini for coding/subagents
-
----
-
-## Cost Optimization Recommendations
-
-### Priority 1: Immediate Free Tier Adoption
-
-| Agent | Current Model | Recommended Free Model | Savings |
-|-------|---------------|----------------------|---------|
-| explore | nvidia/z-ai/glm5 | qwen/qwen3.6-plus:free | 100% |
-| librarian | opencode/gemini-3-flash | qwen/qwen3.6-plus:free | 100% |
-| atlas | opencode/qwen3.6-plus-free | qwen/qwen3.6-plus:free | 100% |
-| metis | opencode/qwen3.6-plus-free | qwen/qwen3.6-plus:free | 100% |
-| multimodal-looker | nvidia/z-ai/glm5 | google/lyria-3-pro-preview:free | 100% |
-
-### Priority 2: Keep Paid Models for Critical Tasks
-
-| Agent | Keep Current Model | Rationale |
-|-------|-------------------|-----------|
-| sisyphus | nvidia/z-ai/glm5 | Optimal orchestration, thinking enabled |
-| hephaestus | openai/gpt-5.4 | Best implementation performance |
-| oracle | openai/gpt-5.4 | Critical architecture consultation |
-| prometheus | openai/gpt-5.4 | Strategic planning requires frontier |
-| momus | openai/gpt-5.4 | Quality assurance needs high reasoning |
-
----
+- Use `nvidia/stepfun-ai/step-3.5-flash` or `opencode/gemini-3-flash` for quick/research tasks.
+- Use `nvidia/nvidia/nemotron-3-nano-30b-a3b` for efficient tasks.
+- Use `openai/gpt-5.4-mini` or `openai/gpt-5.4-nano` for cost-effective reasoning.
 
 ## Key Insights
 
-1. **qwen/qwen3.6-plus:free** is the most versatile free model (top choice for 8/11 agents)
-2. **nvidia/z-ai/glm5** (current default for 4 agents) is excellent but requires NVIDIA Build access
-3. **google/lyria-3-pro-preview:free** is the best free visual model with 1M context
-4. **qwen/qwen3-coder:free** is the best free coding-specific model
-5. Current configurations are well-optimized for their respective roles
-
----
+- GLM-5.1 is the new standard for reasoning and agentic tasks.
+- NVIDIA Build provides the most cost-effective and high-performance options.
+- OpenCode Zen is essential for reliable routing and curated models.
+- OpenAI remains a strong choice for deep reasoning and large context.
 
 ## Methodology
 
-**Effectiveness Score (0-100) based on:**
-- Task-specific capability matching (40%)
-- Context window size (20%)
-- Reasoning level requirements (20%)
-- Tool support (vision, tools, function calling) (10%)
-- Cost efficiency (10%)
+Rankings are based on SWE-Bench Pro performance, reasoning capability, context window, cost, and agentic suitability.
 
-**Data Sources:**
-- OpenRouter free model catalog (April 2026)
-- NVIDIA Build model catalog
-- OpenAI model documentation
-- oh-my-opencode.json configuration file
-- Agent role requirements from system behavior
+## Migration Guide
 
----
-
-**Report Version:** 1.0  
-**Last Updated:** April 4, 2026
+- nvidia/z-ai/glm5 → nvidia/z-ai/glm-5.1 (deprecated)
+- google/gemini-3.1-flash-lite-preview → opencode/gemini-3-flash (provider constraint)
+- Removal of all OpenRouter model references.

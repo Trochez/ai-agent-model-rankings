@@ -1,0 +1,105 @@
+{
+  "test_date": "2026-04-07T00:34:48.231408",
+  "test_prompt": "What is 2 + 2? Reply with ONLY the number.",
+  "results": [
+    {
+      "model": "z-ai/glm-5",
+      "provider": "openrouter",
+      "status": "ERROR",
+      "response_time_ms": 3963,
+      "response": "",
+      "error": null,
+      "passed": null
+    },
+    {
+      "model": "openai/gpt-5.4",
+      "provider": "openai",
+      "status": "ERROR",
+      "response_time_ms": 820,
+      "response": "",
+      "error": "HTTP 429: {\n    \"error\": {\n        \"message\": \"You exceeded your current quota, please check your plan and bil",
+      "passed": ""
+    },
+    {
+      "model": "qwen/qwen3.6-plus:free",
+      "provider": "openrouter",
+      "status": "ERROR",
+      "response_time_ms": 2847,
+      "response": "",
+      "error": "'choices'",
+      "passed": ""
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview",
+      "provider": "google",
+      "status": "PASS",
+      "response_time_ms": 1472,
+      "response": "4",
+      "error": null,
+      "passed": true
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview",
+      "provider": "google",
+      "status": "ERROR",
+      "response_time_ms": 984,
+      "response": "",
+      "error": "HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your p",
+      "passed": ""
+    },
+    {
+      "model": "meta-llama/llama-3.3-70b-instruct:free",
+      "provider": "openrouter",
+      "status": "ERROR",
+      "response_time_ms": 1672,
+      "response": "",
+      "error": "HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"meta-llama/llama-3.3-70b",
+      "passed": ""
+    },
+    {
+      "model": "openai/gpt-5.3-codex",
+      "provider": "openai",
+      "status": "ERROR",
+      "response_time_ms": 826,
+      "response": "",
+      "error": "HTTP 429: {\n    \"error\": {\n        \"message\": \"You exceeded your current quota, please check your plan and bil",
+      "passed": ""
+    },
+    {
+      "model": "openrouter/qwen/qwen2.5-72b-instruct",
+      "provider": "openrouter",
+      "status": "ERROR",
+      "response_time_ms": 247,
+      "response": "",
+      "error": "HTTP 400: {\"error\":{\"message\":\"openrouter/qwen/qwen2.5-72b-instruct is not a valid model ID\",\"code\":400},\"user",
+      "passed": ""
+    },
+    {
+      "model": "openrouter/qwen/qwen3-coder:free",
+      "provider": "openrouter",
+      "status": "ERROR",
+      "response_time_ms": 285,
+      "response": "",
+      "error": "HTTP 400: {\"error\":{\"message\":\"openrouter/qwen/qwen3-coder:free is not a valid model ID\",\"code\":400},\"user_id\"",
+      "passed": ""
+    },
+    {
+      "model": "qwen/qwen2.5-vl-72b-instruct",
+      "provider": "openrouter",
+      "status": "PASS",
+      "response_time_ms": 1377,
+      "response": "4",
+      "error": null,
+      "passed": true
+    },
+    {
+      "model": "stepfun/step-3.5-flash:free",
+      "provider": "openrouter",
+      "status": "ERROR",
+      "response_time_ms": 6266,
+      "response": "",
+      "error": null,
+      "passed": null
+    }
+  ]
+}

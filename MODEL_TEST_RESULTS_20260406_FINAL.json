@@ -1,0 +1,208 @@
+{
+  "test_metadata": {
+    "test_date": "2026-04-06T15:07:32",
+    "test_method": "Direct API calls (Python requests)",
+    "test_prompt": "What is 2 + 2? Reply with ONLY the number.",
+    "expected_response": "4",
+    "total_models": 11,
+    "pass_rate": "18%",
+    "pass_rate_after_fixes": "36%"
+  },
+  "summary": {
+    "passing": 2,
+    "failing": 9,
+    "config_errors": 2,
+    "quota_limits": 3,
+    "rate_limits": 2,
+    "availability_issues": 2
+  },
+  "models": [
+    {
+      "id": "z-ai/glm-5",
+      "provider": "openrouter",
+      "status": "PASS",
+      "response_time_ms": 9658,
+      "response": "4",
+      "error": null,
+      "passed": true,
+      "issue": null,
+      "action_required": null
+    },
+    {
+      "id": "qwen/qwen2.5-vl-72b-instruct",
+      "provider": "openrouter",
+      "status": "PASS",
+      "response_time_ms": 2226,
+      "response": "4",
+      "error": null,
+      "passed": true,
+      "issue": null,
+      "action_required": null
+    },
+    {
+      "id": "openai/gpt-5.4",
+      "provider": "openai",
+      "status": "ERROR",
+      "response_time_ms": 1828,
+      "response": "",
+      "error": "HTTP 429 - Quota exceeded",
+      "passed": false,
+      "issue": "OpenAI API billing quota limit reached",
+      "action_required": "Check OpenAI billing/plan status"
+    },
+    {
+      "id": "qwen/qwen3.6-plus:free",
+      "provider": "openrouter",
+      "status": "ERROR",
+      "response_time_ms": 1093,
+      "response": "",
+      "error": "HTTP 429 - Provider rate limit",
+      "passed": false,
+      "issue": "OpenRouter free tier rate limit hit",
+      "action_required": "Wait 1-2 hours for rate limit reset"
+    },
+    {
+      "id": "google/gemini-3.1-flash-lite-preview",
+      "provider": "google",
+      "status": "ERROR",
+      "response_time_ms": 2062,
+      "response": "",
+      "error": "HTTP 503 - High demand",
+      "passed": false,
+      "issue": "Model experiencing high demand, temporarily unavailable",
+      "action_required": "Retry later or use alternative model"
+    },
+    {
+      "id": "google/gemini-3.1-pro-preview",
+      "provider": "google",
+      "status": "ERROR",
+      "response_time_ms": 775,
+      "response": "",
+      "error": "HTTP 429 - Quota exceeded",
+      "passed": false,
+      "issue": "Google API billing quota limit reached",
+      "action_required": "Check Google Cloud quotas"
+    },
+    {
+      "id": "meta-llama/llama-3.3-70b-instruct:free",
+      "provider": "openrouter",
+      "status": "ERROR",
+      "response_time_ms": 1039,
+      "response": "",
+      "error": "HTTP 429 - Provider rate limit",
+      "passed": false,
+      "issue": "OpenRouter free tier rate limit hit",
+      "action_required": "Wait 1-2 hours for rate limit reset"
+    },
+    {
+      "id": "openai/gpt-5.3-codex",
+      "provider": "openai",
+      "status": "ERROR",
+      "response_time_ms": 1239,
+      "response": "",
+      "error": "HTTP 429 - Quota exceeded",
+      "passed": false,
+      "issue": "OpenAI API billing quota limit reached",
+      "action_required": "Check OpenAI billing/plan status"
+    },
+    {
+      "id": "openrouter/qwen/qwen2.5-72b-instruct",
+      "provider": "openrouter",
+      "status": "ERROR",
+      "response_time_ms": 1664,
+      "response": "",
+      "error": "HTTP 400 - Invalid model ID",
+      "passed": false,
+      "issue": "CONFIG ERROR - Invalid model ID format",
+      "action_required": "FIX: Remove 'openrouter/' prefix → use 'qwen/qwen2.5-72b-instruct'",
+      "fix": "qwen/qwen2.5-72b-instruct"
+    },
+    {
+      "id": "openrouter/qwen/qwen3-coder:free",
+      "provider": "openrouter",
+      "status": "ERROR",
+      "response_time_ms": 921,
+      "response": "",
+      "error": "HTTP 400 - Invalid model ID",
+      "passed": false,
+      "issue": "CONFIG ERROR - Invalid model ID format",
+      "action_required": "FIX: Remove 'openrouter/' prefix → use 'qwen/qwen3-coder:free'",
+      "fix": "qwen/qwen3-coder:free"
+    },
+    {
+      "id": "stepfun/step-3.5-flash:free",
+      "provider": "openrouter",
+      "status": "ERROR",
+      "response_time_ms": 5773,
+      "response": "",
+      "error": "Timeout/empty response",
+      "passed": false,
+      "issue": "Model did not respond or timed out",
+      "action_required": "Investigate model availability or increase timeout"
+    }
+  ],
+  "config_fixes_required": [
+    {
+      "current": "openrouter/qwen/qwen2.5-72b-instruct",
+      "correct": "qwen/qwen2.5-72b-instruct",
+      "reason": "OpenRouter model IDs should not have 'openrouter/' prefix"
+    },
+    {
+      "current": "openrouter/qwen/qwen3-coder:free",
+      "correct": "qwen/qwen3-coder:free",
+      "reason": "OpenRouter model IDs should not have 'openrouter/' prefix"
+    }
+  ],
+  "quota_issues": [
+    {
+      "model": "openai/gpt-5.4",
+      "provider": "openai",
+      "action": "Check OpenAI billing/plan"
+    },
+    {
+      "model": "openai/gpt-5.3-codex",
+      "provider": "openai",
+      "action": "Check OpenAI billing/plan"
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview",
+      "provider": "google",
+      "action": "Check Google Cloud quotas"
+    }
+  ],
+  "rate_limit_issues": [
+    {
+      "model": "qwen/qwen3.6-plus:free",
+      "provider": "openrouter",
+      "limit": "20 req/min, 200 req/day",
+      "action": "Wait 1-2 hours"
+    },
+    {
+      "model": "meta-llama/llama-3.3-70b-instruct:free",
+      "provider": "openrouter",
+      "limit": "20 req/min, 200 req/day",
+      "action": "Wait 1-2 hours"
+    }
+  ],
+  "availability_issues": [
+    {
+      "model": "google/gemini-3.1-flash-lite-preview",
+      "provider": "google",
+      "error": "HTTP 503 - High demand",
+      "action": "Retry later"
+    },
+    {
+      "model": "stepfun/step-3.5-flash:free",
+      "provider": "openrouter",
+      "error": "Timeout/empty response",
+      "action": "Investigate availability"
+    }
+  ],
+  "next_steps": [
+    "1. Fix 2 configuration errors in oh-my-opencode.json",
+    "2. Address quota limits for OpenAI and Google APIs",
+    "3. Wait for rate limits to reset (1-2 hours)",
+    "4. Re-test all models after fixes",
+    "5. Set up automated monitoring for model availability"
+  ]
+}

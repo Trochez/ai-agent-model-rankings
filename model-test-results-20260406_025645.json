@@ -1,0 +1,103 @@
+{
+  "test_date": "2026-04-06T02:56:45.112159",
+  "test_prompt": "What is 2 + 2? Reply with ONLY the number.",
+  "expected_response": "4",
+  "results": [
+    {
+      "model": "nvidia/z-ai/glm5",
+      "status": "PASS",
+      "response_time_ms": 21611,
+      "response": "4",
+      "exit_code": 0,
+      "error": "\u001b[0m\n> Sisyphus (Ultraworker) \u00b7 z-ai/glm5\n\u001b[0m\n"
+    },
+    {
+      "model": "openai/gpt-5.4",
+      "status": "TIMEOUT",
+      "response_time_ms": 30085,
+      "response": "",
+      "exit_code": -1,
+      "error": "Test timed out after 30 seconds"
+    },
+    {
+      "model": "openrouter/qwen/qwen3.6-plus:free",
+      "status": "PASS",
+      "response_time_ms": 23392,
+      "response": "4",
+      "exit_code": 0,
+      "error": "\u001b[0m\n> Sisyphus (Ultraworker) \u00b7 qwen/qwen3.6-plus:free\n\u001b[0m\n"
+    },
+    {
+      "model": "google/gemini-3.1-flash-preview",
+      "status": "FAIL",
+      "response_time_ms": 9460,
+      "response": "",
+      "exit_code": 0,
+      "error": "ProviderModelNotFoundError: ProviderModelNotFoundError\n data: {\n  providerID: \"google\",\n  modelID: \"gemini-3.1-flash-preview\",\n  suggestions: [ \"gemini-3.1-flash-lite-preview\", \"gemini-3.1-flash-image"
+    },
+    {
+      "model": "openrouter/google/lyria-3-pro-preview:free",
+      "status": "FAIL",
+      "response_time_ms": 15696,
+      "response": "",
+      "exit_code": 0,
+      "error": "ProviderModelNotFoundError: ProviderModelNotFoundError\n data: {\n  providerID: \"openrouter\",\n  modelID: \"google/lyria-3-pro-preview:free\",\n  suggestions: [],\n},\n\n      at <anonymous> (/$bunfs/root/src/"
+    },
+    {
+      "model": "openrouter/qwen/qwen2.5-vl-72b-instruct",
+      "status": "TIMEOUT",
+      "response_time_ms": 30218,
+      "response": "",
+      "exit_code": -1,
+      "error": "Test timed out after 30 seconds"
+    },
+    {
+      "model": "openai/gpt-5.3-codex",
+      "status": "TIMEOUT",
+      "response_time_ms": 30347,
+      "response": "",
+      "exit_code": -1,
+      "error": "Test timed out after 30 seconds"
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview",
+      "status": "TIMEOUT",
+      "response_time_ms": 30262,
+      "response": "",
+      "exit_code": -1,
+      "error": "Test timed out after 30 seconds"
+    },
+    {
+      "model": "openrouter/qwen/qwen3-coder-plus",
+      "status": "FAIL",
+      "response_time_ms": 29680,
+      "response": "",
+      "exit_code": 0,
+      "error": "ProviderModelNotFoundError: ProviderModelNotFoundError\n data: {\n  providerID: \"openrouter\",\n  modelID: \"qwen/qwen3-coder-plus\",\n  suggestions: [],\n},\n\n      at <anonymous> (/$bunfs/root/src/index.js:2"
+    },
+    {
+      "model": "openrouter/stepfun/step-3.5-flash:free",
+      "status": "TIMEOUT",
+      "response_time_ms": 30211,
+      "response": "",
+      "exit_code": -1,
+      "error": "Test timed out after 30 seconds"
+    },
+    {
+      "model": "openrouter/meta-llama/llama-3.3-70b-instruct:free",
+      "status": "TIMEOUT",
+      "response_time_ms": 30244,
+      "response": "",
+      "exit_code": -1,
+      "error": "Test timed out after 30 seconds"
+    },
+    {
+      "model": "openrouter/qwen/qwen-2.5-72b-instruct",
+      "status": "FAIL",
+      "response_time_ms": 28834,
+      "response": "",
+      "exit_code": 0,
+      "error": "ProviderModelNotFoundError: ProviderModelNotFoundError\n data: {\n  providerID: \"openrouter\",\n  modelID: \"qwen/qwen-2.5-72b-instruct\",\n  suggestions: [],\n},\n\n      at <anonymous> (/$bunfs/root/src/index"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+T4 Evidence: Direct prompt send blocked before outbound submission
+
+Canonical repo:
+- /home/trocha/projects/opencode/oh-my-openagent
+
+Shared guard added:
+- src/model-policy-prompt-guard.ts
+  - reloads effective config from disk at send time
+  - evaluates provider/model with evaluateModelPolicy()
+  - throws ModelPolicyBlockedError with stable code MODEL_POLICY_BLOCKED_OPENAI
+
+Focused direct-block proof:
+- src/tools/call-omo-agent/sync-executor.test.ts
+  test: "blocks OpenAI sync prompt before promptAsync when openai_hard_block is enabled"
+  observed assertions:
+  - thrown error message contains MODEL_POLICY_BLOCKED_OPENAI
+  - promptAsync was NOT called
+
+Additional direct-block proof:
+- src/hooks/session-recovery/resume.test.ts
+  test: "resumeSession returns false and skips promptAsync when OpenAI is hard blocked"
+  observed assertions:
+  - resumeSession returns false
+  - promptAsync was NOT called
+
+Verification command:
+- bun test src/model-policy-prompt-guard.test.ts src/tools/call-omo-agent/sync-executor.test.ts src/hooks/session-recovery/resume.test.ts src/shared/model-policy.test.ts
+
+Observed result:
+- 21 pass
+- 0 fail
+- 58 expect() calls
+
+Build verification:
+- bun run build
+- passed
+
+Conclusion:
+- OpenAI-bound plugin-controlled prompt sends are blocked before promptAsync submission.
+- Blocked attempts surface the stable MODEL_POLICY_BLOCKED_OPENAI code.

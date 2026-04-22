@@ -1,0 +1,30 @@
+T2 Evidence: Invalid value rejection for openai_hard_block
+
+Canonical repo:
+- /home/trocha/projects/opencode/oh-my-openagent
+
+Proof of schema rejection:
+- src/config/schema.test.ts:182-203
+  Test passes:
+    { openai_hard_block: "true" }
+  Expected and observed:
+    OhMyOpenCodeConfigSchema.safeParse(...) returns success === false
+    Error path includes "openai_hard_block"
+
+Proof of partial-load safety:
+- src/plugin-config.test.ts:554-563
+  parseConfigPartially({ openai_hard_block: "true", disabled_hooks: ["comment-checker"] })
+  Observed:
+    result.openai_hard_block === undefined
+    result.disabled_hooks === ["comment-checker"]
+
+Verification command:
+- bun test src/config/schema.test.ts src/plugin-config.test.ts
+
+Observed result:
+- 91 pass
+- 0 fail
+
+Conclusion:
+- Non-boolean values for openai_hard_block are rejected by the schema.
+- Partial config loading safely skips the invalid field instead of accepting malformed state.

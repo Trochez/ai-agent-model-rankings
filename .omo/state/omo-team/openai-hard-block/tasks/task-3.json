@@ -1,0 +1,13 @@
+{
+  "task_id": "task-3",
+  "title": "T3: Implement shared evaluateModelPolicy() and stable error contract",
+  "category": "unspecified-high",
+  "skills": ["build-fix"],
+  "status": "pending",
+  "assigned_worker": "worker-3",
+  "acceptance_criteria": [
+    "Engine returns allow/deny + code/message using normalized IDs",
+    "openai/* evaluates to deny when toggle is off",
+    "allow_non_gpt_model or similar per-agent fields never override global block"
+  ]
+}

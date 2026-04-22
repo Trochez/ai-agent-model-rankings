@@ -1,0 +1,106 @@
+{
+  "test_date": "2026-04-07T00:51:31.657567",
+  "test_prompt": "What is 2 + 2? Reply with ONLY the number.",
+  "results": [
+    {
+      "model": "z-ai/glm-5",
+      "provider": "openrouter",
+      "source": "sisyphus, explore, multimodal-looker, sisyphus-junior, artistry, quick, unspecified-low, unspecified-high",
+      "status": "PASS",
+      "response_time_ms": 6412,
+      "response": "4",
+      "error": null,
+      "passed": true
+    },
+    {
+      "model": "openai/gpt-5.4",
+      "provider": "openai",
+      "source": "hephaestus, oracle, prometheus, momus, ultrabrain",
+      "status": "ERROR",
+      "response_time_ms": 874,
+      "response": "",
+      "error": "HTTP 429: {\n    \"error\": {\n        \"message\": \"You exceeded your current quota, please check your plan and bil",
+      "passed": ""
+    },
+    {
+      "model": "opencode/qwen3.6-plus-free",
+      "provider": "opencode",
+      "source": "metis, atlas, visual-engineering",
+      "status": "ERROR",
+      "response_time_ms": 522,
+      "response": "",
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "passed": ""
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview",
+      "provider": "google",
+      "source": "librarian, writing",
+      "status": "PASS",
+      "response_time_ms": 19969,
+      "response": "4",
+      "error": null,
+      "passed": true
+    },
+    {
+      "model": "openai/gpt-5.3-codex",
+      "provider": "openai",
+      "source": "deep",
+      "status": "ERROR",
+      "response_time_ms": 738,
+      "response": "",
+      "error": "HTTP 429: {\n    \"error\": {\n        \"message\": \"You exceeded your current quota, please check your plan and bil",
+      "passed": ""
+    },
+    {
+      "model": "qwen/qwen3-coder-4.08.97b-a35b-instruct",
+      "provider": "openrouter",
+      "source": "hephaestus fallback",
+      "status": "ERROR",
+      "response_time_ms": 236,
+      "response": "",
+      "error": "HTTP 400: {\"error\":{\"message\":\"qwen/qwen3-coder-4.08.97b-a35b-instruct is not a valid model ID\",\"code\":400},\"u",
+      "passed": ""
+    },
+    {
+      "model": "stepfun-ai/step-3.5-flash",
+      "provider": "openrouter",
+      "source": "explore, quick fallback",
+      "status": "ERROR",
+      "response_time_ms": 283,
+      "response": "",
+      "error": "HTTP 400: {\"error\":{\"message\":\"stepfun-ai/step-3.5-flash is not a valid model ID\",\"code\":400},\"user_id\":\"user_",
+      "passed": ""
+    },
+    {
+      "model": "nvidia/nemotron-3-nano-30b-a3b",
+      "provider": "nvidia",
+      "source": "multimodal-looker, visual-engineering, unspecified-high fallback",
+      "status": "ERROR",
+      "response_time_ms": 388,
+      "response": "",
+      "error": "HTTP 404: 404 page not found\n",
+      "passed": ""
+    },
+    {
+      "model": "nvidia/meta/llama-3.3-70b-instruct",
+      "provider": "nvidia",
+      "source": "atlas, sisyphus-junior, artistry, unspecified-low, writing fallback",
+      "status": "PASS",
+      "response_time_ms": 36292,
+      "response": "4",
+      "error": null,
+      "passed": true
+    },
+    {
+      "model": "nvidia/meta/llama-3.2-11b-vision-instruct",
+      "provider": "nvidia",
+      "source": "visual-engineering fallback",
+      "status": "ERROR",
+      "response_time_ms": 45355,
+      "response": "",
+      "error": "HTTPSConnectionPool(host='integrate.api.nvidia.com', port=443): Read timed out. (read timeout=45)",
+      "passed": ""
+    }
+  ]
+}

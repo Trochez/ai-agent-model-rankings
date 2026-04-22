@@ -1,0 +1,13 @@
+{
+  "task_id": "task-2",
+  "title": "T2: Add global config schema and persistence for the OpenAI block toggle",
+  "category": "quick",
+  "skills": ["build-fix"],
+  "status": "pending",
+  "assigned_worker": "worker-2",
+  "acceptance_criteria": [
+    "Global toggle schema added",
+    "Invalid values rejected by validation",
+    "Runtime code can read effective OpenAI block state"
+  ]
+}

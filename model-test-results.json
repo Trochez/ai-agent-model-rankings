@@ -1,0 +1,419 @@
+{
+  "timestamp": "2026-04-06T02:23:34.207488",
+  "models": {
+    "z-ai/glm-5": {
+      "provider": "openrouter",
+      "type": "orchestrator",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "z-ai/glm-5",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "z-ai/glm-5",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "z-ai/glm-5",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    },
+    "openai/gpt-5.4": {
+      "provider": "openai",
+      "type": "high-reasoning",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "openai/gpt-5.4",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No OpenAI API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "openai/gpt-5.4",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No OpenAI API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "openai/gpt-5.4",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No OpenAI API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    },
+    "qwen/qwen3.6-plus:free": {
+      "provider": "openrouter",
+      "type": "general",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "qwen/qwen3.6-plus:free",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "qwen/qwen3.6-plus:free",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "qwen/qwen3.6-plus:free",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    },
+    "google/gemini-3.1-flash-preview": {
+      "provider": "google",
+      "type": "fast",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "google/gemini-3.1-flash-preview",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No Google API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "google/gemini-3.1-flash-preview",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No Google API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "google/gemini-3.1-flash-preview",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No Google API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    },
+    "google/lyria-3-pro-preview:free": {
+      "provider": "openrouter",
+      "type": "visual",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "google/lyria-3-pro-preview:free",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "google/lyria-3-pro-preview:free",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "google/lyria-3-pro-preview:free",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    },
+    "qwen/qwen2.5-vl-72b-instruct": {
+      "provider": "openrouter",
+      "type": "vision",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "qwen/qwen2.5-vl-72b-instruct",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "qwen/qwen2.5-vl-72b-instruct",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "qwen/qwen2.5-vl-72b-instruct",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    },
+    "openai/gpt-5.3-codex": {
+      "provider": "openai",
+      "type": "code",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "openai/gpt-5.3-codex",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No OpenAI API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "openai/gpt-5.3-codex",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No OpenAI API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "openai/gpt-5.3-codex",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No OpenAI API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test4_code": {
+          "model": "openai/gpt-5.3-codex",
+          "test": "test4_code",
+          "status": "error",
+          "error": "No OpenAI API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    },
+    "google/gemini-3.1-pro-preview": {
+      "provider": "google",
+      "type": "pro",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "google/gemini-3.1-pro-preview",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No Google API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "google/gemini-3.1-pro-preview",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No Google API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "google/gemini-3.1-pro-preview",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No Google API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    },
+    "qwen/qwen3-coder-plus": {
+      "provider": "openrouter",
+      "type": "code",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "qwen/qwen3-coder-plus",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "qwen/qwen3-coder-plus",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "qwen/qwen3-coder-plus",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test4_code": {
+          "model": "qwen/qwen3-coder-plus",
+          "test": "test4_code",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    },
+    "stepfun/step-3.5-flash:free": {
+      "provider": "openrouter",
+      "type": "fast",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "stepfun/step-3.5-flash:free",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "stepfun/step-3.5-flash:free",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "stepfun/step-3.5-flash:free",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    },
+    "meta-llama/llama-3.3-70b-instruct:free": {
+      "provider": "openrouter",
+      "type": "general",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "meta-llama/llama-3.3-70b-instruct:free",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "meta-llama/llama-3.3-70b-instruct:free",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "meta-llama/llama-3.3-70b-instruct:free",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    },
+    "qwen/qwen-2.5-72b-instruct": {
+      "provider": "openrouter",
+      "type": "general",
+      "tests": {
+        "test1_arithmetic": {
+          "model": "qwen/qwen-2.5-72b-instruct",
+          "test": "test1_arithmetic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test2_instructions": {
+          "model": "qwen/qwen-2.5-72b-instruct",
+          "test": "test2_instructions",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        },
+        "test3_logic": {
+          "model": "qwen/qwen-2.5-72b-instruct",
+          "test": "test3_logic",
+          "status": "error",
+          "error": "No OpenRouter API key configured",
+          "response": "",
+          "time_ms": 0,
+          "pass": false
+        }
+      }
+    }
+  }
+}

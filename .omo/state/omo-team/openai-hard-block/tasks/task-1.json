@@ -1,0 +1,15 @@
+{
+  "task_id": "task-1",
+  "title": "T1: Inventory source repo + plugin-controlled send perimeter",
+  "category": "deep",
+  "skills": ["deepsearch"],
+  "status": "pending",
+  "assigned_worker": "worker-1",
+  "acceptance_criteria": [
+    "Canonical source repo path recorded",
+    "If no editable checkout existed locally at start, a canonical editable checkout is provisioned and recorded",
+    "Plugin-controlled send perimeter documented with concrete call sites/module boundaries",
+    "Any core-unreachable path documented with blast radius estimate",
+    "v1 scope explicitly fixed to openai/* provider block"
+  ]
+}

@@ -1,0 +1,24 @@
+T1 Evidence: Canonical editable source checkout
+
+Canonical editable checkout:
+- /home/trocha/projects/opencode/oh-my-openagent
+
+Repository origin:
+- https://github.com/code-yeongyu/oh-my-openagent.git
+
+Repository commit at inventory time:
+- a941774e994c5a04d14bc238d5461e17f90ab6ed
+
+Workspace reality:
+- /home/trocha/projects/explorer is a research repo only
+- /home/trocha/projects/opencode/ existed but did not contain an editable source checkout before T1
+- T1 provisioned the real patch target by cloning the upstream repository
+
+Repo-native commands discovered from package.json:
+- build: bun run build
+- typecheck: bun run typecheck
+- test: bun test
+
+v1 scope freeze:
+- Provider-first block for openai/* only
+- No broader GPT-family policy expansion in v1

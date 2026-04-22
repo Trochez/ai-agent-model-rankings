@@ -1,0 +1,97 @@
+{
+  "test_date": "2026-04-06T15:39:37.624748",
+  "test_prompt": "What is 2 + 2? Reply with ONLY the number.",
+  "test_type": "retest_failed_models",
+  "results": [
+    {
+      "model": "openai/gpt-5.4",
+      "provider": "openai",
+      "previous_error": "HTTP 429: quota exceeded",
+      "status": "ERROR",
+      "response_time_ms": 872,
+      "response": "",
+      "error": "HTTP 429: {\n    \"error\": {\n        \"message\": \"You exceeded your current quota, please check your plan and bil",
+      "passed": ""
+    },
+    {
+      "model": "qwen/qwen3.6-plus:free",
+      "provider": "openrouter",
+      "previous_error": "HTTP 429: rate limit",
+      "status": "ERROR",
+      "response_time_ms": 831,
+      "response": "",
+      "error": "HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"qwen/qwen3.6-plus:free i",
+      "passed": ""
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview",
+      "provider": "google",
+      "previous_error": "HTTP 503: high demand",
+      "status": "PASS",
+      "response_time_ms": 1457,
+      "response": "4",
+      "error": null,
+      "passed": true
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview",
+      "provider": "google",
+      "previous_error": "HTTP 429: quota exceeded",
+      "status": "ERROR",
+      "response_time_ms": 839,
+      "response": "",
+      "error": "HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your p",
+      "passed": ""
+    },
+    {
+      "model": "meta-llama/llama-3.3-70b-instruct:free",
+      "provider": "openrouter",
+      "previous_error": "HTTP 429: rate limit",
+      "status": "ERROR",
+      "response_time_ms": 619,
+      "response": "",
+      "error": "HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"meta-llama/llama-3.3-70b",
+      "passed": ""
+    },
+    {
+      "model": "openai/gpt-5.3-codex",
+      "provider": "openai",
+      "previous_error": "HTTP 429: quota exceeded",
+      "status": "ERROR",
+      "response_time_ms": 424,
+      "response": "",
+      "error": "HTTP 429: {\n    \"error\": {\n        \"message\": \"You exceeded your current quota, please check your plan and bil",
+      "passed": ""
+    },
+    {
+      "model": "openrouter/qwen/qwen2.5-72b-instruct",
+      "provider": "openrouter",
+      "previous_error": "HTTP 400: invalid model ID",
+      "status": "ERROR",
+      "response_time_ms": 260,
+      "response": "",
+      "error": "HTTP 400: {\"error\":{\"message\":\"openrouter/qwen/qwen2.5-72b-instruct is not a valid model ID\",\"code\":400},\"user",
+      "passed": ""
+    },
+    {
+      "model": "openrouter/qwen/qwen3-coder:free",
+      "provider": "openrouter",
+      "previous_error": "HTTP 400: invalid model ID",
+      "status": "ERROR",
+      "response_time_ms": 443,
+      "response": "",
+      "error": "HTTP 400: {\"error\":{\"message\":\"openrouter/qwen/qwen3-coder:free is not a valid model ID\",\"code\":400},\"user_id\"",
+      "passed": ""
+    },
+    {
+      "model": "stepfun/step-3.5-flash:free",
+      "provider": "openrouter",
+      "previous_error": "null error",
+      "status": "ERROR",
+      "response_time_ms": 3904,
+      "response": "",
+      "error": null,
+      "passed": null
+    }
+  ]
+}

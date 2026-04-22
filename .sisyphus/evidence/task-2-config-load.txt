@@ -1,0 +1,33 @@
+T2 Evidence: Config load and persistence wiring for global OpenAI hard block
+
+Canonical repo:
+- /home/trocha/projects/opencode/oh-my-openagent
+
+Implemented field:
+- src/config/schema/oh-my-opencode-config.ts:47-51
+  openai_hard_block: z.boolean().optional()
+  Comment documents default-false semantics and precedence over allow_non_gpt_model.
+
+Proof of runtime load:
+- src/plugin-config.test.ts:528-552
+  Test writes a user config file containing:
+    { "openai_hard_block": true }
+  Then calls loadPluginConfig(projectDir, {}) and asserts:
+    config.openai_hard_block === true
+
+Proof of merge preservation:
+- src/plugin-config.test.ts:103-113
+  mergeConfigs preserves openai_hard_block when only the base config sets it.
+
+Verification command:
+- bun test src/config/schema.test.ts src/plugin-config.test.ts
+
+Observed result:
+- 91 pass
+- 0 fail
+- 192 expect() calls
+
+Conclusion:
+- The global config toggle is part of the schema.
+- loadPluginConfig reads the effective value from user config.
+- merge behavior preserves the top-level value when an override does not replace it.

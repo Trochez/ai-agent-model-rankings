@@ -1,0 +1,44 @@
+T4 Evidence: Prompt-boundary enforcement perimeter matrix
+
+Guard function:
+- src/model-policy-prompt-guard.ts:49
+
+Patched prompt-send perimeter sites:
+- src/plugin/event.ts:305
+- src/hooks/runtime-fallback/auto-retry.ts:122
+- src/features/background-agent/manager.ts:577
+- src/features/background-agent/manager.ts:597
+- src/features/background-agent/manager.ts:878
+- src/features/background-agent/manager.ts:1850
+- src/features/background-agent/spawner.ts:168
+- src/features/background-agent/spawner.ts:186
+- src/features/background-agent/spawner.ts:313
+- src/features/background-agent/spawner.ts:330
+- src/tools/call-omo-agent/sync-executor.ts:105
+- src/hooks/ralph-loop/continuation-prompt-injector.ts:79
+- src/hooks/todo-continuation-enforcer/continuation-injection.ts:188
+- src/hooks/session-recovery/resume.ts:36
+- src/hooks/session-recovery/recover-tool-result-missing.ts:107
+- src/hooks/atlas/boulder-continuation-injector.ts:85
+- src/hooks/compaction-context-injector/recovery.ts:85
+- src/plugin/unstable-agent-babysitter.ts:30
+- src/plugin/unstable-agent-babysitter.ts:39
+- src/hooks/unstable-agent-babysitter/unstable-agent-babysitter-hook.ts:217
+- src/hooks/anthropic-context-window-limit-recovery/aggressive-truncation-strategy.ts:69
+
+Verification summary:
+- All above sites call assertPromptModelAllowed(...) immediately before prompt / promptAsync submission or prompt helper invocation.
+- Shared guard reloads effective config from disk at send time, supporting next-prompt revalidation semantics.
+- Direct tests cover delegated sync send and session-recovery resume paths.
+- Build passes with all perimeter changes in place.
+
+Verification commands:
+- bun test src/model-policy-prompt-guard.test.ts src/tools/call-omo-agent/sync-executor.test.ts src/hooks/session-recovery/resume.test.ts src/shared/model-policy.test.ts
+- bun run build
+
+Observed result:
+- tests: pass
+- build: pass
+
+Conclusion:
+- The inventoried plugin-controlled perimeter now routes through a prompt-time policy guard before send.

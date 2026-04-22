@@ -1,13 +1,46 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "model_fallback": true,
+  "runtime_fallback": {
+    "enabled": true,
+    "retry_on_errors": [429, 500, 502, 503, 504, 529],
+    "retry_on_timeout": true,
+    "retry_on_network_error": true,
+    "max_fallback_attempts": 5,
+    "backoff_ms": 1000,
+    "max_backoff_ms": 30000,
+    "timeout_seconds": 120,
+    "cooldown_seconds": 30
+  },
   "providerOptions": {
     "enable-auto-tool-choice": true,
     "tool-call-parser": "auto"
   },
+  "provider": {
+    "nvidia": {
+      "timeout": 120000,
+      "chunkTimeout": 30000
+    },
+    "openai": {
+      "timeout": 120000,
+      "chunkTimeout": 30000
+    },
+    "opencode": {
+      "timeout": 120000,
+      "chunkTimeout": 30000
+    }
+  },
+  "background_task": {
+    "staleTimeoutMs": 60000,
+    "circuitBreaker": {
+      "enabled": true,
+      "consecutiveThreshold": 50,
+      "maxToolCalls": 8000
+    }
+  },
   "agents": {
     "sisyphus": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/z-ai/glm-5.1",
       "variant": "max",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -73,11 +106,11 @@
       "color": "#4ECDC4",
       "fallback_models": [
         "nvidia/qwen/qwen3-coder-480b-a35b-instruct",
-        "nvidia/z-ai/glm5"
+        "nvidia/z-ai/glm-5.1"
       ]
     },
     "oracle": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/z-ai/glm-5.1",
       "variant": "high",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -104,7 +137,7 @@
       ]
     },
     "explore": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/stepfun-ai/step-3.5-flash",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
@@ -126,12 +159,12 @@
       "textVerbosity": "low",
       "color": "#3498DB",
       "fallback_models": [
-        "nvidia/stepfun-ai/step-3.5-flash",
-        "nvidia/nvidia/nemotron-3-nano-30b-a3b"
+        "nvidia/nvidia/nemotron-3-nano-30b-a3b",
+        "nvidia/meta/llama-3.3-70b-instruct"
       ]
     },
     "prometheus": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/z-ai/glm-5.1",
       "variant": "max",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -162,7 +195,7 @@
       ]
     },
     "metis": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/z-ai/glm-5.1",
       "variant": "max",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -187,7 +220,7 @@
       ]
     },
     "momus": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/z-ai/glm-5.1",
       "variant": "xhigh",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -212,7 +245,7 @@
       ]
     },
     "librarian": {
-      "model": "google/gemini-3.1-flash-lite-preview",
+      "model": "opencode/gemini-3-flash",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
@@ -235,12 +268,12 @@
       "textVerbosity": "medium",
       "color": "#2ECC71",
       "fallback_models": [
-        "nvidia/z-ai/glm5",
+        "nvidia/z-ai/glm-5.1",
         "nvidia/stepfun-ai/step-3.5-flash"
       ]
     },
     "multimodal-looker": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/qwen/qwen3.5-397b-a17b",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
@@ -260,12 +293,12 @@
       "textVerbosity": "medium",
       "color": "#E67E22",
       "fallback_models": [
-        "nvidia/nvidia/nemotron-3-nano-30b-a3b",
-        "nvidia/nvidia/nvidia-nemotron-nano-9b-v2"
+        "nvidia/nvidia/nemotron-nano-12b-v2-vl",
+        "nvidia/meta/llama-3.2-11b-vision-instruct"
       ]
     },
     "atlas": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/z-ai/glm-5.1",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
@@ -290,7 +323,7 @@
       ]
     },
     "sisyphus-junior": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/nvidia/nemotron-3-super-120b-a12b",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
@@ -311,13 +344,13 @@
       "color": "#FF6B6B",
       "fallback_models": [
         "nvidia/meta/llama-3.3-70b-instruct",
-        "nvidia/nvidia/nemotron-3-super-120b-a12b"
+        "nvidia/z-ai/glm-5.1"
       ]
     }
   },
   "categories": {
     "visual-engineering": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/qwen/qwen3.5-397b-a17b",
       "variant": "high",
       "reasoningEffort": "high",
       "temperature": 0.3,
@@ -325,11 +358,11 @@
       "maxTokens": 16384,
       "fallback_models": [
         "nvidia/meta/llama-3.2-11b-vision-instruct",
-        "nvidia/qwen/qwen3.5-397b-a17b"
+        "nvidia/nvidia/nemotron-nano-12b-v2-vl"
       ]
     },
     "ultrabrain": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/z-ai/glm-5.1",
       "variant": "xhigh",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -341,20 +374,19 @@
       ]
     },
     "deep": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/qwen/qwen3-coder-480b-a35b-instruct",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openai/gpt-5.3-codex",
         "openai/gpt-5.4",
         "nvidia/nvidia/nemotron-3-super-120b-a12b"
       ]
     },
     "artistry": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/mistral-ai/mistral-small-4-119b-2603",
       "variant": "high",
       "reasoningEffort": "high",
       "temperature": 0.3,
@@ -366,19 +398,19 @@
       ]
     },
     "quick": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/nvidia/nemotron-3-nano-30b-a3b",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "nvidia/stepfun-ai/step-3.5-flash",
-        "nvidia/nvidia/nemotron-3-nano-30b-a3b"
+        "nvidia/nvidia/nvidia-nemotron-nano-9b-v2",
+        "nvidia/stepfun-ai/step-3.5-flash"
       ]
     },
     "unspecified-low": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/nvidia/nemotron-3-nano-30b-a3b",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
@@ -386,11 +418,11 @@
       "maxTokens": 16384,
       "fallback_models": [
         "nvidia/meta/llama-3.3-70b-instruct",
-        "nvidia/nvidia/nemotron-3-nano-30b-a3b"
+        "nvidia/stepfun-ai/step-3.5-flash"
       ]
     },
     "unspecified-high": {
-      "model": "nvidia/z-ai/glm5",
+      "model": "nvidia/z-ai/glm-5.1",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
@@ -398,12 +430,11 @@
       "maxTokens": 16384,
       "fallback_models": [
         "openai/gpt-5.4",
-        "nvidia/nvidia/nemotron-3-nano-30b-a3b",
-        "nvidia/meta/llama-3.3-70b-instruct"
+        "nvidia/nvidia/nemotron-3-super-120b-a12b"
       ]
     },
     "writing": {
-      "model": "google/gemini-3.1-flash-lite-preview",
+      "model": "opencode/gemini-3-flash",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
@@ -411,7 +442,7 @@
       "maxTokens": 16384,
       "fallback_models": [
         "nvidia/meta/llama-3.3-70b-instruct",
-        "nvidia/z-ai/glm5"
+        "nvidia/z-ai/glm-5.1"
       ]
     }
   }
