@@ -45,12 +45,12 @@ Date: April 20, 2026
 ### explore
 | Rank | Model | Provider | Score | Context | Rationale |
 |---|---|---|---|---|---|
-| 1 | nvidia/stepfun-ai/step-3.5-flash | NVIDIA Build | 98 | 200K | Search, fast/cheap |
-| 2 | opencode/gemini-3-flash | OpenCode Zen | 95 | 128K | Research, fast |
-| 3 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 92 | 1M | Quick tasks |
-| 4 | openai/gpt-5.4-nano | OpenAI | 90 | 400K | Cost-effective |
-| 5 | nvidia/nvidia/nvidia-nemotron-nano-9b-v2 | NVIDIA Build | 88 | 128K | Edge/quick |
-| 6 | openai/o4-mini | OpenAI | 85 | 200K | Cost-effective |
+| 1 | nvidia/deepseek-ai/deepseek-v4-flash | NVIDIA Build | 80.2 | 1M | Best speed-heavy balance: free, 1M ctx, SWE-Bench 38% |
+| 2 | nvidia/stepfun-ai/step-3.5-flash | NVIDIA Build | 80.0 | 256K | Nearly tied #1: free, fast, GPQA 83.5% |
+| 3 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 78.5 | 1M | Best paid value: $0.05/$0.20, 1M ctx |
+| 4 | nvidia/qwen/qwen3.5-122b-a10b | NVIDIA Build | 78.3 | 262K | Free 122B/10B act MoE, strong search quality |
+| 5 | nvidia/z-ai/glm-4.7 | NVIDIA Build | 78.0 | 2.54M | Massive context + SWE 52% |
+| 6 | openai/gpt-5.4-nano | OpenAI | 76.8 | 400K | Best OpenAI speed/cost option |
 
 ### prometheus
 | Rank | Model | Provider | Score | Context | Rationale |
@@ -85,12 +85,12 @@ Date: April 20, 2026
 ### librarian
 | Rank | Model | Provider | Score | Context | Rationale |
 |---|---|---|---|---|---|
-| 1 | opencode/gemini-3-flash | OpenCode Zen | 98 | 128K | Research, fast |
-| 2 | nvidia/stepfun-ai/step-3.5-flash | NVIDIA Build | 96 | 200K | Fast/cheap |
-| 3 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 93 | 1M | Quick tasks |
-| 4 | openai/gpt-5.4-mini | OpenAI | 91 | 400K | Cost-effective |
-| 5 | nvidia/nvidia/nvidia-nemotron-nano-9b-v2 | NVIDIA Build | 89 | 128K | Edge/quick |
-| 6 | openai/o4-mini | OpenAI | 87 | 200K | Cost-effective |
+| 1 | nvidia/deepseek-ai/deepseek-v4-flash | NVIDIA Build | 80.2 | 1M | Best overall research/search value in refreshed benchmark set |
+| 2 | nvidia/stepfun-ai/step-3.5-flash | NVIDIA Build | 80.0 | 256K | Free, fast, strong GPQA for doc lookup |
+| 3 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 78.5 | 1M | Cheap + 1M context for repository-scale reference work |
+| 4 | nvidia/qwen/qwen3.5-122b-a10b | NVIDIA Build | 78.3 | 262K | Strong free MoE research option |
+| 5 | nvidia/z-ai/glm-4.7 | NVIDIA Build | 78.0 | 2.54M | Best long-context librarian candidate |
+| 6 | openai/gpt-5.4-nano | OpenAI | 76.8 | 400K | Best OpenAI librarian model on cost/perf |
 
 ### multimodal-looker
 | Rank | Model | Provider | Score | Context | Rationale |
@@ -155,16 +155,16 @@ Date: April 20, 2026
 ### quick
 | Rank | Model | Provider | Score | Context | Rationale |
 |---|---|---|---|---|---|
-| 1 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 99 | 1M | Fast, cheap |
-| 2 | opencode/gemini-3-flash | OpenCode Zen | 97 | 128K | Fast research |
-| 3 | nvidia/nvidia/nvidia-nemotron-nano-9b-v2 | NVIDIA Build | 95 | 128K | Edge/quick |
+| 1 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 93.5 | 1M | Best overall quick model: cheap, fast, smart |
+| 2 | nvidia/qwen/qwen3.5-9b | NVIDIA Build | 92.7 | 256K | Frontier reasoning at 9B for tiny fixes |
+| 3 | nvidia/stepfun-ai/step-3.5-flash | NVIDIA Build | 91.0 | 256K | Free + GPQA 83.5% |
 
 ### unspecified-low
 | Rank | Model | Provider | Score | Context | Rationale |
 |---|---|---|---|---|---|
-| 1 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 99 | 1M | Efficient |
-| 2 | opencode/gemini-3-flash | OpenCode Zen | 97 | 128K | Fast research |
-| 3 | nvidia/nvidia/nvidia-nemotron-nano-9b-v2 | NVIDIA Build | 95 | 128K | Edge/quick |
+| 1 | nvidia/nvidia/nemotron-3-nano-30b-a3b | NVIDIA Build | 93.5 | 1M | Best balance for low-effort tasks |
+| 2 | nvidia/qwen/qwen3.5-9b | NVIDIA Build | 92.7 | 256K | Strong small-model quality |
+| 3 | nvidia/stepfun-ai/step-3.5-flash | NVIDIA Build | 91.0 | 256K | Free and fast with excellent GPQA |
 
 ### unspecified-high
 | Rank | Model | Provider | Score | Context | Rationale |
@@ -176,9 +176,9 @@ Date: April 20, 2026
 ### writing
 | Rank | Model | Provider | Score | Context | Rationale |
 |---|---|---|---|---|---|
-| 1 | opencode/gemini-3-flash | OpenCode Zen | 98 | 128K | Fast research |
-| 2 | nvidia/z-ai/glm-5.1 | NVIDIA Build | 96 | 200K | High reasoning |
-| 3 | openai/gpt-5.4 | OpenAI | 94 | 1.05M | High reasoning |
+| 1 | nvidia/deepseek-ai/deepseek-v4-pro | NVIDIA Build | 88.9 | 1M | Best writing score: free + strong MMLU/GPQA |
+| 2 | nvidia/z-ai/glm-4.7 | NVIDIA Build | 87.7 | 2.54M | Huge context + strong writing benchmarks |
+| 3 | nvidia/deepseek-ai/deepseek-v4-flash | NVIDIA Build | 83.2 | 1M | Free, strong general writing quality |
 
 ## Summary: Best Model per Agent
 
@@ -187,11 +187,11 @@ Date: April 20, 2026
 | sisyphus | nvidia/z-ai/glm-5.1 |
 | hephaestus | openai/gpt-5.4 |
 | oracle | nvidia/z-ai/glm-5.1 |
-| explore | nvidia/stepfun-ai/step-3.5-flash |
+| explore | nvidia/deepseek-ai/deepseek-v4-flash |
 | prometheus | nvidia/z-ai/glm-5.1 |
 | metis | nvidia/z-ai/glm-5.1 |
 | momus | nvidia/z-ai/glm-5.1 |
-| librarian | opencode/gemini-3-flash |
+| librarian | nvidia/deepseek-ai/deepseek-v4-flash |
 | multimodal-looker | nvidia/qwen/qwen3.5-397b-a17b |
 | atlas | nvidia/z-ai/glm-5.1 |
 | sisyphus-junior | nvidia/nvidia/nemotron-3-super-120b-a12b |
@@ -207,7 +207,7 @@ Date: April 20, 2026
 | quick | nvidia/nvidia/nemotron-3-nano-30b-a3b |
 | unspecified-low | nvidia/nvidia/nemotron-3-nano-30b-a3b |
 | unspecified-high | nvidia/z-ai/glm-5.1 |
-| writing | opencode/gemini-3-flash |
+| writing | nvidia/deepseek-ai/deepseek-v4-pro |
 
 ## Model Provider Summary
 
@@ -225,16 +225,16 @@ Date: April 20, 2026
 
 ## Cost Optimization
 
-- Use `nvidia/stepfun-ai/step-3.5-flash` or `opencode/gemini-3-flash` for quick/research tasks.
-- Use `nvidia/nvidia/nemotron-3-nano-30b-a3b` for efficient tasks.
-- Use `openai/gpt-5.4-mini` or `openai/gpt-5.4-nano` for cost-effective reasoning.
+- Use `nvidia/deepseek-ai/deepseek-v4-flash` or `nvidia/stepfun-ai/step-3.5-flash` for search/research tasks.
+- Use `nvidia/nvidia/nemotron-3-nano-30b-a3b` for quick and efficient low-effort tasks.
+- Use `openai/gpt-5.4-nano` when you want the best OpenAI speed/cost tradeoff.
 
 ## Key Insights
 
-- GLM-5.1 is the new standard for reasoning and agentic tasks.
-- NVIDIA Build provides the most cost-effective and high-performance options.
-- OpenCode Zen is essential for reliable routing and curated models.
-- OpenAI remains a strong choice for deep reasoning and large context.
+- GLM-5.1 remains the reasoning benchmark leader, but speed-heavy rankings shifted toward cheaper free NVIDIA models.
+- DeepSeek-V4-Flash now leads refreshed explore/librarian rankings on the speed-heavy formula.
+- Nemotron-3-Nano-30B-A3B remains the best quick/unspecified-low option after the expanded NVIDIA-only refresh.
+- DeepSeek-V4-Pro leads refreshed writing rankings, with GPT-5.4-Nano still the strongest OpenAI writing/value option.
 
 ## Methodology
 

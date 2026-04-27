@@ -1,0 +1,41 @@
+Evidence Inventory for F1
+=======================
+
+Task 1 Evidence:
+- task-1-perimeter.md: Inventory of canonical source repo + plugin-controlled send perimeter
+- task-1-source-checkout.txt: Records the canonical editable source checkout path
+- task-1-core-gap.md: (Not created - no core-unreachable path found)
+
+Task 2 Evidence:
+- task-2-config-load.txt: Shows global config schema loads correctly
+- task-2-config-invalid.txt: Shows invalid values are rejected
+
+Task 3 Evidence:
+- task-3-deny.txt: Shows OpenAI provider denied when toggle is off
+- task-3-precedence.txt: Shows global block overrides agent-level allow_non_gpt_model
+
+Task 4 Evidence:
+- task-4-direct-block.txt: Shows direct prompt send blocked with stable error
+- task-4-perimeter-matrix.txt: Shows all inventoried send paths blocked
+
+Task 5 Evidence:
+- task-5-builtin.txt: Shows builtin registration prunes OpenAI candidates
+- task-5-override.txt: Shows explicit OpenAI override is rejected
+
+Task 6 Evidence:
+- task-6-retry.txt: Shows retry/fallback skips OpenAI candidates
+- task-6-restore.txt: Shows restored session revalidates and blocks on next send
+
+Task 7 Evidence:
+- task-7-delegate.txt: Shows delegated/subagent/background flows blocked
+- task-7-tmux-reload.txt: Shows tmux-child reloads policy before next prompt
+
+Task 8 Evidence:
+- task-8-toggle.txt: Shows TUI/settings/slash-command toggle works
+- task-8-active-session.txt: Shows active session respects toggle change
+
+Task 9 Evidence:
+- task-9-test-matrix.txt: Shows regression test matrix passes
+- task-9-openai-proof.txt: Shows plugin-visible fallback lists never send OpenAI
+
+All declared evidence files for T1-T9 exist and are readable.

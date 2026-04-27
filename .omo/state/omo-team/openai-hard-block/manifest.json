@@ -3,8 +3,8 @@
   "created_at": "2026-04-22T00:00:00Z",
   "worker_count": 3,
   "status": "active",
-  "wave": 1,
+  "wave": 2,
   "plan_file": ".sisyphus/plans/global-openai-gpt-hard-block.md",
-  "tasks": ["task-1", "task-2", "task-3"],
-  "notes": "Wave 1: T1 (inventory), T2 (config), T3 (policy engine). Wave 2 and 3 spawn after Wave 1 completes."
+  "tasks": ["task-5", "task-6", "task-7", "task-8", "task-9"],
+  "notes": "Wave 1 (T1-T4) completed. Wave 2/3 active: T5 early filtering, T6 fallback/bootstrap/restore sanitization, T7 delegate/background/tmux propagation, T8 UI toggle/status, T9 regression proof. Final verification pending after worker completion."
 }

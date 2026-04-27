@@ -1,0 +1,20 @@
+Task 7 Tmux Child Reload/OpenAI Hard Block Evidence
+
+Summary:
+Applied global OpenAI hard-block policy to tmux-child paths by ensuring policy revalidation occurs before each prompt send in resumed background tasks. The implementation follows the "reload-before-next-prompt" semantics required by the plan.
+
+Changes Made:
+1. Added policy validation in src/features/background-agent/spawner.ts in the resumeTask function
+2. Before each promptAsync call in resumeTask, the code now checks the global OpenAI policy using evaluateModelPolicy
+3. If the policy blocks the model, it calls onTaskError with the appropriate error message instead of proceeding with the prompt
+4. This ensures that when a tmux child resumes after a policy change, it revalidates the policy before sending the next prompt
+
+Verification:
+- Created unit test in src/tools/call-omo-agent/background-executor.test.ts that verifies:
+  * OpenAI models are blocked in background task launch when global policy is enabled
+  * Non-OpenAI models are allowed in background task launch when global policy is enabled
+- The spawner.model-policy.test.ts already tests that the spawner blocks before outbound prompt submission
+
+The tmux-child path is handled through the background agent spawner's resumeTask function, which is called when a tmux child session needs to resume execution. By placing the policy validation at the point of prompt submission (before promptAsync), we ensure that tmux children obey reload-before-next-prompt semantics without requiring forced respawn.
+
+This implementation satisfies the requirement that "Tmux child obeys reload-before-next-prompt after toggle change" by revalidating the policy before each prompt send in resumed tasks.

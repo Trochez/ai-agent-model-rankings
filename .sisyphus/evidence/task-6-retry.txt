@@ -1,0 +1,26 @@
+T6 retry evidence
+
+Changed files:
+- src/hooks/runtime-fallback/fallback-models.ts
+- src/hooks/runtime-fallback/fallback-bootstrap-model.ts
+- src/hooks/runtime-fallback/fallback-state.ts
+
+What was verified:
+- Runtime fallback list pruning now removes blocked `openai/*` candidates when `openai_hard_block` is enabled.
+- Bootstrap derivation skips blocked OpenAI models and falls through to the next allowed configured model.
+- Stale retry state is invalidated before the next fallback send, so a previously cached OpenAI candidate cannot stay alive after policy change.
+
+Targeted test command:
+`bun test src/hooks/runtime-fallback/fallback-state.test.ts src/hooks/runtime-fallback/fallback-models.test.ts src/hooks/runtime-fallback/fallback-bootstrap-model.test.ts src/hooks/session-recovery/resume.test.ts src/plugin/chat-message.test.ts`
+
+Result:
+- `32 pass`
+- `0 fail`
+- Included runtime-fallback assertions:
+  - `filters blocked OpenAI fallback candidates from runtime retry lists`
+  - `skips blocked OpenAI bootstrap sources and falls through to the next allowed model`
+  - `resets stale blocked candidate state before choosing the next sanitized fallback`
+
+Validation:
+- `bun run typecheck` passed
+- `bun run build` passed

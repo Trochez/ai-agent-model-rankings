@@ -1,0 +1,18 @@
+Task: T5 builtin registration prunes blocked OpenAI candidates
+Repo: /home/trocha/projects/opencode/oh-my-openagent
+
+Command:
+bun test src/agents/utils.test.ts -t "builtin registration prunes blocked OpenAI fallback candidates"
+
+Result:
+bun test v1.3.13 (bf2e2cec)
+
+ 1 pass
+ 68 filtered out
+ 0 fail
+ 3 expect() calls
+Ran 1 test across 1 file. [573.00ms]
+
+Observed assertion summary:
+- createBuiltinAgents(..., openaiHardBlock=true) no longer kept oracle on openai/gpt-5.4
+- builtin fallback pruning resolved oracle to anthropic/claude-opus-4.7 instead

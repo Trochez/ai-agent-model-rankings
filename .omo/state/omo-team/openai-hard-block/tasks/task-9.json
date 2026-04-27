@@ -1,0 +1,12 @@
+{
+  "task": "T9",
+  "title": "Add regression coverage, observability, and proof artifact",
+  "worker": "worker-9",
+  "category": "unspecified-high",
+  "skills": ["ultraqa"],
+  "repo": "/home/trocha/projects/opencode/oh-my-openagent",
+  "evidence": [
+    "/home/trocha/projects/explorer/.sisyphus/evidence/task-9-test-matrix.txt",
+    "/home/trocha/projects/explorer/.sisyphus/evidence/task-9-openai-proof.txt"
+  ]
+}

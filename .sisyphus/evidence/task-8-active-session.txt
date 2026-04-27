@@ -1,0 +1,56 @@
+Task T8: TUI/Settings/Slash-Command Operator Surface for OpenAI Hard Block
+=============================================================================
+
+## Acceptance Criteria Status
+
+### 1. Operator can toggle OpenAI hard block on/off from intended UX surface
+PASS - `/openai-block` slash command template updated with clear, actionable steps
+         using bash-based config read/write. Template provides:
+         - Automatic config file detection (canonical + legacy paths)
+         - jq-based toggle with node fallback
+         - Config file creation if missing
+         - Confirmation of new state
+
+### 2. Status reflects effective policy state
+PASS - `openai-block-status` hook wired into chat-message handler chain
+         (src/plugin/chat-message.ts:279)
+       - Shows toast on first chat message of each session:
+         - "OpenAI models are HARD BLOCKED by global policy" (variant: error)
+         - "OpenAI models are ALLOWED" (variant: info)
+       - Doctor check (`openai-hard-block`) reports current state
+       - Hook registered in HookNameSchema for disable capability
+
+### 3. Active session next send respects changed state
+PASS - Policy engine reads config at prompt-send time via assertPromptModelAllowed()
+       - Model resolution pipeline filters blocked OpenAI models
+       - Chat-message handler clears blocked stored session models
+       - No restart required
+
+## Files Modified
+
+1. src/config/schema/hooks.ts - Added "openai-block-status" to HookNameSchema
+2. src/config/schema/commands.ts - Added "openai-block" to BuiltinCommandNameSchema
+3. src/plugin/hooks/create-session-hooks.ts - Added openaiBlockStatus to SessionHooks type,
+   hook creation with isHookEnabled/safeHook, and return object
+4. src/plugin/chat-message.ts - Added openaiBlockStatus hook call in chat-message chain
+5. src/features/builtin-commands/templates/openai-block-toggle.ts - Improved template with
+   robust config detection and toggle logic
+6. src/shared/openai-hard-block-toggle.ts - NEW: Programmatic toggle utility
+   (readOpenaiHardBlockState, setOpenaiHardBlock, toggleOpenaiHardBlock)
+7. src/shared/index.ts - Added export for openai-hard-block-toggle
+8. src/cli/doctor/checks/openai-hard-block.ts - NEW: Doctor check for block status
+9. src/cli/doctor/checks/index.ts - Registered new doctor check
+10. src/cli/doctor/constants.ts - Added OPENAI_HARD_BLOCK check ID and name
+
+## Validation
+
+- TypeScript typecheck: PASS (0 errors)
+- LSP diagnostics: PASS (0 errors in all modified files)
+
+## Architecture Notes
+
+- Toggle is UI/control-plane ONLY — enforcement remains in model-policy.ts and
+  model-policy-prompt-guard.ts (existing T2/T3 implementation)
+- Config key: `openai_hard_block` (boolean, default false = OpenAI allowed)
+- No separate config path invented — uses same user-level config as existing system
+- No unrelated UI refactored — all changes scoped to OpenAI hard block feature

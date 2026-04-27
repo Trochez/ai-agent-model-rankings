@@ -1,0 +1,12 @@
+{
+  "task": "T7",
+  "title": "Apply policy to delegate, background, and tmux-child paths",
+  "worker": "worker-7",
+  "category": "deep",
+  "skills": ["build-fix"],
+  "repo": "/home/trocha/projects/opencode/oh-my-openagent",
+  "evidence": [
+    "/home/trocha/projects/explorer/.sisyphus/evidence/task-7-delegate.txt",
+    "/home/trocha/projects/explorer/.sisyphus/evidence/task-7-tmux-reload.txt"
+  ]
+}

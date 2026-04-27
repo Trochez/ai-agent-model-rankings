@@ -1,0 +1,49 @@
+Task 9 proof — zero outbound OpenAI prompt sends from plugin-visible fallback paths
+
+Scope:
+- Provider-first block only for openai/*
+- Proof limited to plugin-controlled prompt paths and plugin-visible fallback lists
+
+Proof points:
+1. Early fallback sanitization
+   - src/shared/model-resolution-pipeline.test.ts
+   - "prunes blocked OpenAI override and fallback candidates during early resolution"
+   - Expected result: openai/gpt-5.4 fallback candidate removed; anthropic fallback selected instead
+
+2. Runtime retry/fallback sanitization
+   - src/hooks/runtime-fallback/fallback-models.test.ts
+   - src/hooks/runtime-fallback/fallback-bootstrap-model.test.ts
+   - Expected result: blocked openai/* retry/bootstrap candidates are filtered before reuse
+
+3. Direct prompt boundary for retry / restored-session / child reload
+   - src/model-policy-regression.test.ts
+   - asserts MODEL_POLICY_BLOCKED_OPENAI on retry fallback, restored session revalidation, and allow→block next-send reread
+
+4. Delegate / sync executor proof of no outbound send
+   - src/tools/call-omo-agent/sync-executor.test.ts
+   - test: "blocks OpenAI sync prompt before promptAsync when openai_hard_block is enabled"
+   - proof: promptAsync not called
+
+5. Background / spawner proof of no outbound send
+   - src/features/background-agent/spawner.model-policy.test.ts
+   - test: "blocks before outbound prompt submission and surfaces MODEL_POLICY_BLOCKED_OPENAI"
+   - proof: promptAsync not called
+
+6. Prompt perimeter integrity
+   - src/model-policy-prompt-perimeter.test.ts
+   - proof: every inventoried plugin-controlled send path retains assertPromptModelAllowed guard
+
+Command evidence:
+- bun test src/model-policy-regression.test.ts src/model-policy-prompt-guard.test.ts src/model-policy-prompt-perimeter.test.ts src/shared/model-policy.test.ts src/shared/model-resolution-pipeline.test.ts src/hooks/session-recovery/resume.test.ts src/features/background-agent/spawner.model-policy.test.ts src/tools/call-omo-agent/sync-executor.test.ts src/tools/call-omo-agent/background-executor.test.ts src/tools/delegate-task/openai-policy.test.ts src/hooks/runtime-fallback/fallback-models.test.ts src/hooks/runtime-fallback/fallback-bootstrap-model.test.ts
+  -> 67 pass, 0 fail
+
+Reasoned proof summary:
+- Plugin-visible fallback lists may still contain openai/* entries in config/history, but the combination of early pruning, runtime fallback sanitization, and prompt-time assertPromptModelAllowed prevents any outbound OpenAI prompt send while the hard block is enabled.
+- Negative send proofs are explicit where it matters most:
+  - sync executor: promptAsync not called
+  - background spawner: promptAsync not called
+  - restored session: promptAsync skipped and resume returns false
+
+Conclusion:
+- No tested plugin-controlled fallback path produced an outbound OpenAI prompt send under disabled mode.
+- Stable deny reason remains MODEL_POLICY_BLOCKED_OPENAI with normalized provider/model context.

@@ -1,0 +1,111 @@
+# Task 8 Toggle Evidence - Text Artifact
+
+## Command: /openai-block
+
+### Usage Examples
+
+#### Example 1: Toggle from ALLOWED to BLOCKED
+
+**Before:**
+```
+Config: openai_hard_block: false (or undefined)
+Status: OpenAI models are ALLOWED
+```
+
+**Command:**
+```
+/openai-block toggle
+```
+
+**After:**
+```
+Config: openai_hard_block: true
+Status: OpenAI models are HARD BLOCKED
+Toast: "OpenAI Policy Status - OpenAI models are HARD BLOCKED by global policy"
+```
+
+#### Example 2: Toggle from BLOCKED to ALLOWED
+
+**Before:**
+```
+Config: openai_hard_block: true
+Status: OpenAI models are HARD BLOCKED
+```
+
+**Command:**
+```
+/openai-block toggle
+```
+
+**After:**
+```
+Config: openai_hard_block: false
+Status: OpenAI models are ALLOWED
+Toast: "OpenAI Policy Status - OpenAI models are ALLOWED"
+```
+
+### Session Start Status
+
+When a new session starts, the hook automatically shows:
+
+**If blocked:**
+```
+Toast Title: "OpenAI Policy Status"
+Toast Message: "OpenAI models are HARD BLOCKED by global policy"
+Toast Variant: "error"
+Duration: 5000ms
+```
+
+**If allowed:**
+```
+Toast Title: "OpenAI Policy Status"
+Toast Message: "OpenAI models are ALLOWED"
+Toast Variant: "info"
+Duration: 5000ms
+```
+
+### Config File Changes
+
+**User Config Path:** `~/.config/opencode/oh-my-opencode.json`
+**Project Config Path:** `<project-root>/.opencode/oh-my-opencode.json`
+
+**Example config with block enabled:**
+```json
+{
+  "openai_hard_block": true,
+  "agents": {
+    "sisyphus": {
+      "model": "nvidia/z-ai/glm-5.1"
+    }
+  }
+}
+```
+
+**Example config with block disabled:**
+```json
+{
+  "openai_hard_block": false,
+  "agents": {
+    "sisyphus": {
+      "model": "nvidia/z-ai/glm-5.1"
+    }
+  }
+}
+```
+
+### Policy Enforcement
+
+When `openai_hard_block: true`:
+- All `openai/*` provider models are blocked
+- Error code: `MODEL_POLICY_BLOCKED_OPENAI`
+- No outbound OpenAI requests are made
+- Applies to: direct prompts, delegated agents, background tasks, retry/fallback
+
+When `openai_hard_block: false` (or undefined):
+- OpenAI models work normally
+- No policy restrictions applied
+
+---
+Evidence Type: Text Artifact (screenshot alternative)
+Generated: 2026-04-22
+Task: T8 - TUI/settings/slash-command operator surface

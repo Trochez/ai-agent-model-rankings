@@ -1,0 +1,25 @@
+T6 restored-session evidence
+
+Changed files:
+- src/plugin/chat-message.ts
+- src/hooks/session-recovery/resume.ts (existing prompt guard retained as authoritative send-time block)
+
+What was verified:
+- Restored main-session model cache is revalidated on next send.
+- If restored state still points at `openai/*` while `openai_hard_block` is enabled, the cached model is cleared before reuse.
+- Resume flow still hard-blocks `openai/*` immediately before `promptAsync`.
+
+Targeted test command:
+`bun test src/hooks/runtime-fallback/fallback-state.test.ts src/hooks/runtime-fallback/fallback-models.test.ts src/hooks/runtime-fallback/fallback-bootstrap-model.test.ts src/hooks/session-recovery/resume.test.ts src/plugin/chat-message.test.ts`
+
+Result:
+- `32 pass`
+- `0 fail`
+- Included restored-session assertions:
+  - `resumeSession returns false and skips promptAsync when OpenAI is hard blocked`
+  - `clears a blocked stored model before reusing restored session state`
+
+Validation:
+- Changed-file `lsp_diagnostics` clean
+- `bun run typecheck` passed
+- `bun run build` passed

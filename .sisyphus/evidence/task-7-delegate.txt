@@ -1,0 +1,20 @@
+Task 7 Delegate/OpenAI Hard Block Evidence
+
+Summary:
+Applied global OpenAI hard-block policy to delegate task resolution in subagent-resolver.ts. The policy engine is now invoked before returning categoryModel for delegated agents, ensuring that any OpenAI model selection is blocked when the global policy is enabled.
+
+Changes Made:
+1. Added imports for plugin-config and model-policy modules in src/tools/delegate-task/subagent-resolver.ts
+2. Added policy validation logic after model resolution but before returning results
+3. The policy check uses the same evaluateModelPolicy function used elsewhere in the codebase
+4. When OpenAI hard block is enabled and an OpenAI model is selected, returns an error instead of the model config
+
+Verification:
+- Created unit test in src/tools/delegate-task/openai-policy.test.ts that verifies:
+  * OpenAI models are blocked when global policy is enabled
+  * Non-OpenAI models are allowed when global policy is enabled
+  * OpenAI models are allowed when global policy is disabled
+  * Agent overrides with OpenAI models are blocked
+  * Category configs with OpenAI models are blocked
+
+All tests pass, confirming the delegate path now properly enforces the global OpenAI hard-block policy before agent execution begins.

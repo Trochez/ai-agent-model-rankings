@@ -1,0 +1,68 @@
+Task 9 regression matrix — global OpenAI hard block
+
+Repo:
+- /home/trocha/projects/opencode/oh-my-openagent
+
+Changed / validated files:
+- src/model-policy-regression.test.ts
+- src/model-policy-prompt-perimeter.test.ts
+- src/tools/call-omo-agent/background-executor.test.ts
+- src/plugin/chat-message.ts
+- src/shared/openai-hard-block-toggle.ts
+
+Bypass class coverage:
+1. Direct prompt send
+   - src/model-policy-regression.test.ts
+   - tests: blocks openai/gpt-5.4 when hard block is on; allows non-OpenAI; no-op when no model
+
+2. Override
+   - src/model-policy-regression.test.ts
+   - tests: global block overrides allow_non_gpt_model and enabled:false semantics
+
+3. Retry / fallback
+   - src/model-policy-regression.test.ts
+   - src/shared/model-resolution-pipeline.test.ts
+   - src/hooks/runtime-fallback/fallback-models.test.ts
+   - src/hooks/runtime-fallback/fallback-bootstrap-model.test.ts
+   - tests: fallback candidates pruned/sanitized; blocked OpenAI retry candidate denied before send
+
+4. Restored session
+   - src/model-policy-regression.test.ts
+   - src/hooks/session-recovery/resume.test.ts
+   - tests: restored OpenAI session revalidation blocks promptAsync and returns false when blocked
+
+5. Delegate / background
+   - src/model-policy-regression.test.ts
+   - src/tools/delegate-task/openai-policy.test.ts
+   - src/tools/call-omo-agent/sync-executor.test.ts
+   - src/features/background-agent/spawner.model-policy.test.ts
+   - src/tools/call-omo-agent/background-executor.test.ts
+   - tests: delegate resolution blocks OpenAI, sync executor blocks before promptAsync, spawner rejects before outbound prompt submission
+
+6. Child / tmux reload-before-next-prompt
+   - src/model-policy-regression.test.ts
+   - tests: config reread between prompts catches allow→block toggle and blocks next send
+
+Observability:
+- Stable deny code: MODEL_POLICY_BLOCKED_OPENAI
+- Path context asserted in src/model-policy-regression.test.ts via normalized provider/model fields on denied result and ModelPolicyBlockedError.{code,provider,model}
+- Perimeter inventory asserted by src/model-policy-prompt-perimeter.test.ts
+
+Commands run:
+1. bun test src/model-policy-regression.test.ts src/model-policy-prompt-guard.test.ts src/model-policy-prompt-perimeter.test.ts src/shared/model-policy.test.ts src/shared/model-resolution-pipeline.test.ts src/hooks/session-recovery/resume.test.ts src/features/background-agent/spawner.model-policy.test.ts src/tools/call-omo-agent/sync-executor.test.ts src/tools/call-omo-agent/background-executor.test.ts src/tools/delegate-task/openai-policy.test.ts src/hooks/runtime-fallback/fallback-models.test.ts src/hooks/runtime-fallback/fallback-bootstrap-model.test.ts
+   Result: 67 pass, 0 fail, 187 expect() calls
+
+2. bun run typecheck
+   Result: passed
+
+3. bun run build
+   Result: passed
+
+Changed-file diagnostics:
+- src/tools/call-omo-agent/background-executor.test.ts: no errors
+- src/plugin/chat-message.ts: no errors
+- src/shared/openai-hard-block-toggle.ts: no errors (hint-only unused locals)
+
+Conclusion:
+- Each required bypass class has regression coverage or explicit perimeter/observability proof.
+- Provider-first scope remains limited to openai/*.
