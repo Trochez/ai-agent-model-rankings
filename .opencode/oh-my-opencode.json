@@ -25,12 +25,27 @@
   },
   "provider": {
     "openrouter": {
-      "timeout": 120000,
-      "chunkTimeout": 30000
-    },
-    "openai": {
-      "timeout": 120000,
-      "chunkTimeout": 30000
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "OpenRouter",
+      "options": {
+        "baseURL": "https://openrouter.ai/api/v1",
+        "timeout": 120000,
+        "chunkTimeout": 30000
+      },
+      "models": {
+        "nvidia/nemotron-3-nano-30b-a3b:nitro": {
+          "name": "NVIDIA Nemotron 3 Nano 30B A3B Nitro"
+        },
+        "stepfun/step-3.5-flash": {
+          "name": "StepFun Step 3.5 Flash"
+        },
+        "qwen/qwen3-coder-next": {
+          "name": "Qwen3 Coder Next"
+        },
+        "openai/gpt-5.4-nano": {
+          "name": "GPT 5.4 Nano via OpenRouter"
+        }
+      }
     }
   },
   "background_task": {
@@ -42,9 +57,9 @@
     }
   },
   "agents": {
-"sisyphus": {
-"model": "openrouter/z-ai/glm-5.1",
-"provider": "openrouter",
+    "sisyphus": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "max",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -79,13 +94,14 @@
       "textVerbosity": "medium",
       "color": "#9400D3",
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-pro",
-        "openrouter/deepseek/deepseek-v4-pro"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"hephaestus": {
-"model": "openrouter/qwen/qwen3-coder-next",
-"provider": "openrouter",
+    "hephaestus": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "high",
       "temperature": 0.3,
@@ -110,13 +126,14 @@
       "allow_non_gpt_model": true,
       "color": "#4ECDC4",
       "fallback_models": [
-        "openrouter/z-ai/glm-5.1",
-        "openrouter/openai/gpt-5.4"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"oracle": {
-"model": "openrouter/z-ai/glm-5.1",
-"provider": "openrouter",
+    "oracle": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "high",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -138,13 +155,14 @@
       "textVerbosity": "high",
       "color": "#9B59B6",
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-pro",
-        "openrouter/deepseek/deepseek-v4-pro"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"explore": {
-"model": "openrouter/deepseek/deepseek-v4-flash",
-"provider": "openrouter",
+    "explore": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
@@ -167,12 +185,13 @@
       "color": "#3498DB",
       "fallback_models": [
         "openrouter/stepfun/step-3.5-flash",
-        "openrouter/nvidia/nemotron-3-nano-30b-a3b"
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"prometheus": {
-"model": "openrouter/z-ai/glm-5.1",
-"provider": "openrouter",
+    "prometheus": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "max",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -198,13 +217,14 @@
       "textVerbosity": "high",
       "color": "#E74C3C",
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-pro",
-        "openrouter/deepseek/deepseek-v4-pro"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"metis": {
-"model": "openrouter/z-ai/glm-5.1",
-"provider": "openrouter",
+    "metis": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "max",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -224,13 +244,14 @@
       "textVerbosity": "high",
       "color": "#1ABC9C",
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-pro",
-        "openrouter/deepseek/deepseek-v4-pro"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"momus": {
-"model": "openrouter/z-ai/glm-5.1",
-"provider": "openrouter",
+    "momus": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "xhigh",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -250,13 +271,14 @@
       "textVerbosity": "high",
       "color": "#F39C12",
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-pro",
-        "openrouter/deepseek/deepseek-v4-pro"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"librarian": {
-"model": "openrouter/deepseek/deepseek-v4-flash",
-"provider": "openrouter",
+    "librarian": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
@@ -280,12 +302,13 @@
       "color": "#2ECC71",
       "fallback_models": [
         "openrouter/stepfun/step-3.5-flash",
-        "openrouter/nvidia/nemotron-3-nano-30b-a3b"
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "multimodal-looker": {
-      "model": "openai/gpt-5.5",
-      "provider": "openai",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
@@ -305,14 +328,14 @@
       "textVerbosity": "medium",
       "color": "#E67E22",
       "fallback_models": [
-        "openrouter/openai/gpt-5.5",
-        "openrouter/openai/gpt-5.4",
-        "openrouter/deepseek/deepseek-v4-pro"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"atlas": {
-"model": "openrouter/z-ai/glm-5.1",
-"provider": "openrouter",
+    "atlas": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
@@ -332,13 +355,14 @@
       "textVerbosity": "medium",
       "color": "#95A5A6",
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-pro",
-        "openrouter/deepseek/deepseek-v4-pro"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"sisyphus-junior": {
-"model": "openrouter/deepseek/deepseek-v4-pro",
-"provider": "openrouter",
+    "sisyphus-junior": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
@@ -358,118 +382,131 @@
       "textVerbosity": "medium",
       "color": "#FF6B6B",
       "fallback_models": [
-        "openrouter/openai/gpt-5.4",
-        "openrouter/qwen/qwen3-coder-plus"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     }
   },
   "categories": {
     "visual-engineering": {
-      "model": "openai/gpt-5.5",
-      "provider": "openai",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "high",
       "reasoningEffort": "high",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/openai/gpt-5.5",
+        "openrouter/stepfun/step-3.5-flash",
         "openrouter/qwen/qwen3-coder-next",
-        "openrouter/z-ai/glm-5.1"
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"ultrabrain": {
-"model": "openrouter/z-ai/glm-5.1",
-"provider": "openrouter",
+    "ultrabrain": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "xhigh",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-pro",
-        "openrouter/deepseek/deepseek-v4-pro"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"deep": {
-"model": "openrouter/z-ai/glm-5.1",
-"provider": "openrouter",
+    "deep": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-pro",
-        "openrouter/deepseek/deepseek-v4-pro"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"artistry": {
-"model": "openrouter/z-ai/glm-5.1",
-"provider": "openrouter",
+    "artistry": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "high",
       "reasoningEffort": "high",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-pro",
-        "openrouter/deepseek/deepseek-v4-pro"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "quick": {
-      "model": "openai/gpt-5.4-nano",
-      "provider": "openai",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-nano",
-        "openrouter/deepseek/deepseek-v4-flash",
-        "openrouter/qwen/qwen3-coder-next"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "unspecified-low": {
-      "model": "openai/gpt-5.4-nano",
-      "provider": "openai",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-nano",
-        "openrouter/deepseek/deepseek-v4-flash",
-        "openrouter/qwen/qwen3-coder-next"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"unspecified-high": {
-"model": "openrouter/z-ai/glm-5.1",
-"provider": "openrouter",
+    "unspecified-high": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/openai/gpt-5.4-pro",
-        "openrouter/deepseek/deepseek-v4-pro"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
-"writing": {
-"model": "openrouter/deepseek/deepseek-v4-pro",
-"provider": "openrouter",
+    "writing": {
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+      "provider": "openrouter",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/z-ai/glm-4.7",
-        "openrouter/deepseek/deepseek-v4-flash"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     }
-  }
+  },
+  "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+  "small_model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+  "fallback_models": [
+    "openrouter/stepfun/step-3.5-flash",
+    "openrouter/qwen/qwen3-coder-next",
+    "openrouter/openai/gpt-5.4-nano"
+  ]
 }

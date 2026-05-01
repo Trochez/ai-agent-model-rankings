@@ -25,16 +25,71 @@
   },
   "provider": {
     "nvidia": {
-      "timeout": 120000,
-      "chunkTimeout": 30000
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "NVIDIA NIM",
+      "options": {
+        "baseURL": "https://integrate.api.nvidia.com/v1",
+        "timeout": 120000,
+        "chunkTimeout": 30000
+      },
+      "models": {
+        "deepseek-ai/deepseek-v4-flash": {
+          "name": "Deepseek V4 Flash"
+        },
+        "deepseek-ai/deepseek-v4-pro": {
+          "name": "Deepseek V4 Pro"
+        },
+        "google/gemma-4-31b-it": {
+          "name": "Gemma 4 31B It"
+        },
+        "mistralai/devstral-2-123b-instruct-2512": {
+          "name": "Devstral 2 123B Instruct 2512"
+        },
+        "moonshotai/kimi-k2-5": {
+          "name": "Kimi K2 5"
+        },
+        "moonshotai/kimi-k2-thinking": {
+          "name": "Kimi K2 Thinking"
+        },
+        "qwen/qwen3.5-397b-a17b": {
+          "name": "Qwen3.5 397B A17B"
+        },
+        "z-ai/glm5.1": {
+          "name": "Glm5.1"
+        }
+      }
     },
     "openai": {
-      "timeout": 120000,
-      "chunkTimeout": 30000
-    },
-    "opencode": {
-      "timeout": 120000,
-      "chunkTimeout": 30000
+      "options": {
+        "timeout": 120000,
+        "chunkTimeout": 30000
+      },
+      "models": {
+        "gpt-5": {
+          "name": "Gpt 5"
+        },
+        "gpt-5-mini": {
+          "name": "Gpt 5 Mini"
+        },
+        "gpt-5.4": {
+          "name": "Gpt 5.4"
+        },
+        "gpt-5.4-mini": {
+          "name": "Gpt 5.4 Mini"
+        },
+        "gpt-5.4-nano": {
+          "name": "Gpt 5.4 Nano"
+        },
+        "gpt-5.4-pro": {
+          "name": "Gpt 5.4 Pro"
+        },
+        "gpt-5.5": {
+          "name": "Gpt 5.5"
+        },
+        "gpt-5.5-pro": {
+          "name": "Gpt 5.5 Pro"
+        }
+      }
     }
   },
   "background_task": {
@@ -47,7 +102,8 @@
   },
   "agents": {
     "sisyphus": {
-      "model": "nvidia/z-ai/glm-5.1",
+      "model": "nvidia/z-ai/glm5.1",
+      "provider": "nvidia",
       "variant": "max",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -82,13 +138,20 @@
       "textVerbosity": "medium",
       "color": "#9400D3",
       "fallback_models": [
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "nvidia/qwen/qwen3.5-397b-a17b",
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
+        "openai/gpt-5.4-pro",
         "openai/gpt-5.4",
-        "nvidia/deepseek-ai/deepseek-v3.2",
-        "nvidia/qwen/qwen3-coder-480b-a35b-instruct"
+        "openai/gpt-5"
       ]
     },
     "hephaestus": {
-      "model": "openai/gpt-5.4",
+      "model": "nvidia/z-ai/glm5.1",
+      "provider": "nvidia",
       "variant": "medium",
       "reasoningEffort": "high",
       "temperature": 0.3,
@@ -113,12 +176,20 @@
       "allow_non_gpt_model": true,
       "color": "#4ECDC4",
       "fallback_models": [
-        "nvidia/z-ai/glm-5.1",
-        "nvidia/qwen/qwen3-coder-480b-a35b-instruct"
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "nvidia/mistralai/devstral-2-123b-instruct-2512",
+        "nvidia/moonshotai/kimi-k2-thinking",
+        "nvidia/deepseek-ai/deepseek-v4-flash",
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5",
+        "openai/gpt-5.4",
+        "openai/gpt-5",
+        "openai/gpt-5.4-mini"
       ]
     },
     "oracle": {
-      "model": "nvidia/z-ai/glm-5.1",
+      "model": "nvidia/z-ai/glm5.1",
+      "provider": "nvidia",
       "variant": "high",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -140,14 +211,20 @@
       "textVerbosity": "high",
       "color": "#9B59B6",
       "fallback_models": [
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "nvidia/qwen/qwen3.5-397b-a17b",
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
         "openai/gpt-5.4-pro",
-        "nvidia/deepseek-ai/deepseek-v3.2",
-        "openai/o3-pro",
-        "nvidia/z-ai/glm-5.1"
+        "openai/gpt-5.4",
+        "openai/gpt-5"
       ]
     },
     "explore": {
-      "model": "nvidia/stepfun-ai/step-3.5-flash",
+      "model": "nvidia/deepseek-ai/deepseek-v4-pro",
+      "provider": "nvidia",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
@@ -169,13 +246,20 @@
       "textVerbosity": "low",
       "color": "#3498DB",
       "fallback_models": [
-        "nvidia/nvidia/nemotron-3-nano-30b-a3b",
-        "openai/gpt-5.4-nano",
-        "nvidia/z-ai/glm4.7"
+        "nvidia/z-ai/glm5.1",
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/qwen/qwen3.5-397b-a17b",
+        "nvidia/moonshotai/kimi-k2-thinking",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
+        "openai/gpt-5.4-pro",
+        "openai/gpt-5.4",
+        "openai/gpt-5.4-mini"
       ]
     },
     "prometheus": {
-      "model": "nvidia/z-ai/glm-5.1",
+      "model": "nvidia/deepseek-ai/deepseek-v4-pro",
+      "provider": "nvidia",
       "variant": "max",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -201,15 +285,20 @@
       "textVerbosity": "high",
       "color": "#E74C3C",
       "fallback_models": [
+        "nvidia/z-ai/glm5.1",
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/qwen/qwen3.5-397b-a17b",
+        "nvidia/moonshotai/kimi-k2-thinking",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
         "openai/gpt-5.4-pro",
         "openai/gpt-5.4",
-        "nvidia/deepseek-ai/deepseek-v3.2",
-        "nvidia/qwen/qwen3-coder-480b-a35b-instruct",
-        "openai/o3"
+        "openai/gpt-5.4-mini"
       ]
     },
     "metis": {
-      "model": "nvidia/z-ai/glm-5.1",
+      "model": "nvidia/deepseek-ai/deepseek-v4-pro",
+      "provider": "nvidia",
       "variant": "max",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -229,13 +318,20 @@
       "textVerbosity": "high",
       "color": "#1ABC9C",
       "fallback_models": [
+        "nvidia/z-ai/glm5.1",
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/qwen/qwen3.5-397b-a17b",
+        "nvidia/moonshotai/kimi-k2-thinking",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
         "openai/gpt-5.4-pro",
-        "nvidia/deepseek-ai/deepseek-v3.2",
-        "nvidia/qwen/qwen3-coder-480b-a35b-instruct"
+        "openai/gpt-5.4",
+        "openai/gpt-5.4-mini"
       ]
     },
     "momus": {
-      "model": "nvidia/z-ai/glm-5.1",
+      "model": "nvidia/qwen/qwen3.5-397b-a17b",
+      "provider": "nvidia",
       "variant": "xhigh",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
@@ -255,13 +351,20 @@
       "textVerbosity": "high",
       "color": "#F39C12",
       "fallback_models": [
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/z-ai/glm5.1",
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
+        "openai/gpt-5.4-pro",
         "openai/gpt-5.4",
-        "nvidia/deepseek-ai/deepseek-v3.2",
-        "nvidia/qwen/qwen3-coder-480b-a35b-instruct"
+        "openai/gpt-5"
       ]
     },
     "librarian": {
-      "model": "nvidia/stepfun-ai/step-3.5-flash",
+      "model": "nvidia/deepseek-ai/deepseek-v4-pro",
+      "provider": "nvidia",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
@@ -284,12 +387,20 @@
       "textVerbosity": "medium",
       "color": "#2ECC71",
       "fallback_models": [
-        "nvidia/nvidia/nemotron-3-nano-30b-a3b",
-        "nvidia/z-ai/glm4.7"
+        "nvidia/z-ai/glm5.1",
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/qwen/qwen3.5-397b-a17b",
+        "nvidia/moonshotai/kimi-k2-thinking",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
+        "openai/gpt-5.4-pro",
+        "openai/gpt-5.4",
+        "openai/gpt-5.4-mini"
       ]
     },
     "multimodal-looker": {
-      "model": "openai/gpt-5.5",
+      "model": "nvidia/moonshotai/kimi-k2-5",
+      "provider": "nvidia",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
@@ -310,13 +421,19 @@
       "color": "#E67E22",
       "fallback_models": [
         "nvidia/qwen/qwen3.5-397b-a17b",
-        "openai/gpt-5.4-pro",
-        "nvidia/z-ai/glm-5.1",
-        "nvidia/meta/llama-3.2-11b-vision-instruct"
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5",
+        "openai/gpt-5.4",
+        "openai/gpt-5.4-mini",
+        "openai/gpt-5-mini",
+        "openai/gpt-5.4-nano"
       ]
     },
     "atlas": {
-      "model": "nvidia/z-ai/glm-5.1",
+      "model": "nvidia/z-ai/glm5.1",
+      "provider": "nvidia",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
@@ -336,13 +453,20 @@
       "textVerbosity": "medium",
       "color": "#95A5A6",
       "fallback_models": [
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "nvidia/qwen/qwen3.5-397b-a17b",
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
+        "openai/gpt-5.4-pro",
         "openai/gpt-5.4",
-        "nvidia/deepseek-ai/deepseek-v3.2",
-        "nvidia/qwen/qwen3-coder-480b-a35b-instruct"
+        "openai/gpt-5"
       ]
     },
     "sisyphus-junior": {
-      "model": "nvidia/nvidia/nemotron-3-super-120b-a12b",
+      "model": "nvidia/deepseek-ai/deepseek-v4-flash",
+      "provider": "nvidia",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
@@ -362,114 +486,180 @@
       "textVerbosity": "medium",
       "color": "#FF6B6B",
       "fallback_models": [
-        "nvidia/z-ai/glm4.7",
         "nvidia/google/gemma-4-31b-it",
-        "openai/gpt-5.4-mini"
+        "nvidia/z-ai/glm5.1",
+        "nvidia/moonshotai/kimi-k2-thinking",
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "openai/gpt-5.4-nano",
+        "openai/gpt-5-mini",
+        "openai/gpt-5.4-mini",
+        "openai/gpt-5.4",
+        "openai/gpt-5.5"
       ]
     }
   },
   "categories": {
     "visual-engineering": {
-      "model": "nvidia/qwen/qwen3.5-397b-a17b",
+      "model": "nvidia/z-ai/glm5.1",
+      "provider": "nvidia",
       "variant": "high",
       "reasoningEffort": "high",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "nvidia/z-ai/glm-5.1",
-        "nvidia/meta/llama-3.2-11b-vision-instruct"
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "nvidia/mistralai/devstral-2-123b-instruct-2512",
+        "nvidia/moonshotai/kimi-k2-thinking",
+        "nvidia/deepseek-ai/deepseek-v4-flash",
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5",
+        "openai/gpt-5.4",
+        "openai/gpt-5",
+        "openai/gpt-5.4-mini"
       ]
     },
     "ultrabrain": {
-      "model": "nvidia/z-ai/glm-5.1",
+      "model": "nvidia/z-ai/glm5.1",
+      "provider": "nvidia",
       "variant": "xhigh",
       "reasoningEffort": "xhigh",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "nvidia/qwen/qwen3.5-397b-a17b",
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
         "openai/gpt-5.4-pro",
-        "nvidia/deepseek-ai/deepseek-v3.2",
-        "nvidia/qwen/qwen3-coder-480b-a35b-instruct"
+        "openai/gpt-5.4",
+        "openai/gpt-5"
       ]
     },
     "deep": {
-      "model": "nvidia/qwen/qwen3-coder-480b-a35b-instruct",
+      "model": "nvidia/z-ai/glm5.1",
+      "provider": "nvidia",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "nvidia/z-ai/glm-5.1",
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "nvidia/qwen/qwen3.5-397b-a17b",
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
+        "openai/gpt-5.4-pro",
         "openai/gpt-5.4",
-        "nvidia/deepseek-ai/deepseek-v3.2"
+        "openai/gpt-5"
       ]
     },
     "artistry": {
-      "model": "nvidia/z-ai/glm-5.1",
+      "model": "nvidia/moonshotai/kimi-k2-5",
+      "provider": "nvidia",
       "variant": "high",
       "reasoningEffort": "high",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "nvidia/qwen/qwen3-coder-480b-a35b-instruct",
-        "nvidia/deepseek-ai/deepseek-v3.2",
-        "nvidia/stepfun-ai/step-3.5-flash"
+        "nvidia/qwen/qwen3.5-397b-a17b",
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5",
+        "openai/gpt-5.4",
+        "openai/gpt-5.4-mini",
+        "openai/gpt-5-mini",
+        "openai/gpt-5.4-nano"
       ]
     },
     "quick": {
-      "model": "nvidia/nvidia/nemotron-3-nano-30b-a3b",
+      "model": "nvidia/deepseek-ai/deepseek-v4-flash",
+      "provider": "nvidia",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "nvidia/stepfun-ai/step-3.5-flash",
-        "nvidia/nvidia/nvidia-nemotron-nano-9b-v2"
+        "nvidia/google/gemma-4-31b-it",
+        "nvidia/z-ai/glm5.1",
+        "nvidia/moonshotai/kimi-k2-thinking",
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "openai/gpt-5.4-nano",
+        "openai/gpt-5-mini",
+        "openai/gpt-5.4-mini",
+        "openai/gpt-5.4",
+        "openai/gpt-5.5"
       ]
     },
     "unspecified-low": {
-      "model": "nvidia/nvidia/nemotron-3-nano-30b-a3b",
+      "model": "nvidia/deepseek-ai/deepseek-v4-flash",
+      "provider": "nvidia",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "nvidia/stepfun-ai/step-3.5-flash",
-        "nvidia/nvidia/nvidia-nemotron-nano-9b-v2"
+        "nvidia/google/gemma-4-31b-it",
+        "nvidia/z-ai/glm5.1",
+        "nvidia/moonshotai/kimi-k2-thinking",
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "openai/gpt-5.4-nano",
+        "openai/gpt-5-mini",
+        "openai/gpt-5.4-mini",
+        "openai/gpt-5.4",
+        "openai/gpt-5.5"
       ]
     },
     "unspecified-high": {
-      "model": "nvidia/z-ai/glm-5.1",
+      "model": "nvidia/z-ai/glm5.1",
+      "provider": "nvidia",
       "variant": "medium",
       "reasoningEffort": "medium",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "nvidia/qwen/qwen3.5-397b-a17b",
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
+        "openai/gpt-5.4-pro",
         "openai/gpt-5.4",
-        "nvidia/deepseek-ai/deepseek-v3.2",
-        "nvidia/qwen/qwen3-coder-480b-a35b-instruct"
+        "openai/gpt-5"
       ]
     },
     "writing": {
-      "model": "nvidia/deepseek-ai/deepseek-v4-pro",
+      "model": "nvidia/qwen/qwen3.5-397b-a17b",
+      "provider": "nvidia",
       "variant": "low",
       "reasoningEffort": "minimal",
       "temperature": 0.3,
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "nvidia/z-ai/glm4.7",
-        "nvidia/stepfun-ai/step-3.5-flash",
-        "openai/gpt-5.4-mini",
-        "nvidia/minimaxai/minimax-m2.7"
+        "nvidia/moonshotai/kimi-k2-5",
+        "nvidia/z-ai/glm5.1",
+        "nvidia/deepseek-ai/deepseek-v4-pro",
+        "nvidia/google/gemma-4-31b-it",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.5",
+        "openai/gpt-5.4-pro",
+        "openai/gpt-5.4",
+        "openai/gpt-5"
       ]
     }
-  }
+  },
+  "model": "nvidia/z-ai/glm5.1",
+  "small_model": "nvidia/deepseek-ai/deepseek-v4-flash"
 }

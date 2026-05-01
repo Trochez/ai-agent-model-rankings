@@ -25,54 +25,25 @@
   },
   "provider": {
     "openrouter": {
-      "timeout": 120000,
-      "chunkTimeout": 30000,
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "OpenRouter",
       "options": {
+        "baseURL": "https://openrouter.ai/api/v1",
         "timeout": 120000,
         "chunkTimeout": 30000
       },
       "models": {
-        "mistralai/mistral-nemo": {
-          "name": "Mistral Nemo",
-          "limit": {
-            "context": 131072,
-            "output": 4096
-          }
+        "nvidia/nemotron-3-nano-30b-a3b:nitro": {
+          "name": "NVIDIA Nemotron 3 Nano 30B A3B Nitro"
         },
-        "ibm-granite/granite-4.0-h-micro": {
-          "name": "IBM Granite 4.0 H Micro",
-          "limit": {
-            "context": 131072,
-            "output": 4096
-          }
+        "stepfun/step-3.5-flash": {
+          "name": "StepFun Step 3.5 Flash"
         },
-        "meta-llama/llama-3.1-8b-instruct": {
-          "name": "Meta Llama 3.1 8B Instruct",
-          "limit": {
-            "context": 16384,
-            "output": 4096
-          }
+        "qwen/qwen3-coder-next": {
+          "name": "Qwen3 Coder Next"
         },
-        "google/gemini-2.5-flash-lite": {
-          "name": "Google Gemini 2.5 Flash Lite",
-          "limit": {
-            "context": 1048576,
-            "output": 8192
-          }
-        },
-        "qwen/qwen3-vl-32b-instruct": {
-          "name": "Qwen3 VL 32B Instruct",
-          "limit": {
-            "context": 131072,
-            "output": 8192
-          }
-        },
-        "google/gemini-2.5-flash": {
-          "name": "Google Gemini 2.5 Flash",
-          "limit": {
-            "context": 1048576,
-            "output": 8192
-          }
+        "openai/gpt-5.4-nano": {
+          "name": "GPT 5.4 Nano via OpenRouter"
         }
       }
     }
@@ -87,7 +58,7 @@
   },
   "agents": {
     "sisyphus": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "max",
       "reasoningEffort": "xhigh",
@@ -123,12 +94,13 @@
       "textVerbosity": "medium",
       "color": "#9400D3",
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "hephaestus": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "high",
@@ -154,12 +126,13 @@
       "allow_non_gpt_model": true,
       "color": "#4ECDC4",
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "oracle": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "high",
       "reasoningEffort": "xhigh",
@@ -182,12 +155,13 @@
       "textVerbosity": "high",
       "color": "#9B59B6",
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "explore": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "low",
       "reasoningEffort": "minimal",
@@ -210,12 +184,13 @@
       "textVerbosity": "low",
       "color": "#3498DB",
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "prometheus": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "max",
       "reasoningEffort": "xhigh",
@@ -242,12 +217,13 @@
       "textVerbosity": "high",
       "color": "#E74C3C",
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "metis": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "max",
       "reasoningEffort": "xhigh",
@@ -268,12 +244,13 @@
       "textVerbosity": "high",
       "color": "#1ABC9C",
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "momus": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "xhigh",
       "reasoningEffort": "xhigh",
@@ -294,12 +271,13 @@
       "textVerbosity": "high",
       "color": "#F39C12",
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "librarian": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "low",
       "reasoningEffort": "minimal",
@@ -323,12 +301,13 @@
       "textVerbosity": "medium",
       "color": "#2ECC71",
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "multimodal-looker": {
-      "model": "openrouter/google/gemini-2.5-flash-lite",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
@@ -349,12 +328,13 @@
       "textVerbosity": "medium",
       "color": "#E67E22",
       "fallback_models": [
-        "openrouter/qwen/qwen3-vl-32b-instruct",
-        "openrouter/google/gemini-2.5-flash"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "atlas": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
@@ -375,12 +355,13 @@
       "textVerbosity": "medium",
       "color": "#95A5A6",
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "sisyphus-junior": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
@@ -401,14 +382,15 @@
       "textVerbosity": "medium",
       "color": "#FF6B6B",
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     }
   },
   "categories": {
     "visual-engineering": {
-      "model": "openrouter/google/gemini-2.5-flash-lite",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "high",
       "reasoningEffort": "high",
@@ -416,12 +398,13 @@
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/qwen/qwen3-vl-32b-instruct",
-        "openrouter/google/gemini-2.5-flash"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "ultrabrain": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "xhigh",
       "reasoningEffort": "xhigh",
@@ -429,12 +412,13 @@
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "deep": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
@@ -442,12 +426,13 @@
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "artistry": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "high",
       "reasoningEffort": "high",
@@ -455,12 +440,13 @@
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "quick": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "low",
       "reasoningEffort": "minimal",
@@ -468,12 +454,13 @@
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "unspecified-low": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
@@ -481,12 +468,13 @@
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "unspecified-high": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "medium",
       "reasoningEffort": "medium",
@@ -494,12 +482,13 @@
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     },
     "writing": {
-      "model": "openrouter/mistralai/mistral-nemo",
+      "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
       "provider": "openrouter",
       "variant": "low",
       "reasoningEffort": "minimal",
@@ -507,12 +496,17 @@
       "top_p": 0.9,
       "maxTokens": 16384,
       "fallback_models": [
-        "openrouter/ibm-granite/granite-4.0-h-micro",
-        "openrouter/meta-llama/llama-3.1-8b-instruct"
+        "openrouter/stepfun/step-3.5-flash",
+        "openrouter/qwen/qwen3-coder-next",
+        "openrouter/openai/gpt-5.4-nano"
       ]
     }
   },
-  "configProfile": "orcp-openrouter-models-registered",
-  "model": "openrouter/mistralai/mistral-nemo",
-  "small_model": "openrouter/mistralai/mistral-nemo"
+  "model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+  "small_model": "openrouter/nvidia/nemotron-3-nano-30b-a3b:nitro",
+  "fallback_models": [
+    "openrouter/stepfun/step-3.5-flash",
+    "openrouter/qwen/qwen3-coder-next",
+    "openrouter/openai/gpt-5.4-nano"
+  ]
 }
