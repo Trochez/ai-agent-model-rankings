@@ -39,7 +39,7 @@ STATE = {
     "status": "starting", "mode": MODE, "started_utc": None, "ended_utc": None,
     "calls": 0, "selected": 0, "eligible": 0, "completed_models": 0,
     "current_model": None, "errors": [], "ranking": [], "excluded": [],
-    "method": "behavior-suite-12x5 / anti-loop-adapted-160+40 / global-v3",
+    "method": "behavior-suite-12-cases, repeats=5 (full) or 1 (smoke); anti-loop-adapted-160+40 only full / global-v3",
     "notice": "Poder y demanda son estimaciones de noviembre 2026; anti-loop v4.1 adaptado; nunca son medidas internas de GPU.",
 }
 RAW = []
@@ -47,7 +47,7 @@ T0 = {}
 STOP = False
 START = time.monotonic()
 SPECIAL = re.compile(
-    r"(embed|rerank|reward|safety|guard|flux|whisper|parakeet|fastpitch|tacotron|"
+    r"(embed|rerank|reward|safety|guard|flux|whisper|parakeet|fastpitch|tacotron|fastino|gliner|"
     r"translate|deplot|detector|calibration|parse|nvclip|nemoguard)", re.I)
 ALT_MODEL_IDS = [
     "nvidia/nvidia/nemotron-3.5-super-vl-120b-a12b",
@@ -303,6 +303,7 @@ def runner():
             possible = possible[:MAX_MODELS]
         STATE["selected"] = len(possible)
         STATE["models_selected"] = possible
+        print("INVENTORY_SELECTED " + json.dumps({"count":len(possible), "candidate_ids": possible}, ensure_ascii=False), flush=True)
         STATE["status"] = "availability"
         probes = []
         eligible = []
