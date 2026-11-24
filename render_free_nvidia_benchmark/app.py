@@ -6,7 +6,7 @@ No endpoint can trigger a new run. Results are public benchmark data, NOT creden
 The ephemeral filesystem is not durable; JSON summary is also emitted to Render logs.
 """
 import csv
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, wait, FIRST_COMPLETED
 import datetime as dt
 import io
 import json
@@ -29,7 +29,7 @@ MODE = os.getenv("BENCHMARK_MODE", "full")
 AUTO = os.getenv("AUTO_RUN", "0") == "1"
 MAX_MODELS = max(0, int(os.getenv("MAX_MODELS", "0")))
 MAX_CALLS = max(1, int(os.getenv("MAX_API_CALLS", "1000")))
-MAX_SECONDS = max(30, int(os.getenv("MAX_RUN_SECONDS", "650")))
+MAX_SECONDS = min(540, max(30, int(os.getenv("MAX_RUN_SECONDS", "650"))))
 SOCKET_TIMEOUT = max(10, int(os.getenv("SOCKET_TIMEOUT", "120")))
 DELAY = max(0, float(os.getenv("REQUEST_DELAY_SECONDS", "0.8")))
 PORT = int(os.getenv("PORT", "10000"))
@@ -64,7 +64,10 @@ PROCESS_ID = uuid.uuid4().hex
 CALL_BASE = 0
 REMOTE_ROOT = "https://raw.githubusercontent.com/Trochez/ai-agent-model-rankings/render-free-nvidia-benchmark-20261123/render_free_nvidia_benchmark/"
 MAX_TOTAL_CALLS = max(1, int(os.getenv("MAX_TOTAL_API_CALLS", "7000")))
-MAX_SEGMENTS = max(1, int(os.getenv("MAX_BENCHMARK_SEGMENTS", "48")))
+MAX_SEGMENTS = min(168, max(1, int(os.getenv("MAX_WEEKLY_BATCHES", "168"))))
+BATCH = 0
+BATCH_CEILING = 0
+AUTH_FAILED = threading.Event()
 SEGMENT_CALLS = 0
 JOURNAL_LOCK = threading.RLock()
 CHECKPOINT = ROOT / "checkpoint.json"
@@ -109,14 +112,24 @@ def should_stop():
 def api(path, body=None, timeout=SOCKET_TIMEOUT):
     global SEGMENT_CALLS
     with CALL_LOCK:
+        if AUTH_FAILED.is_set():
+            raise PermissionError("NVIDIA authentication rejected")
+        if weekly_id() != RUN_ID[:13]:
+            raise BudgetReached("week_boundary")
         if STATE["calls"] >= MAX_TOTAL_CALLS:
             raise BudgetReached("max_total_calls")
+        if BATCH_CEILING and STATE["calls"] >= BATCH_CEILING:
+            raise BudgetReached("batch_call_ceiling")
         if SEGMENT_CALLS >= MAX_CALLS:
             raise BudgetReached("max_segment_calls")
         if time.monotonic() - START > MAX_SECONDS:
             raise BudgetReached("max_segment_runtime")
         STATE["calls"] += 1
         SEGMENT_CALLS += 1
+        # Count reservations before network I/O; conservative even on abrupt termination.
+        print("BENCHMARK_API_RESERVED " + json.dumps({"run_id":RUN_ID,"process_id":PROCESS_ID,
+            "batch":BATCH,"calls":STATE["calls"],"call_base":CALL_BASE,
+            "process_calls":STATE["calls"]-CALL_BASE}),flush=True)
     payload = None if body is None else json.dumps(body).encode("utf-8")
     request = urllib.request.Request(
         BASE + path,
@@ -129,6 +142,8 @@ def api(path, body=None, timeout=SOCKET_TIMEOUT):
         data = json.loads(content)
         return {"ok": True, "data": data, "elapsed": time.monotonic() - began}
     except urllib.error.HTTPError as exc:
+        if exc.code in (401,403):
+            AUTH_FAILED.set()
         detail = exc.read(400).decode("utf-8", "replace")
         return {"ok": False, "error": "http_" + str(exc.code), "http": exc.code,
                 "detail": detail[:180], "elapsed": time.monotonic() - began}
@@ -157,6 +172,8 @@ def chat(model, msgs, tools=None, limit=1024):
     out["retries"] = retry
     out["input_chars"] = len(json.dumps(req["messages"], ensure_ascii=False))
     if not out["ok"]:
+        if out.get("http") in (401,403):
+            raise PermissionError("NVIDIA authentication rejected")
         detail = out.get("detail", "").lower()
         if any(x in detail for x in ("context window", "context length", "context_length", "too many input tokens")):
             out["error"] = "context_overflow"
@@ -173,7 +190,7 @@ def chat(model, msgs, tools=None, limit=1024):
                 "tokens": (obj.get("usage") or {}).get("completion_tokens"),
                 "prompt_tokens": (obj.get("usage") or {}).get("prompt_tokens"),
                 "reasoning_tokens": ((obj.get("usage") or {}).get("completion_tokens_details") or {}).get("reasoning_tokens")})
-    if not out["text"].strip() and not out["tool_calls"]:
+    if not out["text"].strip() and not out["tool_calls"] and out.get("finish_reason") != "length":
         out.update({"ok": False, "error": "empty_completion"})
     return out
 
@@ -245,10 +262,15 @@ def one_trial(model, name, prompt, expected, repeat, phase):
                 "\n".join("heartbeat %04d: nominal" % k for k in range(count)) +
                 "\n" + prompt)
     if phase == "recovery":
-        # Controlled prior failure, not a claim that a natural loop was observed.
-        msgs = [msgs[0], {"role": "user", "content": "The definitive label is ORCHID. Identify it."},
-                {"role": "assistant", "content": "ROSE. I will keep guessing ROSE."},
-                msgs[1]]
+        # Four controlled failure histories; not a claim of naturally observed loops.
+        j = int(name.rsplit("_",1)[1])
+        failures = ["ROSE. I will keep guessing ROSE.", "ROSE ROSE ROSE ROSE ROSE.",
+            "I need to reconsider the same question again before answering.",
+            "I cannot proceed until I repeat my previous incorrect answer ROSE."]
+        msgs = [msgs[0], {"role":"user","content":"The definitive label is ORCHID. Identify it."},
+                {"role":"assistant","content":failures[j%4]},
+                {"role":"user","content":"Your prior response was wrong. Stop repeating it."},
+                {"role":"assistant","content":failures[j%4]}, msgs[1]]
     trace = []
     seen = set()
     answer = ""
@@ -516,10 +538,10 @@ def planned_cases():
         for n,p,e in anti_cases():
             phase = "recovery" if n.startswith("recovery_") else "anti_loop"
             (c if phase == "recovery" else a).append((n,p,e,0,phase))
-    # One basic test, 4 anti tests and one recovery per round, until exhausted.
+    # Cover all phases early, then preserve the planned counts.
     out = []
     while b or a or c:
-        for queue, size in ((b, 1), (a, 4), (c, 1)):
+        for queue, size in ((b, 1), (c, 1), (a, 4)):
             out.extend(queue[:size])
             del queue[:size]
     return out
@@ -587,81 +609,169 @@ def run_segment():
         return
     STATE["status"] = "mixed_trials"
     done = {trial_key(r) for r in RAW}
-    # Each model receives each case before proceeding to the next case.
-    tasks = [(m,n,p,e,r,phase) for n,p,e,r,phase in planned_cases() for m in eligible
-             if (m,phase,n,r) not in done]
-    # Only one trial per model can run at once, even across bounded waves.
+    pending = {m:[(m,n,p,e,r,phase) for n,p,e,r,phase in planned_cases()
+                  if (m,phase,n,r) not in done] for m in eligible}
+    progress = {m:sum(r["model"]==m for r in RAW) for m in eligible}
+    # Work-conserving scheduling: one active trial per model, three workers,
+    # no barrier waiting on a slow model before another worker can proceed.
+    active = {}
+    busy = set()
+    error = None
+    completed_here = 0
     with ThreadPoolExecutor(max_workers=WORKERS) as pool:
-        for offset in range(0,len(tasks),WORKERS):
-            wave = tasks[offset:offset+WORKERS]
-            if len({x[0] for x in wave}) != len(wave):
-                for x in wave:
-                    one_trial(*x)
-            else:
-                futures = [pool.submit(one_trial,*x) for x in wave]
-                for f in as_completed(futures):
-                    f.result()
-            if offset % (WORKERS*12) == 0:
+        while True:
+            if error is None and not should_stop():
+                ready = sorted((m for m in eligible if pending[m] and m not in busy),
+                               key=lambda m:(progress[m],eligible.index(m)))
+                for m in ready[:max(0,WORKERS-len(active))]:
+                    job = pool.submit(one_trial,*pending[m].pop(0))
+                    active[job] = m
+                    busy.add(m)
+            if not active:
+                break
+            finished,_ = wait(list(active),return_when=FIRST_COMPLETED)
+            for job in finished:
+                m = active.pop(job)
+                busy.remove(m)
+                try:
+                    job.result()
+                    progress[m] += 1
+                    completed_here += 1
+                except Exception as exc:
+                    if error is None or isinstance(exc,PermissionError):
+                        error = exc
+            if completed_here and completed_here % 12 == 0:
                 compute_ranking()
                 print("MODEL_ROUND_DONE " + json.dumps({"run_id":RUN_ID,"attempted":len(RAW),
-                      "ranking":STATE["ranking"]}), flush=True)
+                      "ranking":STATE["ranking"]}),flush=True)
+    if error:
+        raise error
+    if any(pending.values()):
+        if STATE["calls"] >= MAX_TOTAL_CALLS:
+            raise BudgetReached("max_total_calls")
+        raise BudgetReached("max_segment_runtime" if time.monotonic()-START>MAX_SECONDS else "max_segment_calls")
+
+
+def announce_summary():
+    STATE["ended_utc"] = now()
+    STATE["process_calls"] = max(0,STATE["calls"]-CALL_BASE)
+    STATE["current_model"] = None
+    print("BENCHMARK_SUMMARY " + json.dumps({k:v for k,v in STATE.items() if k not in
+          ("models_selected","probes")},ensure_ascii=False),flush=True)
+
+
+def valid_active_manifest(obj, week):
+    rid = obj.get("run_id","")
+    return (obj.get("schema")==SCHEMA and obj.get("week_id",rid[:13])==week
+            and re.fullmatch(re.escape(week)+r"(?:-r[0-9]+)?",rid) is not None)
+
+
+def batch_authorized(obj, process, last_batch):
+    return (obj.get("authorized_process_id")==process
+            and type(obj.get("authorized_batch")) is int
+            and obj["authorized_batch"]>last_batch
+            and type(obj.get("calls_ceiling")) is int
+            and 0<=int(obj.get("calls",0))<=obj["calls_ceiling"]<=MAX_TOTAL_CALLS)
 
 
 def runner():
-    global START, SEGMENT_CALLS, CALL_BASE
+    global START, SEGMENT_CALLS, CALL_BASE, RUN_ID, BATCH, BATCH_CEILING
     STATE["started_utc"] = now()
+    last_batch = 0
+    announced = None
+    locked_run = None
     try:
-        STATE["status"] = "restoring_checkpoint"
-        restore(remote=True)
-        CALL_BASE = STATE["calls"]
-        STATE["call_base"] = CALL_BASE
-        if STATE.get("checkpoint_terminal"):
-            possible = STATE.get("models_selected",[])
-            STATE["selected"] = len(possible)
-            STATE["eligible_models"] = [m for m in possible if any(
-                r["model"] == m and r["ok"] for r in STATE.get("probes",[]))]
-            STATE["eligible"] = len(STATE["eligible_models"])
-            STATE["excluded"] = [m for m in possible if m not in STATE["eligible_models"]]
-            compute_ranking()
-            STATE["status"] = "archived_terminal"
-            return
-        print("BENCHMARK_RUN_START " + json.dumps({"run_id":RUN_ID,"schema":SCHEMA,
-              "process_id":PROCESS_ID,"call_base":CALL_BASE,
-              "mode":MODE,"max_total_calls":MAX_TOTAL_CALLS,"max_segment_calls":MAX_CALLS,
-              "max_segment_seconds":MAX_SECONDS,"workers":WORKERS}), flush=True)
-        for segment in range(MAX_SEGMENTS):
-            START = time.monotonic()
-            SEGMENT_CALLS = 0
-            STATE["segments"] = segment + 1
+        while True:
+            week = weekly_id()
+            if locked_run and locked_run[:13]!=week:
+                STATE["status"]="week_ended"
+                return
+            STATE["status"]="awaiting_authorization"
+            obj = remote_json("checkpoint.json")
+            if not valid_active_manifest(obj,week):
+                STATE["status"]="standby_week_not_authorized"
+                time.sleep(30)
+                continue
+            if locked_run and obj["run_id"]!=locked_run:
+                STATE["status"]="superseded"
+                return
+            RUN_ID=obj["run_id"]
+            STATE["run_id"]=RUN_ID
+            if announced!=RUN_ID:
+                print("BENCHMARK_BOOT_WAIT " + json.dumps({"run_id":RUN_ID,"week_id":week,
+                      "process_id":PROCESS_ID,"utc":now()}),flush=True)
+                announced=RUN_ID
+            if obj.get("terminal_notified") or obj.get("terminal_status") in ("completed","completed_with_gaps","partial_budget","failed"):
+                restore(remote=True,reader=lambda p:obj if p=="checkpoint.json" else remote_json(p))
+                possible=STATE.get("models_selected",[])
+                STATE["selected"]=len(possible)
+                STATE["eligible_models"]=[m for m in possible if any(r["model"]==m and r["ok"] for r in STATE.get("probes",[]))]
+                STATE["eligible"]=len(STATE["eligible_models"])
+                STATE["excluded"]=[m for m in possible if m not in STATE["eligible_models"]]
+                compute_ranking()
+                STATE["status"]="archived_terminal"
+                return
+            if not batch_authorized(obj,PROCESS_ID,last_batch):
+                time.sleep(20)
+                continue
+            locked_run=RUN_ID
+            previous_calls=STATE["calls"]
+            previous_keys={trial_key(r) for r in RAW}
+            previous_probes={(r["model"],r["trial"]) for r in STATE.get("probes",[])}
+            if int(obj.get("calls",0))<previous_calls:
+                raise ValueError("archive missing previous batch calls")
+            STATE["status"]="restoring_checkpoint"
+            restore(remote=True,reader=lambda p:obj if p=="checkpoint.json" else remote_json(p))
+            if not previous_keys.issubset({trial_key(r) for r in RAW}) or not previous_probes.issubset({(r["model"],r["trial"]) for r in STATE.get("probes",[])}):
+                raise ValueError("archive missing previous batch events")
+            if last_batch==0:
+                CALL_BASE=STATE["calls"]
+            STATE["call_base"]=CALL_BASE
+            BATCH=obj["authorized_batch"]
+            BATCH_CEILING=obj["calls_ceiling"]
+            last_batch=BATCH
+            STATE["segments"]=BATCH
+            STATE["batch"]=BATCH
+            if BATCH>MAX_SEGMENTS or STATE["calls"]>=MAX_TOTAL_CALLS:
+                STATE["status"]="partial_budget"
+                STATE["errors"].append("max_segments" if BATCH>MAX_SEGMENTS else "max_total_calls")
+                announce_summary()
+                return
+            START=time.monotonic()
+            SEGMENT_CALLS=0
+            print("BENCHMARK_RUN_START " + json.dumps({"run_id":RUN_ID,"schema":SCHEMA,"batch":BATCH,
+                "process_id":PROCESS_ID,"call_base":CALL_BASE,"mode":MODE,"max_total_calls":MAX_TOTAL_CALLS,
+                "max_segment_calls":MAX_CALLS,"max_segment_seconds":MAX_SECONDS,"workers":WORKERS}),flush=True)
             try:
                 run_segment()
                 compute_ranking()
-                STATE["status"] = "completed" if MODE == "probe" or all(
-                    not r["provisional"] for r in STATE["ranking"]) and STATE["eligible"] else "completed_with_gaps"
-                break
+                STATE["status"]="completed" if (MODE=="probe" or (STATE["eligible"] and all(
+                    not r["provisional"] for r in STATE["ranking"]))) else "completed_with_gaps"
+                announce_summary()
+                return
             except BudgetReached as exc:
                 compute_ranking()
-                STATE["status"] = "partial_budget"
-                print("BENCHMARK_SEGMENT_DONE " + json.dumps({"run_id":RUN_ID,"segment":segment+1,
-                      "reason":str(exc),"calls":STATE["calls"],"trials":len(RAW),
-                      "process_id":PROCESS_ID,"call_base":CALL_BASE,"process_calls":STATE["calls"]-CALL_BASE}), flush=True)
-                if STATE["calls"] >= MAX_TOTAL_CALLS:
-                    STATE["errors"].append("max_total_calls")
-                    break
-                if segment + 1 >= MAX_SEGMENTS:
-                    STATE["errors"].append("max_segments")
-                    break
-                time.sleep(5)
+                reason=str(exc)
+                if reason=="max_total_calls" or STATE["calls"]>=MAX_TOTAL_CALLS or BATCH>=MAX_SEGMENTS:
+                    STATE["status"]="partial_budget"
+                    STATE["errors"].append("max_total_calls" if STATE["calls"]>=MAX_TOTAL_CALLS else "max_segments")
+                    announce_summary()
+                    return
+                if reason=="week_boundary":
+                    STATE["status"]="week_ended"
+                    announce_summary()
+                    return
+                STATE["status"]="awaiting_checkpoint"
+                print("BENCHMARK_BATCH_DONE " + json.dumps({"run_id":RUN_ID,"batch":BATCH,"reason":reason,
+                    "calls":STATE["calls"],"trials":len(RAW),"process_id":PROCESS_ID,
+                    "call_base":CALL_BASE,"process_calls":STATE["calls"]-CALL_BASE}),flush=True)
+                # Require an independently persisted, new authorization before another batch.
+                time.sleep(20)
     except Exception as exc:
-        STATE["status"] = "checkpoint_unavailable" if STATE["status"] == "restoring_checkpoint" else "failed"
+        STATE["status"]="checkpoint_unavailable" if STATE["status"] in ("restoring_checkpoint","awaiting_authorization") else "failed"
         STATE["errors"].append(type(exc).__name__)
         compute_ranking()
-    finally:
-        STATE["ended_utc"] = now()
-        STATE["process_calls"] = max(0,STATE["calls"]-CALL_BASE)
-        STATE["current_model"] = None
-        print("BENCHMARK_SUMMARY " + json.dumps({k:v for k,v in STATE.items() if k not in
-              ("models_selected","probes")}, ensure_ascii=False), flush=True)
+        announce_summary()
 
 
 def selftest():
@@ -674,6 +784,11 @@ def selftest():
     assert trial_key({"model":"m","phase":"behavior","test":"t","repeat":0}) == ("m","behavior","t",0)
     assert grade("json",'{"status":"ok","count":3,"ids":[2,4,6]}')
     assert "infra_error" in NON_EVALUABLE and "context_overflow" in NON_EVALUABLE
+    week=weekly_id()
+    assert valid_active_manifest({"schema":2,"week_id":week,"run_id":week+"-r2"},week)
+    assert not valid_active_manifest({"schema":2,"run_id":"v2-2026-01-01"},week)
+    auth={"authorized_process_id":"p","authorized_batch":2,"calls":10,"calls_ceiling":100}
+    assert batch_authorized(auth,"p",1) and not batch_authorized(auth,"q",1) and not batch_authorized(auth,"p",2)
     # Deterministic checkpoint and scoring checks; no real NVIDIA request.
     import tempfile
     global CHECKPOINT
@@ -751,7 +866,7 @@ class Handler(BaseHTTPRequestHandler):
             payload = {k:v for k,v in STATE.items() if k not in ("probes", "models_selected")}
             if self.path.startswith("/health"):
                 payload = {k:payload[k] for k in ("status", "calls", "selected", "eligible",
-                                                  "completed_models", "current_model", "run_id")}
+                                                  "completed_models", "current_model", "run_id", "process_id", "segments")}
             data = json.dumps(payload, ensure_ascii=False, default=str, indent=2).encode("utf-8")
             content_type = "application/json; charset=utf-8"
         self.send_response(200)
@@ -767,7 +882,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     selftest()
-    if MODE not in ("probe", "smoke", "historical", "full"):
+    if MODE not in ("probe", "smoke", "full"):
         STATE["status"] = "invalid_mode"
     elif not AUTO:
         STATE["status"] = "standby_autorun_disabled"
