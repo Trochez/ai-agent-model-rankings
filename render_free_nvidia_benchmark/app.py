@@ -313,6 +313,7 @@ def runner():
                 row = {"model": m, "trial": trial+1, "ok": r["ok"],
                        "elapsed_s": round(r["elapsed"], 5), "error": r.get("error")}
                 probes.append(row)
+                print("PROBE_RESULT " + json.dumps(row, ensure_ascii=False), flush=True)
                 if r["ok"]:
                     successes.append(r["elapsed"])
                 if r.get("http") in (401, 403):
@@ -333,12 +334,14 @@ def runner():
             for name, prompt, expected in cases():
                 for repeat in range(CASE_REPEATS):
                     one_trial(m, name, prompt, expected, repeat, "behavior")
+            STATE["models_done"].append(m)
+            STATE["completed_models"] = len(STATE["models_done"])
+            compute_ranking()
+            print("BEHAVIOR_MODEL_DONE " + json.dumps({"model": m, "rank": next((r for r in STATE["ranking"] if r["nombre modelo"] == m), {})}, ensure_ascii=False), flush=True)
             if MODE == "full":
                 STATE["status"] = "anti_loop"
                 for name, prompt, expected in anti_cases():
                     one_trial(m, name, prompt, expected, 0, "anti_loop")
-            STATE["models_done"].append(m)
-            STATE["completed_models"] = len(STATE["models_done"])
             compute_ranking()
             print("MODEL_RESULT " + json.dumps(STATE["ranking"][-1] if len(STATE["ranking"]) == 1 else
                 next((r for r in STATE["ranking"] if r["nombre modelo"] == m), {}), ensure_ascii=False), flush=True)
