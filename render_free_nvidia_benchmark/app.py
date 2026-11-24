@@ -18,6 +18,7 @@ import threading
 import time
 import urllib.error
 import urllib.request
+import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -59,6 +60,9 @@ def weekly_id(t=None):
 
 RUN_ID = os.getenv("BENCHMARK_RUN_ID", "").strip() or weekly_id()
 SCHEMA = 2
+PROCESS_ID = uuid.uuid4().hex
+CALL_BASE = 0
+REMOTE_ROOT = "https://raw.githubusercontent.com/Trochez/ai-agent-model-rankings/render-free-nvidia-benchmark-20261123/render_free_nvidia_benchmark/"
 MAX_TOTAL_CALLS = max(1, int(os.getenv("MAX_TOTAL_API_CALLS", "7000")))
 MAX_SEGMENTS = max(1, int(os.getenv("MAX_BENCHMARK_SEGMENTS", "48")))
 SEGMENT_CALLS = 0
@@ -66,6 +70,7 @@ JOURNAL_LOCK = threading.RLock()
 CHECKPOINT = ROOT / "checkpoint.json"
 STATE.update({"run_id": RUN_ID, "checkpoint_schema": SCHEMA, "segments": 0,
               "max_total_calls": MAX_TOTAL_CALLS, "max_segment_calls": MAX_CALLS,
+              "process_id": PROCESS_ID, "call_base": 0, "checkpoint_source": None,
               "max_segment_seconds": MAX_SECONDS,
               "test_score_method": "phase-planned-weighted evaluable success rates; provisional if incomplete"})
 SPECIAL = re.compile(
@@ -318,8 +323,11 @@ if MODE == "full":
 
 def journal(kind, data):
     # External controller archives these sanitized events, keyed by run and test.
+    calls = STATE["calls"]
     event = {"schema": SCHEMA, "run_id": RUN_ID, "kind": kind,
-             "data": data, "calls": STATE["calls"], "utc": now()}
+             "data": data, "calls": calls, "utc": now(),
+             "process_id": PROCESS_ID, "call_base": CALL_BASE,
+             "process_calls": calls - CALL_BASE}
     print("BENCHMARK_CHECKPOINT " + json.dumps(event, ensure_ascii=False, separators=(",", ":")), flush=True)
 
 
@@ -327,48 +335,127 @@ def trial_key(r):
     return (r["model"], r["phase"], r["test"], int(r["repeat"]))
 
 
-def restore(quiet=False):
-    if not CHECKPOINT.exists():
-        return
-    obj = json.loads(CHECKPOINT.read_text(encoding="utf-8"))
-    if obj.get("run_id") != RUN_ID:
-        return  # never import another week's experiments
+def remote_json(path):
+    # Public benchmark metrics only. Never transmit the NVIDIA API key to GitHub.
+    # A cache-busting query and no-cache request avoid stale branch manifests.
+    url = REMOTE_ROOT + path + "?checkpoint_read=" + uuid.uuid4().hex
+    req = urllib.request.Request(url, headers={"Accept":"application/json",
+        "Cache-Control":"no-cache", "User-Agent":"nvidia-benchmark-checkpoint-v2"})
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=15) as response:
+                data = response.read(4_000_001)
+            if len(data) > 4_000_000:
+                raise ValueError("checkpoint exceeds size limit")
+            obj = json.loads(data)
+            if not isinstance(obj, dict):
+                raise ValueError("checkpoint not an object")
+            return obj
+        except (urllib.error.URLError, TimeoutError, OSError):
+            if attempt == 2:
+                raise
+            time.sleep(2 ** attempt)
+
+
+def checkpoint_events(obj, load_part):
     if obj.get("schema") != SCHEMA:
         raise ValueError("checkpoint schema mismatch")
-    seen_trials, seen_probes = set(), set()
+    if obj.get("run_id") != RUN_ID:
+        return []
     events = list(obj.get("events", []))
-    for part in obj.get("parts", []):
-        # Restrict archive reads to checked-in JSON files for this exact run.
+    parts = obj.get("parts", [])
+    if not isinstance(parts, list) or len(parts) > 1000 or len(set(parts)) != len(parts):
+        raise ValueError("invalid checkpoint part list")
+    for part in parts:
         if not re.fullmatch(r"checkpoint_events/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.json", part):
             raise ValueError("invalid checkpoint part")
         if part.split("/")[1] != RUN_ID:
             raise ValueError("checkpoint part from different run")
-        batch = json.loads((ROOT / part).read_text(encoding="utf-8"))
+        batch = load_part(part)
         if batch.get("run_id") != RUN_ID or batch.get("schema") != SCHEMA:
             raise ValueError("checkpoint part run mismatch")
-        events.extend(batch.get("events", []))
+        rows = batch.get("events")
+        if not isinstance(rows,list) or len(rows) > 100:
+            raise ValueError("invalid checkpoint part events")
+        events.extend(rows)
     for e in events:
-        if e.get("schema") != SCHEMA or e.get("run_id") != RUN_ID:
-            raise ValueError("mixed checkpoint run")
-        STATE["calls"] = max(STATE["calls"], int(e.get("calls", 0)))
+        if e.get("schema") != SCHEMA or e.get("run_id") != RUN_ID or e.get("kind") not in ("inventory","probe","trial"):
+            raise ValueError("invalid checkpoint event")
+        if not isinstance(e.get("data"),dict) or int(e.get("calls",0)) < 0:
+            raise ValueError("invalid checkpoint payload")
+    return events
+
+
+def restore(quiet=False, remote=False, reader=None):
+    # The deployed checkout is immutable. On real startup load the live manifest
+    # and all referenced immutable shards, then apply atomically in memory.
+    # If the remote read fails, fail closed rather than replay thousands of calls.
+    local = json.loads(CHECKPOINT.read_text(encoding="utf-8")) if CHECKPOINT.exists() else None
+    if remote:
+        reader = reader or remote_json
+        obj = reader("checkpoint.json")
+        if not isinstance(obj,dict) or obj.get("schema") != SCHEMA or not isinstance(obj.get("run_id"),str):
+            raise ValueError("invalid remote manifest")
+        if obj.get("run_id") != RUN_ID and local and local.get("run_id") == RUN_ID:
+            raise ValueError("remote manifest older than deployed checkpoint")
+        if obj.get("run_id") == RUN_ID and local and local.get("run_id") == RUN_ID:
+            if int(obj.get("calls",0)) < int(local.get("calls",0)) or not set(local.get("parts",[])).issubset(obj.get("parts",[])):
+                raise ValueError("remote manifest regressed")
+        load = reader
+        source = "github_live"
+    else:
+        if local is None:
+            return
+        obj = local
+        load = lambda path: json.loads((ROOT / path).read_text(encoding="utf-8"))
+        source = "local"
+    STATE["checkpoint_source"] = source
+    if obj.get("run_id") != RUN_ID:
+        if remote:
+            # Only an older valid weekly manifest authorizes a fresh run.
+            if not re.fullmatch(r"v2-\d{4}-\d{2}-\d{2}",obj["run_id"]) or obj["run_id"] >= RUN_ID:
+                raise ValueError("unexpected remote run_id")
+            if not quiet:
+                print("CHECKPOINT_NEW_WEEK " + json.dumps({"run_id":RUN_ID,"previous_run_id":obj["run_id"],"source":source}),flush=True)
+        return
+    events = checkpoint_events(obj,load)
+    seen_trials, seen_probes = set(), set()
+    inventory = None
+    probes, trials = [], []
+    calls = int(obj.get("calls",0))
+    for e in events:
+        calls = max(calls,int(e.get("calls",0)))
         d = e["data"]
         if e["kind"] == "inventory":
-            STATE["models_selected"] = d["candidate_ids"]
-            STATE["started_utc"] = d["started_utc"]
+            if inventory is None:
+                inventory = d
+            elif inventory["candidate_ids"] != d["candidate_ids"]:
+                raise ValueError("conflicting run inventory")
         elif e["kind"] == "probe":
-            k = (d["model"], d["trial"])
+            k = (d["model"],d["trial"])
             if k not in seen_probes:
-                STATE.setdefault("probes", []).append(d)
+                probes.append(d)
                 seen_probes.add(k)
         elif e["kind"] == "trial":
             k = trial_key(d)
             if k not in seen_trials:
-                RAW.append(d)
+                trials.append(d)
                 seen_trials.add(k)
-    STATE["calls"] = max(STATE["calls"], int(obj.get("calls", 0)))
+    if remote and (probes or trials) and inventory is None:
+        raise ValueError("missing run inventory")
+    if inventory is not None:
+        STATE["models_selected"] = inventory["candidate_ids"]
+        STATE["started_utc"] = inventory["started_utc"]
+    STATE["probes"] = probes
+    RAW[:] = trials
+    STATE["calls"] = max(STATE["calls"],calls)
+    STATE["archive_cursor_utc"] = obj.get("cursor_utc")
+    STATE["checkpoint_terminal"] = bool(obj.get("terminal_notified")) or obj.get("terminal_status") in ("completed","completed_with_gaps","partial_budget","failed")
     if not quiet:
-        print("CHECKPOINT_RESTORED " + json.dumps({"run_id": RUN_ID, "trials": len(RAW),
-              "probes": len(STATE.get("probes", [])), "calls": STATE["calls"]}), flush=True)
+        print("CHECKPOINT_RESTORED " + json.dumps({"run_id":RUN_ID,"trials":len(RAW),
+            "probes":len(probes),"calls":STATE["calls"],"source":source,
+            "cursor_utc":obj.get("cursor_utc"),"process_id":PROCESS_ID,
+            "terminal":STATE["checkpoint_terminal"]}),flush=True)
 
 
 def compute_ranking():
@@ -521,11 +608,25 @@ def run_segment():
 
 
 def runner():
-    global START, SEGMENT_CALLS
+    global START, SEGMENT_CALLS, CALL_BASE
     STATE["started_utc"] = now()
     try:
-        restore()
+        STATE["status"] = "restoring_checkpoint"
+        restore(remote=True)
+        CALL_BASE = STATE["calls"]
+        STATE["call_base"] = CALL_BASE
+        if STATE.get("checkpoint_terminal"):
+            possible = STATE.get("models_selected",[])
+            STATE["selected"] = len(possible)
+            STATE["eligible_models"] = [m for m in possible if any(
+                r["model"] == m and r["ok"] for r in STATE.get("probes",[]))]
+            STATE["eligible"] = len(STATE["eligible_models"])
+            STATE["excluded"] = [m for m in possible if m not in STATE["eligible_models"]]
+            compute_ranking()
+            STATE["status"] = "archived_terminal"
+            return
         print("BENCHMARK_RUN_START " + json.dumps({"run_id":RUN_ID,"schema":SCHEMA,
+              "process_id":PROCESS_ID,"call_base":CALL_BASE,
               "mode":MODE,"max_total_calls":MAX_TOTAL_CALLS,"max_segment_calls":MAX_CALLS,
               "max_segment_seconds":MAX_SECONDS,"workers":WORKERS}), flush=True)
         for segment in range(MAX_SEGMENTS):
@@ -542,7 +643,8 @@ def runner():
                 compute_ranking()
                 STATE["status"] = "partial_budget"
                 print("BENCHMARK_SEGMENT_DONE " + json.dumps({"run_id":RUN_ID,"segment":segment+1,
-                      "reason":str(exc),"calls":STATE["calls"],"trials":len(RAW)}), flush=True)
+                      "reason":str(exc),"calls":STATE["calls"],"trials":len(RAW),
+                      "process_id":PROCESS_ID,"call_base":CALL_BASE,"process_calls":STATE["calls"]-CALL_BASE}), flush=True)
                 if STATE["calls"] >= MAX_TOTAL_CALLS:
                     STATE["errors"].append("max_total_calls")
                     break
@@ -551,11 +653,12 @@ def runner():
                     break
                 time.sleep(5)
     except Exception as exc:
-        STATE["status"] = "failed"
+        STATE["status"] = "checkpoint_unavailable" if STATE["status"] == "restoring_checkpoint" else "failed"
         STATE["errors"].append(type(exc).__name__)
         compute_ranking()
     finally:
         STATE["ended_utc"] = now()
+        STATE["process_calls"] = max(0,STATE["calls"]-CALL_BASE)
         STATE["current_model"] = None
         print("BENCHMARK_SUMMARY " + json.dumps({k:v for k,v in STATE.items() if k not in
               ("models_selected","probes")}, ensure_ascii=False), flush=True)
@@ -607,6 +710,22 @@ def selftest():
             n = len(RAW)
             restore(quiet=True)
             assert len(RAW) == n
+            # Live branch simulation with immutable shard, duplicate test, and accumulated calls.
+            shard = "checkpoint_events/" + RUN_ID + "/sample.json"
+            manifest = {"schema":SCHEMA,"run_id":RUN_ID,"parts":[shard],"calls":12}
+            inv = {"candidate_ids":[m],"started_utc":"2026-11-24T00:00:00Z"}
+            fixtures = {"checkpoint.json":manifest,shard:{"schema":SCHEMA,"run_id":RUN_ID,
+                "events":[event("inventory",inv),event("trial",row),event("trial",row),event("probe",probe)]}}
+            restore(quiet=True,remote=True,reader=lambda p:fixtures[p])
+            assert len(RAW)==1 and len(STATE["probes"])==1 and STATE["calls"]==12
+            assert STATE["checkpoint_source"]=="github_live"
+            try:
+                restore(quiet=True,remote=True,reader=lambda p:fixtures[p] if p=="checkpoint.json" else {})
+            except ValueError:
+                pass
+            else:
+                raise AssertionError("missing shard accepted")
+            assert len(RAW)==1 and STATE["calls"]==12
     finally:
         CHECKPOINT = old_checkpoint
         STATE.clear()
