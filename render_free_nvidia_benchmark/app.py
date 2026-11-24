@@ -6,6 +6,7 @@ No endpoint can trigger a new run. Results are public benchmark data, NOT creden
 The ephemeral filesystem is not durable; JSON summary is also emitted to Render logs.
 """
 import csv
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import datetime as dt
 import io
 import json
@@ -32,6 +33,9 @@ SOCKET_TIMEOUT = max(10, int(os.getenv("SOCKET_TIMEOUT", "120")))
 DELAY = max(0, float(os.getenv("REQUEST_DELAY_SECONDS", "0.8")))
 PORT = int(os.getenv("PORT", "10000"))
 CASE_REPEATS = 1 if MODE == "smoke" else 5
+WORKERS = max(1, min(4, int(os.getenv("BENCHMARK_WORKERS", "3"))))
+PROBE_TOKENS = int(os.getenv("PROBE_MAX_TOKENS", "1024"))
+CALL_LOCK = threading.Lock()
 GLOBAL_FIELDS = ["nombre modelo", "poder", "demanda",
                  "tiempo de respuesta promedio", "mediana tiempo respuesta en pruebas",
                  "velocidad", "indicador de pruebas", "indicador global"]
@@ -40,7 +44,8 @@ STATE = {
     "calls": 0, "selected": 0, "eligible": 0, "completed_models": 0,
     "current_model": None, "errors": [], "ranking": [], "excluded": [],
     "method": "behavior-suite-12-cases, repeats=5 (full) or 1 (smoke); anti-loop-adapted-160+40 only full / global-v3",
-    "notice": "Poder y demanda son estimaciones de noviembre 2026; anti-loop v4.1 adaptado; nunca son medidas internas de GPU.",
+    "notice": "Poder/demanda: referencias historicas de calibracion, no mediciones nuevas. Latencia y resultados: exclusivamente esta ejecucion.",
+    "workers": WORKERS, "socket_timeout_s": SOCKET_TIMEOUT, "probe_max_tokens": PROBE_TOKENS, "repeats": CASE_REPEATS,
 }
 RAW = []
 T0 = {}
@@ -79,9 +84,10 @@ def should_stop():
 
 
 def api(path, body=None, timeout=SOCKET_TIMEOUT):
-    if should_stop():
-        raise BudgetReached("max_requests_or_runtime")
-    STATE["calls"] += 1
+    with CALL_LOCK:
+        if should_stop():
+            raise BudgetReached("max_requests_or_runtime")
+        STATE["calls"] += 1
     payload = None if body is None else json.dumps(body).encode("utf-8")
     request = urllib.request.Request(
         BASE + path,
@@ -245,7 +251,7 @@ def one_trial(model, name, prompt, expected, repeat, phase):
 
 def compute_ranking():
     rows = []
-    completed = [m for m in STATE.get("models_done", [])]
+    completed = list(STATE.get("eligible_models", []))
     lat = {m: statistics.median([r["elapsed_s"] for r in RAW if r["model"] == m and
             r["phase"] == "behavior" and r["status"] == "pass"])
            for m in completed if any(r["model"] == m and r["phase"] == "behavior" and
@@ -262,7 +268,7 @@ def compute_ranking():
             v = 100 if tmin == tmax else 100 * (math.log1p(tmax) - math.log1p(lat[m])) / \
                 (math.log1p(tmax) - math.log1p(tmin))
             v = max(0, min(100, v))
-        p, d = SCORES.get(m, (None, None))
+        p, d = SCORES.get(m, SCORES.get(clean_id(m), (None, None)))
         g = .35*p + .15*(100-d) + .15*v + .35*t if None not in (p,d,v,t) else None
         probes = [r for r in STATE.get("probes", []) if r["model"] == m and r["ok"]]
         t0 = statistics.mean(r["elapsed_s"] for r in probes) if probes else None
@@ -276,7 +282,8 @@ def compute_ranking():
         row.update({"evaluable": len(evaluable), "planned_behavior": 12*CASE_REPEATS,
                     "passed": correct, "anti_pass": sum(x["status"] == "pass" for x in anti),
                     "anti_total": len(anti), "p_d_provenance": "historical_estimate_20261119",
-                    "provisional": len(scored) < 12*CASE_REPEATS,
+                    "provisional": len(evaluable) < 12*CASE_REPEATS or CASE_REPEATS < 5,
+                    "attempted_behavior": len(scored), "probe_successes": len(probes),
                     "speed_cohort_n": len(lat)})
         rows.append(row)
     rows.sort(key=lambda r: (r["indicador global"] is None,
@@ -315,50 +322,62 @@ def runner():
         STATE["status"] = "availability"
         probes = []
         eligible = []
-        for m in possible:
-            successes = []
+        STATE["probes"] = probes
+        STATE["eligible_models"] = eligible
+        STATE["models_done"] = []
+        def probe_model(m):
+            rows = []
             for trial in range(3):
-                r = chat(m, [{"role": "user", "content": "Reply exactly READY."}], limit=64)
+                r = chat(m, [{"role": "user", "content": "Reply exactly READY."}], limit=PROBE_TOKENS)
                 row = {"model": m, "request_model": clean_id(m), "trial": trial+1, "ok": r["ok"],
                        "elapsed_s": round(r["elapsed"], 5), "error": r.get("error")}
-                probes.append(row)
+                rows.append(row)
                 print("PROBE_RESULT " + json.dumps(row, ensure_ascii=False), flush=True)
-                if r["ok"]:
-                    successes.append(r["elapsed"])
                 if r.get("http") in (401, 403):
-                    STATE["errors"].append("Authentication rejected by NVIDIA; stopping.")
-                    STATE["status"] = "needs_valid_key"
-                    STATE["probes"] = probes
-                    return
-            if successes:
-                eligible.append(m)
-            else:
-                STATE["excluded"].append(m)
-            STATE["probes"] = probes
-        STATE["eligible"] = len(eligible)
-        STATE["models_done"] = []
-        STATE["eligible_models"] = eligible
-        if MODE == "probe":
-            STATE["status"] = "completed"
-            return
-        STATE["status"] = "behavior"
-        for m in eligible:
-            STATE["current_model"] = m
+                    break
+            return m, rows
+
+        def behavior_round(m, repeat):
             for name, prompt, expected in cases():
+                one_trial(m, name, prompt, expected, repeat, "behavior")
+            return m
+
+        def anti_round(m):
+            for name, prompt, expected in anti_cases():
+                one_trial(m, name, prompt, expected, 0, "anti_loop")
+            return m
+
+        with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+            jobs = [pool.submit(probe_model, m) for m in possible]
+            for f in as_completed(jobs):
+                m, rows = f.result()
+                probes.extend(rows)
+                if any(x["ok"] for x in rows):
+                    eligible.append(m)
+                else:
+                    STATE["excluded"].append(m)
+                STATE["eligible"] = len(eligible)
+            eligible.sort(key=lambda m: possible.index(m))
+            print("AVAILABILITY_DONE " + json.dumps({"eligible": eligible, "excluded": STATE["excluded"], "probes": len(probes)}, ensure_ascii=False), flush=True)
+            compute_ranking()
+            if MODE != "probe":
+                STATE["status"] = "behavior"
                 for repeat in range(CASE_REPEATS):
-                    one_trial(m, name, prompt, expected, repeat, "behavior")
-            STATE["models_done"].append(m)
-            STATE["completed_models"] = len(STATE["models_done"])
-            compute_ranking()
-            print("BEHAVIOR_MODEL_DONE " + json.dumps({"model": m, "rank": next((r for r in STATE["ranking"] if r["nombre modelo"] == m), {})}, ensure_ascii=False), flush=True)
-            if MODE == "full":
-                STATE["status"] = "anti_loop"
-                for name, prompt, expected in anti_cases():
-                    one_trial(m, name, prompt, expected, 0, "anti_loop")
-            compute_ranking()
-            print("MODEL_RESULT " + json.dumps(STATE["ranking"][-1] if len(STATE["ranking"]) == 1 else
-                next((r for r in STATE["ranking"] if r["nombre modelo"] == m), {}), ensure_ascii=False), flush=True)
-            STATE["status"] = "behavior"
+                    jobs = [pool.submit(behavior_round, m, repeat) for m in eligible]
+                    for f in as_completed(jobs):
+                        m = f.result()
+                        if repeat == CASE_REPEATS - 1:
+                            STATE["models_done"].append(m)
+                        STATE["completed_models"] = len(STATE["models_done"])
+                        compute_ranking()
+                        print("MODEL_ROUND_DONE " + json.dumps({"repeat":repeat+1,"model":m,"ranking":STATE["ranking"]}, ensure_ascii=False), flush=True)
+                if MODE == "full":
+                    STATE["status"] = "anti_loop"
+                    jobs = [pool.submit(anti_round, m) for m in eligible]
+                    for f in as_completed(jobs):
+                        m = f.result()
+                        compute_ranking()
+                        print("ANTI_MODEL_DONE " + json.dumps({"model":m,"ranking":STATE["ranking"]}, ensure_ascii=False), flush=True)
         STATE["status"] = "completed"
     except BudgetReached as exc:
         STATE["status"] = "partial_budget"
@@ -417,7 +436,7 @@ def main():
         STATE["status"] = "starting_runner"
         threading.Thread(target=runner, daemon=True).start()
     print("NVIDIA_BENCH_SERVER_READY " + json.dumps(
-        {"status": STATE["status"], "mode": MODE, "free_only": True}), flush=True)
+        {"status": STATE["status"], "mode": MODE, "free_only": True, "workers":WORKERS, "probe_max_tokens":PROBE_TOKENS}), flush=True)
     ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
 
 
