@@ -297,7 +297,7 @@ def runner():
         else:
             ids = [clean_id(x) for x in SCORES]
             STATE["errors"].append("Catalog unavailable; fallback to historical candidates.")
-        possible = sorted({i if i.startswith("nvidia/") else "nvidia/" + i for i in ids
+        possible = sorted({"nvidia/" + i for i in ids
                            if i and not SPECIAL.search(i)})
         if not possible:
             possible = ALT_MODEL_IDS
@@ -319,7 +319,7 @@ def runner():
             successes = []
             for trial in range(3):
                 r = chat(m, [{"role": "user", "content": "Reply exactly READY."}], limit=64)
-                row = {"model": m, "trial": trial+1, "ok": r["ok"],
+                row = {"model": m, "request_model": clean_id(m), "trial": trial+1, "ok": r["ok"],
                        "elapsed_s": round(r["elapsed"], 5), "error": r.get("error")}
                 probes.append(row)
                 print("PROBE_RESULT " + json.dumps(row, ensure_ascii=False), flush=True)
@@ -337,6 +337,10 @@ def runner():
             STATE["probes"] = probes
         STATE["eligible"] = len(eligible)
         STATE["models_done"] = []
+        STATE["eligible_models"] = eligible
+        if MODE == "probe":
+            STATE["status"] = "completed"
+            return
         STATE["status"] = "behavior"
         for m in eligible:
             STATE["current_model"] = m
@@ -403,7 +407,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main():
-    if MODE not in ("smoke", "historical", "full"):
+    if MODE not in ("probe", "smoke", "historical", "full"):
         STATE["status"] = "invalid_mode"
     elif not AUTO:
         STATE["status"] = "standby_autorun_disabled"
