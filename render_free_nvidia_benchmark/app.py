@@ -303,6 +303,10 @@ def runner():
             possible = ALT_MODEL_IDS
         priority = [i for i in ALT_MODEL_IDS if i in possible]
         possible = priority + [i for i in possible if i not in priority]
+        only = [m.strip() for m in os.getenv("BENCHMARK_MODEL_IDS", "").split(",") if m.strip()]
+        if only:
+            catalog_set = set(possible)
+            possible = [m for m in only if m in catalog_set]
         if MAX_MODELS:
             possible = possible[:MAX_MODELS]
         STATE["selected"] = len(possible)
