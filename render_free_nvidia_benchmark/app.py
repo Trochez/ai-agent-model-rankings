@@ -29,7 +29,12 @@ MODE = os.getenv("BENCHMARK_MODE", "full")
 AUTO = os.getenv("AUTO_RUN", "0") == "1"
 MAX_MODELS = max(0, int(os.getenv("MAX_MODELS", "0")))
 MAX_CALLS = max(1, int(os.getenv("MAX_API_CALLS", "1000")))
-MAX_SECONDS = min(540, max(30, int(os.getenv("MAX_RUN_SECONDS", "650"))))
+MAX_SECONDS = min(720, max(30, int(os.getenv("MAX_RUN_SECONDS", "720"))))
+# Stay inside the free service idle window, with a drain reserve for requests.
+LAST_HEALTH = None
+BATCH_SECONDS = min(540, MAX_SECONDS)
+BOOT_MONO = time.monotonic()
+LAST_MANIFEST_API = -1e20
 SOCKET_TIMEOUT = max(10, int(os.getenv("SOCKET_TIMEOUT", "120")))
 DELAY = max(0, float(os.getenv("REQUEST_DELAY_SECONDS", "0.8")))
 PORT = int(os.getenv("PORT", "10000"))
@@ -106,7 +111,7 @@ def clean_id(model):
 
 def should_stop():
     return (STATE["calls"] >= MAX_TOTAL_CALLS or SEGMENT_CALLS >= MAX_CALLS
-            or time.monotonic() - START > MAX_SECONDS)
+            or time.monotonic() - START >= BATCH_SECONDS)
 
 
 def api(path, body=None, timeout=SOCKET_TIMEOUT):
@@ -122,7 +127,7 @@ def api(path, body=None, timeout=SOCKET_TIMEOUT):
             raise BudgetReached("batch_call_ceiling")
         if SEGMENT_CALLS >= MAX_CALLS:
             raise BudgetReached("max_segment_calls")
-        if time.monotonic() - START > MAX_SECONDS:
+        if time.monotonic() - START >= BATCH_SECONDS:
             raise BudgetReached("max_segment_runtime")
         STATE["calls"] += 1
         SEGMENT_CALLS += 1
@@ -377,6 +382,41 @@ def remote_json(path):
             if attempt == 2:
                 raise
             time.sleep(2 ** attempt)
+
+
+def live_manifest():
+    # Raw branch URLs may briefly be stale. Check the public Contents API at
+    # most once per 75 seconds per process; never send NVIDIA credentials.
+    global LAST_MANIFEST_API
+    t = time.monotonic()
+    if t - LAST_MANIFEST_API >= 75:
+        LAST_MANIFEST_API = t
+        url = ("https://api.github.com/repos/Trochez/ai-agent-model-rankings/contents/"
+               "render_free_nvidia_benchmark/checkpoint.json"
+               "?ref=render-free-nvidia-benchmark-20261123")
+        req = urllib.request.Request(url,headers={"Accept":"application/vnd.github.raw+json",
+            "Cache-Control":"no-cache","User-Agent":"nvidia-benchmark-checkpoint-v2"})
+        try:
+            with urllib.request.urlopen(req,timeout=10) as response:
+                raw = response.read(4_000_001)
+            if len(raw)>4_000_000:
+                raise ValueError("manifest exceeds size limit")
+            obj=json.loads(raw)
+            if isinstance(obj,dict) and obj.get("schema")==SCHEMA and isinstance(obj.get("run_id"),str):
+                return obj
+        except (urllib.error.URLError, TimeoutError, OSError, ValueError):
+            pass
+    return remote_json("checkpoint.json")
+
+
+def batch_window(t, health, boot, maximum, socket_timeout):
+    # Only genuine incoming status traffic can justify the longer window.
+    # Without it, keep the previous 9-minute ceiling and account for boot age.
+    # Stop reserving new calls early enough to drain the last request.
+    drain = max(60, socket_timeout + 15)
+    if health is None or health < boot:
+        return max(0, min(540, maximum, 780 - (t - boot) - drain))
+    return max(0, min(maximum, 810 - (t - health) - drain))
 
 
 def checkpoint_events(obj, load_part):
@@ -649,7 +689,7 @@ def run_segment():
     if any(pending.values()):
         if STATE["calls"] >= MAX_TOTAL_CALLS:
             raise BudgetReached("max_total_calls")
-        raise BudgetReached("max_segment_runtime" if time.monotonic()-START>MAX_SECONDS else "max_segment_calls")
+        raise BudgetReached("max_segment_runtime" if time.monotonic()-START>=BATCH_SECONDS else "max_segment_calls")
 
 
 def announce_summary():
@@ -675,7 +715,7 @@ def batch_authorized(obj, process, last_batch):
 
 
 def runner():
-    global START, SEGMENT_CALLS, CALL_BASE, RUN_ID, BATCH, BATCH_CEILING
+    global START, SEGMENT_CALLS, CALL_BASE, RUN_ID, BATCH, BATCH_CEILING, BATCH_SECONDS
     STATE["started_utc"] = now()
     last_batch = 0
     announced = None
@@ -687,7 +727,7 @@ def runner():
                 STATE["status"]="week_ended"
                 return
             STATE["status"]="awaiting_authorization"
-            obj = remote_json("checkpoint.json")
+            obj = live_manifest()
             if not valid_active_manifest(obj,week):
                 STATE["status"]="standby_week_not_authorized"
                 time.sleep(30)
@@ -738,11 +778,15 @@ def runner():
                 announce_summary()
                 return
             START=time.monotonic()
+            BATCH_SECONDS=batch_window(START,LAST_HEALTH,BOOT_MONO,MAX_SECONDS,SOCKET_TIMEOUT)
+            STATE["batch_window_s"]=round(BATCH_SECONDS,1)
             SEGMENT_CALLS=0
             print("BENCHMARK_RUN_START " + json.dumps({"run_id":RUN_ID,"schema":SCHEMA,"batch":BATCH,
                 "process_id":PROCESS_ID,"call_base":CALL_BASE,"mode":MODE,"max_total_calls":MAX_TOTAL_CALLS,
-                "max_segment_calls":MAX_CALLS,"max_segment_seconds":MAX_SECONDS,"workers":WORKERS}),flush=True)
+                "max_segment_calls":MAX_CALLS,"max_segment_seconds":round(BATCH_SECONDS,1),"workers":WORKERS}),flush=True)
             try:
+                if BATCH_SECONDS < 30:
+                    raise BudgetReached("idle_window_exhausted")
                 run_segment()
                 compute_ranking()
                 STATE["status"]="completed" if (MODE=="probe" or (STATE["eligible"] and all(
@@ -784,6 +828,10 @@ def selftest():
     assert trial_key({"model":"m","phase":"behavior","test":"t","repeat":0}) == ("m","behavior","t",0)
     assert grade("json",'{"status":"ok","count":3,"ids":[2,4,6]}')
     assert "infra_error" in NON_EVALUABLE and "context_overflow" in NON_EVALUABLE
+    assert batch_window(1000,990,900,720,45)==720
+    assert batch_window(1000,None,900,720,45)==540
+    assert batch_window(1000,300,200,720,45)==50
+    assert batch_window(1000,100,0,720,45)==0
     week=weekly_id()
     assert valid_active_manifest({"schema":2,"week_id":week,"run_id":week+"-r2"},week)
     assert not valid_active_manifest({"schema":2,"run_id":"v2-2026-01-01"},week)
@@ -851,6 +899,9 @@ def selftest():
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
+        global LAST_HEALTH
+        if self.path.split("?")[0] == "/health":
+            LAST_HEALTH = time.monotonic()
         if self.path.split("?")[0] not in ("/", "/health", "/ranking.json", "/ranking.csv"):
             self.send_error(404)
             return
