@@ -1,0 +1,9 @@
+{
+  "schema": 2,
+  "run_id": "v2-2026-11-23",
+  "parts": [
+    "checkpoint_events/v2-2026-11-23/700068dc-0039-4720-924d-6c355ef997c7_2d41832f-06ef-45a7-8678-84ea85ab0f4a.json"
+  ],
+  "calls": 21,
+  "cursor_utc": "2026-11-24T19:34:29.561360776Z"
+}
