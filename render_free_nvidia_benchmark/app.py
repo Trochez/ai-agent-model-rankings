@@ -236,6 +236,10 @@ def one_trial(model, name, prompt, expected, repeat, phase):
            "status": status, "elapsed_s": round(time.monotonic()-begin, 4),
            "tool_calls": tool_count, "trace": trace, "answer_excerpt": answer[:120]}
     RAW.append(row)
+    if phase == "behavior":
+        print("BEHAVIOR_TRIAL_RESULT " + json.dumps(
+            {k: row[k] for k in ("model", "test", "repeat", "status", "elapsed_s", "tool_calls")},
+            ensure_ascii=False), flush=True)
     return row
 
 
