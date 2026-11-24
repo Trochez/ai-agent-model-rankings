@@ -12,8 +12,8 @@
   "process_call_highwater": {
     "6973653ff6b440d882d24740fb2542fe": 149
   },
-  "authorized_batch": 1,
-  "authorized_process_id": "6973653ff6b440d882d24740fb2542fe",
-  "calls_ceiling": 900,
+  "authorized_batch": 2,
+  "authorized_process_id": "f74a2660f5d94cbbb852396c945edd6c",
+  "calls_ceiling": 1049,
   "created_for": "explicit fresh restart"
 }
