@@ -4,12 +4,13 @@
   "run_id": "v2-2026-11-23-r2",
   "parts": [
     "checkpoint_events/v2-2026-11-23-r2/fec103b1-4e41-4e5d-bf6b-57d3cf2a8517_23ab1823-e344-4ef3-b3cc-ccda26c877e4.json",
-    "checkpoint_events/v2-2026-11-23-r2/e4e88ab8-a789-4c62-b586-1ad8ddc49b0e_ed687d99-6450-4228-8119-a8a376fcf3e5.json"
+    "checkpoint_events/v2-2026-11-23-r2/e4e88ab8-a789-4c62-b586-1ad8ddc49b0e_ed687d99-6450-4228-8119-a8a376fcf3e5.json",
+    "checkpoint_events/v2-2026-11-23-r2/82b8fbd8-31e6-4581-a9ad-ede2ce87d089_6ab38493-b118-4709-9187-dfc78bcd0299.json"
   ],
-  "calls": 126,
-  "cursor_utc": "2026-11-24T20:43:48.143838199Z",
+  "calls": 149,
+  "cursor_utc": "2026-11-24T20:45:40.630432888Z",
   "process_call_highwater": {
-    "6973653ff6b440d882d24740fb2542fe": 126
+    "6973653ff6b440d882d24740fb2542fe": 149
   },
   "authorized_batch": 1,
   "authorized_process_id": "6973653ff6b440d882d24740fb2542fe",
