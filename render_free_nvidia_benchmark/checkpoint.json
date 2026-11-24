@@ -6,8 +6,8 @@
   "calls": 0,
   "cursor_utc": null,
   "process_call_highwater": {},
-  "authorized_batch": 0,
-  "authorized_process_id": null,
-  "calls_ceiling": 0,
+  "authorized_batch": 1,
+  "authorized_process_id": "6973653ff6b440d882d24740fb2542fe",
+  "calls_ceiling": 900,
   "created_for": "explicit fresh restart"
 }
