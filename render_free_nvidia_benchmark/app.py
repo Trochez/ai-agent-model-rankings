@@ -231,6 +231,14 @@ def one_trial(model, name, prompt, expected, repeat, phase):
     begin = time.monotonic()
     msgs = [{"role": "system", "content": "Follow user instructions and use the requested tool when necessary."},
             {"role": "user", "content": prompt}]
+    if phase == "anti_loop" and name.startswith("anti_problem_"):
+        # Long-context challenge, distinct from effective context-window measurement.
+        j = int(name.rsplit("_",1)[1])
+        count = (0, 64, 256, 1024)[j % 4]
+        if count:
+            msgs[1]["content"] = ("Ignore these unrelated heartbeat records.\n" +
+                "\n".join("heartbeat %04d: nominal" % k for k in range(count)) +
+                "\n" + prompt)
     if phase == "recovery":
         # Controlled prior failure, not a claim that a natural loop was observed.
         msgs = [msgs[0], {"role": "user", "content": "The definitive label is ORCHID. Identify it."},
@@ -319,7 +327,7 @@ def trial_key(r):
     return (r["model"], r["phase"], r["test"], int(r["repeat"]))
 
 
-def restore():
+def restore(quiet=False):
     if not CHECKPOINT.exists():
         return
     obj = json.loads(CHECKPOINT.read_text(encoding="utf-8"))
@@ -328,7 +336,18 @@ def restore():
     if obj.get("schema") != SCHEMA:
         raise ValueError("checkpoint schema mismatch")
     seen_trials, seen_probes = set(), set()
-    for e in obj.get("events", []):
+    events = list(obj.get("events", []))
+    for part in obj.get("parts", []):
+        # Restrict archive reads to checked-in JSON files for this exact run.
+        if not re.fullmatch(r"checkpoint_events/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.json", part):
+            raise ValueError("invalid checkpoint part")
+        if part.split("/")[1] != RUN_ID:
+            raise ValueError("checkpoint part from different run")
+        batch = json.loads((ROOT / part).read_text(encoding="utf-8"))
+        if batch.get("run_id") != RUN_ID or batch.get("schema") != SCHEMA:
+            raise ValueError("checkpoint part run mismatch")
+        events.extend(batch.get("events", []))
+    for e in events:
         if e.get("schema") != SCHEMA or e.get("run_id") != RUN_ID:
             raise ValueError("mixed checkpoint run")
         STATE["calls"] = max(STATE["calls"], int(e.get("calls", 0)))
@@ -346,8 +365,10 @@ def restore():
             if k not in seen_trials:
                 RAW.append(d)
                 seen_trials.add(k)
-    print("CHECKPOINT_RESTORED " + json.dumps({"run_id": RUN_ID, "trials": len(RAW),
-          "probes": len(STATE.get("probes", [])), "calls": STATE["calls"]}), flush=True)
+    STATE["calls"] = max(STATE["calls"], int(obj.get("calls", 0)))
+    if not quiet:
+        print("CHECKPOINT_RESTORED " + json.dumps({"run_id": RUN_ID, "trials": len(RAW),
+              "probes": len(STATE.get("probes", [])), "calls": STATE["calls"]}), flush=True)
 
 
 def compute_ranking():
@@ -550,6 +571,47 @@ def selftest():
     assert trial_key({"model":"m","phase":"behavior","test":"t","repeat":0}) == ("m","behavior","t",0)
     assert grade("json",'{"status":"ok","count":3,"ids":[2,4,6]}')
     assert "infra_error" in NON_EVALUABLE and "context_overflow" in NON_EVALUABLE
+    # Deterministic checkpoint and scoring checks; no real NVIDIA request.
+    import tempfile
+    global CHECKPOINT
+    old_checkpoint = CHECKPOINT
+    state_before = dict(STATE)
+    raw_before = list(RAW)
+    try:
+        m = next(iter(SCORES))
+        row = {"model":m,"phase":"behavior","test":"exact_instruction","repeat":0,
+               "status":"pass","elapsed_s":1.0}
+        probe = {"model":m,"trial":1,"ok":True,"elapsed_s":0.5}
+        event = lambda k,d: {"schema":SCHEMA,"run_id":RUN_ID,"kind":k,"data":d,"calls":3}
+        with tempfile.TemporaryDirectory() as tmp:
+            CHECKPOINT = Path(tmp)/"checkpoint.json"
+            CHECKPOINT.write_text(json.dumps({"schema":SCHEMA,"run_id":RUN_ID,
+                "events":[event("trial",row),event("trial",row),event("probe",probe)]}),encoding="utf-8")
+            restore(quiet=True)
+            assert len(RAW) == 1 and len(STATE["probes"]) == 1
+            assert STATE["calls"] == 3
+            STATE["eligible_models"] = [m]
+            compute_ranking()
+            result = STATE["ranking"][0]
+            assert result["evaluable"] == 1 and result["provisional"]
+            assert result["indicador de pruebas"] == 100
+            RAW.append(dict(row,test="arithmetic",status="infra_error"))
+            compute_ranking()
+            assert STATE["ranking"][0]["evaluable"] == 1
+            assert STATE["ranking"][0]["indicador de pruebas"] == 100
+            if MODE == "full":
+                RAW.append(dict(row,phase="anti_loop",test="anti_generation_00",status="bad_answer"))
+                compute_ranking()
+                assert abs(STATE["ranking"][0]["indicador de pruebas"] - 27.27) < .01
+            CHECKPOINT.write_text(json.dumps({"schema":SCHEMA,"run_id":"other-week","events":[]}),encoding="utf-8")
+            n = len(RAW)
+            restore(quiet=True)
+            assert len(RAW) == n
+    finally:
+        CHECKPOINT = old_checkpoint
+        STATE.clear()
+        STATE.update(state_before)
+        RAW[:] = raw_before
     print("BENCHMARK_SELFTEST_OK", flush=True)
 
 
