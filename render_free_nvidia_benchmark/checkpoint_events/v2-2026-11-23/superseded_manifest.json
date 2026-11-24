@@ -3,15 +3,16 @@
   "run_id": "v2-2026-11-23",
   "parts": [
     "checkpoint_events/v2-2026-11-23/700068dc-0039-4720-924d-6c355ef997c7_2d41832f-06ef-45a7-8678-84ea85ab0f4a.json",
-    "checkpoint_events/v2-2026-11-23/777d50f2-8282-4fcc-89f1-bd821a673aac_327221c3-c7b0-43e1-813f-3aed0edda8ed.json"
+    "checkpoint_events/v2-2026-11-23/777d50f2-8282-4fcc-89f1-bd821a673aac_327221c3-c7b0-43e1-813f-3aed0edda8ed.json",
+    "checkpoint_events/v2-2026-11-23/282e10bd-65d1-4b3d-b9fb-e2ef35969604_cc03065d-67e3-463f-a4d7-08d7febd671a.json"
   ],
-  "calls": 207,
-  "cursor_utc": "2026-11-24T20:30:17.389293443Z",
+  "calls": 217,
+  "cursor_utc": "2026-11-24T20:31:32.478306023Z",
   "process_call_highwater": {
     "6c292a0e-4c88-454d-8aeb-953843230db1": 118,
-    "2b2cfbfa-4cc6-4697-8d81-26e8c5bccc6f": 89
+    "2b2cfbfa-4cc6-4697-8d81-26e8c5bccc6f": 99
   },
   "terminal_status": "superseded",
   "superseded_by": "v2-2026-11-23-r2",
-  "archive_note": "Snapshot before authorized fresh-run migration; subsequent old-process events excluded from replacement run."
+  "archive_note": "Old run checkpoint snapshot plus final log tail through deployment switch. Not used by replacement run."
 }
