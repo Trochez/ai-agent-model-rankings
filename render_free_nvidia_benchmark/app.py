@@ -297,6 +297,8 @@ def runner():
                            if i and not SPECIAL.search(i)})
         if not possible:
             possible = ALT_MODEL_IDS
+        priority = [i for i in ALT_MODEL_IDS if i in possible]
+        possible = priority + [i for i in possible if i not in priority]
         if MAX_MODELS:
             possible = possible[:MAX_MODELS]
         STATE["selected"] = len(possible)
