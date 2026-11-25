@@ -7,13 +7,16 @@
     "checkpoint_events/v2-2026-11-23-r2/e4e88ab8-a789-4c62-b586-1ad8ddc49b0e_ed687d99-6450-4228-8119-a8a376fcf3e5.json",
     "checkpoint_events/v2-2026-11-23-r2/82b8fbd8-31e6-4581-a9ad-ede2ce87d089_6ab38493-b118-4709-9187-dfc78bcd0299.json",
     "checkpoint_events/v2-2026-11-23-r2/56005a8f-b1ab-472a-89ca-6ea92f4ffdba_fbec6b74-8aee-41bc-9ee5-e33cf037e6ed.json",
-    "checkpoint_events/v2-2026-11-23-r2/93579c67-3e91-464a-ad32-e766f815bc45_27f9536e-7d7b-4a61-88f4-26ba206a9fe7.json"
+    "checkpoint_events/v2-2026-11-23-r2/93579c67-3e91-464a-ad32-e766f815bc45_27f9536e-7d7b-4a61-88f4-26ba206a9fe7.json",
+    "checkpoint_events/v2-2026-11-23-r2/0edb2091-32b9-44f8-b804-1d44f8b4c998_41fff5c7-e80a-4686-8853-cf6da396b3ab.json",
+    "checkpoint_events/v2-2026-11-23-r2/8fa7e9ac-143b-4a9a-bf8f-e37e0a02aaac_cd746303-74a9-4c39-a292-53eea043b1da.json"
   ],
-  "calls": 289,
-  "cursor_utc": "2026-11-24T21:38:10.561999232Z",
+  "calls": 501,
+  "cursor_utc": "2026-11-24T22:46:14.24410889Z",
   "process_call_highwater": {
     "6973653ff6b440d882d24740fb2542fe": 149,
-    "f74a2660f5d94cbbb852396c945edd6c": 140
+    "f74a2660f5d94cbbb852396c945edd6c": 140,
+    "a0cb479b8e044c09916413c548de3ca5": 212
   },
   "authorized_batch": 3,
   "authorized_process_id": "a0cb479b8e044c09916413c548de3ca5",
