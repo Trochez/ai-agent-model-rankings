@@ -24,9 +24,9 @@
     "aa8a75a766284252b4762201d40e464a": 150,
     "492b749fb168479eb2a7503ae8b57572": 207
   },
-  "authorized_batch": 6,
-  "authorized_process_id": "492b749fb168479eb2a7503ae8b57572",
-  "calls_ceiling": 1551,
+  "authorized_batch": 7,
+  "authorized_process_id": "e8556bcfecf84fe49f350dcd347997c9",
+  "calls_ceiling": 1758,
   "created_for": "explicit fresh restart",
   "controller_index": {
     "path": "checkpoint_events/v2-2026-11-23-r2/index_858.json",
