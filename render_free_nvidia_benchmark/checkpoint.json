@@ -27,5 +27,10 @@
   "authorized_batch": 6,
   "authorized_process_id": "492b749fb168479eb2a7503ae8b57572",
   "calls_ceiling": 1551,
-  "created_for": "explicit fresh restart"
+  "created_for": "explicit fresh restart",
+  "controller_index": {
+    "path": "checkpoint_events/v2-2026-11-23-r2/index_858.json",
+    "sha": "702f9a65f807aa2adfeef04e1ae65d5ab5cf4ba1",
+    "keys": 683
+  }
 }
